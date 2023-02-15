@@ -13,6 +13,10 @@ namespace GymLog.Data
         public DbSet<Excercise> Excercises { get; set; }
         public DbSet<BodyPart> BodyParts { get; set; }
         public DbSet<BodyPartExcercise> BodyPartExcercises { get; set; }
+        public DbSet<Set> Sets { get; set; }
+        public DbSet<OrderedSetList> OrderedSetLists { get; set; }
+        public DbSet<Template> Templates { get; set; }
+        public DbSet<Workout> Workouts { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +33,8 @@ namespace GymLog.Data
                         .WithMany(p => p.BodyPartExcercises)
                         .HasForeignKey(be => be.BodyPartId)
                     );
+
+
         }
     }
 }

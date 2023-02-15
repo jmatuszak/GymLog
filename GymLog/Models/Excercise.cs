@@ -1,4 +1,5 @@
 ﻿using GymLog.Data.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymLog.Models
 {
@@ -8,7 +9,8 @@ namespace GymLog.Models
         public string Name { get; set; }
         public WeightType? WeightType { get; set; }
 
-        public ICollection<BodyPart>? BodyParts { get; set; }
+        public List<BodyPart>? BodyParts { get; set; }
         public List<BodyPartExcercise>? BodyPartExcercises { get; set; }
+        public List<Set>? Set { get; set; }
     }
 }

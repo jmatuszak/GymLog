@@ -1,0 +1,6 @@
+﻿@model IEnumerable<BodyPart>
+
+	@foreach(var Item in Model)
+	{
+		<h4>@Item.Id - @Item.Name</h4>
+	}

@@ -61,6 +61,9 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
+
+
+
                 //Excercises
                 if (!context.Excercises.Any())
                 {
@@ -105,6 +108,9 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
+
+
+
                 if (!context.BodyPartExcercises.Any())
                 {
                     context.BodyPartExcercises.AddRange(new List<BodyPartExcercise>()
@@ -127,6 +133,145 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
+
+
+
+                if (!context.Templates.Any())
+                {
+                    context.Templates.AddRange(new List<Template>()
+                    {
+                        new Template()
+                        {
+                            Name = "Chest distruction",
+
+                        },
+
+                    });
+                    context.SaveChanges();
+                }
+                if (!context.OrderedSetLists.Any())
+                {
+                    context.OrderedSetLists.AddRange(new List<OrderedSetList>()
+                    {
+                        new OrderedSetList()
+                        {
+                            Order = 1,
+                            Description = "3 x 1-4",
+                            TemplateId = 1,
+
+                        },
+                        new OrderedSetList()
+                        {
+                            Order = 2,
+                            Description = "3 x 1-4",
+                            TemplateId = 1,
+
+                        },
+                        new OrderedSetList()
+                        {
+                            Order = 3,
+                            Description = "3 x 1-4",
+                            TemplateId = 1,
+
+                        },
+
+                    });
+                    context.SaveChanges();
+                }
+                if (!context.Sets.Any())
+                {
+                    context.Sets.AddRange(new List<Set>()
+                    {
+                        new Set()
+                        {
+                            Weight = 80,
+                            Reps = 1,
+                            Description = "Easy",
+                            ExcerciseId = 1,
+                            OrderedSetListId = 1,
+                        },
+                        new Set()
+                        {
+                            Weight = 90,
+                            Reps = 1,
+                            Description = "Harder",
+                            ExcerciseId = 1,
+                            OrderedSetListId = 1,
+                        },
+                        new Set()
+                        {
+                            Weight = 100,
+                            Reps = 1,
+                            Description = "Hard",
+                            ExcerciseId = 1,
+                            OrderedSetListId = 1,
+                        },
+                        new Set()
+                        {
+                            Weight = 80,
+                            Reps = 1,
+                            Description = "Easy",
+                            ExcerciseId = 2,
+                            OrderedSetListId = 2
+                        },
+                        new Set()
+                        {
+                            Weight = 90,
+                            Reps = 1,
+                            Description = "Harder",
+                            ExcerciseId = 2,
+                            OrderedSetListId = 2,
+                        },
+                        new Set()
+                        {
+                            Weight = 100,
+                            Reps = 1,
+                            Description = "Hard",
+                            ExcerciseId = 2,
+                            OrderedSetListId = 2,
+                        },
+                        new Set()
+                        {
+                            Weight = 80,
+                            Reps = 1,
+                            Description = "Easy",
+                            ExcerciseId = 3,
+                            OrderedSetListId = 3
+                        },
+                        new Set()
+                        {
+                            Weight = 90,
+                            Reps = 1,
+                            Description = "Harder",
+                            ExcerciseId = 3,
+                            OrderedSetListId = 3,
+                        },
+                        new Set()
+                        {
+                            Weight = 100,
+                            Reps = 1,
+                            Description = "Hard",
+                            ExcerciseId = 3,
+                            OrderedSetListId = 3,
+                        },
+                    });
+                    context.SaveChanges();
+                }
+                if (!context.Workouts.Any())
+                {
+                    context.Workouts.AddRange(new List<Workout>()
+                    {
+                        new Workout()
+                        {
+                            Date = DateTime.Now,
+                            TemplateId = 1,
+
+                        },
+
+                    });
+                    context.SaveChanges();
+                }
+
             }
 
         }
