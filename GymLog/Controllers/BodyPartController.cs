@@ -23,6 +23,11 @@ namespace GymLog.Controllers
             return View(bodyPart);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
 
     }
 }
