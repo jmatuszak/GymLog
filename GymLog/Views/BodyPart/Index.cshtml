@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<BodyPart>
 
+
+	<a asp-controller="BodyPart" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Body Part</a>
 	@foreach(var Item in Model)
 	{
 		<h4>@Item.Id - @Item.Name</h4>
+	<a  asp-controller="BodyPart" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+	<a  asp-controller="BodyPart" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+
 	}

@@ -7,7 +7,7 @@ namespace GymLog.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public WeightType WeightType { get; set; }
-        public List<BodyPart>? BodyParts { get; set; }
+        public WeightType? WeightType { get; set; }
+        public List<BodyPartVM>? BodyPartsVM { get; set; }
     }
 }

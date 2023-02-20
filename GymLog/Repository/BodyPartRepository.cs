@@ -33,11 +33,15 @@ namespace GymLog.Repository
             return await _context.BodyParts.ToListAsync();
         }
 
-        public async Task<BodyPart> GetById(int id)
-        {
-            return await _context.BodyParts.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task<IEnumerable<BodyPart>> GetByName(string name)
+		public async Task<BodyPart> GetById(int id)
+		{
+			return await _context.BodyParts.FirstOrDefaultAsync(i => i.Id == id);
+		}
+		public async Task<BodyPart> GetByIdAsNoTracking(int id)
+		{
+			return await _context.BodyParts.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+		}
+		public async Task<IEnumerable<BodyPart>> GetByName(string name)
         {
             return await _context.BodyParts.Where(n => n.Name.Contains(name)).ToListAsync();
         }
@@ -50,7 +54,7 @@ namespace GymLog.Repository
 
         public bool Update(BodyPart bodyPart)
         {
-            _context.BodyParts.Update(bodyPart);
+            _context.Update(bodyPart);
             return Save();
         }
     }

@@ -3,6 +3,7 @@ using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {
@@ -16,51 +17,83 @@ namespace GymLog.Controllers
         }
         public IActionResult Index()
         {
-            List<SelectListItem> selectListItems = _context.BodyParts.
-    Select(a => new SelectListItem
-    {
-        Text = a.Name,
-        Value = a.Id.ToString(),
-    }).ToList();
-            ViewBag.BodyPartId = selectListItems;
-            return View();
+            var excercises = new List<Excercise>();
+            excercises = _context.Excercises.ToList();
+            return View(excercises);
         }
         public IActionResult Create()
         {
-            var bodyParts = _context.BodyParts;
-            var bodyPartListVM = new List<BodyPartVM>();
-            foreach(var item in bodyParts)
+            /*            var bodyParts = _context.BodyParts;
+                        var bodyPartListVM = new List<BodyPartVM>();
+                        foreach(var item in bodyParts)
+                        {
+                            bodyPartListVM.Add(new BodyPartVM
+                            {
+                                Id = item.Id,
+                                Name = item.Name,
+                            });
+                        }
+                        ViewBag.BodyParts = bodyPartListVM;*/
+            var bodyParts = _context.BodyParts.ToList();
+            var checkedBodyPartsVM = new List<BodyPartVM>();
+            foreach (var bodyPart in bodyParts)
             {
-                bodyPartListVM.Add(new BodyPartVM
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                });
+                checkedBodyPartsVM.Add(new BodyPartVM() { Id= bodyPart.Id, Name=bodyPart.Name, IsChecked=false});
             }
-            ViewBag.BodyParts = bodyPartListVM;
-            return View();
+            var createExcerciseVM = new CreateExcerciseVM() { BodyPartsVM = checkedBodyPartsVM};
+            return View(createExcerciseVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Excercise excercise, List<int> BodyPartIdList)
+        public async Task<IActionResult> Create(CreateExcerciseVM excerciseVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(excercise);
+                return View(excerciseVM);
             }
+            Excercise excercise = new Excercise() 
+            {
+                Id = excerciseVM.Id,
+                Name= excerciseVM.Name
+            };
             _context.Excercises.Add(excercise);
             _context.SaveChanges();
-
-            foreach (var item in BodyPartIdList)
+            if (excerciseVM.BodyPartsVM != null)
             {
-                BodyPartExcercise bodyPartExcercise = new BodyPartExcercise()
+                foreach (var bodyPart in excerciseVM.BodyPartsVM)
                 {
-                    BodyPartId = item,
-                    ExcerciseId = excercise.Id,
-                    BodyPart = _context.BodyParts.Where(x => x.Id == item).FirstOrDefault(),
-                    Excercise = excercise
-                };
-                _context.BodyPartExcercises.Add(bodyPartExcercise);
+                    if (bodyPart.IsChecked == true)
+                    {
+                        BodyPartExcercise bodyPartExcercise = new BodyPartExcercise()
+                        {
+                            BodyPartId = bodyPart.Id,
+                            ExcerciseId = excercise.Id,
+                            BodyPart = _context.BodyParts.Where(x => x.Id == bodyPart.Id).FirstOrDefault(),
+                            Excercise = excercise
+                        };
+                        _context.BodyPartExcercises.Add(bodyPartExcercise);
+                        _context.SaveChanges();
+                    }
+                    
+                    
+                }
             }
+            return RedirectToAction("Index");
+        }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var excercise = await _context.Excercises.FirstOrDefaultAsync(i => i.Id == id);
+            if (excercise == null) return View("Error");
+            return View(excercise);
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteBodyPartPart(int id)
+        {
+            var excercise = await _context.Excercises.FirstOrDefaultAsync(i => i.Id == id);
+            if (excercise == null) return View("Error");
+            _context.Remove(excercise);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
     }

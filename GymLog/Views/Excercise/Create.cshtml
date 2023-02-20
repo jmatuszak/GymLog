@@ -1,6 +1,6 @@
 ﻿@using GymLog.Data.Enum
 @using GymLog.ViewModels
-@model Excercise
+@model CreateExcerciseVM
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="form-group">
@@ -18,12 +18,18 @@
     </div>
     <div class="form-group">
         @{
-            List<BodyPartVM> bodyParts = ViewBag.BodyParts;
-                foreach(var bodyPart in bodyParts)
-                {
-                <input type="checkbox" name="selectedCourse" value="@bodyPart.Id" />
-                <p>@bodyPart.Name</p>
+
+
+            @for (int i= 0; i< Model.BodyPartsVM.Count; i++)
+            {
+                
+                @Html.CheckBoxFor(m => m.BodyPartsVM[i].IsChecked)
+                <label>@Model.BodyPartsVM[i].Name</label>
+                @Html.HiddenFor(m => m.BodyPartsVM[i].Id)
+                @Html.HiddenFor(m => m.BodyPartsVM[i].Name)
+                <br />
             }
+           
         }
         </div>
 
