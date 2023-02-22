@@ -33,5 +33,8 @@ namespace GymLog.Controllers
 			_context.SaveChanges();
 			return RedirectToAction("Index");
 		}
+
+
+		
 	}
 }
