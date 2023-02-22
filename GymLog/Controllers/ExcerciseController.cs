@@ -23,17 +23,7 @@ namespace GymLog.Controllers
         }
         public IActionResult Create()
         {
-            /*            var bodyParts = _context.BodyParts;
-                        var bodyPartListVM = new List<BodyPartVM>();
-                        foreach(var item in bodyParts)
-                        {
-                            bodyPartListVM.Add(new BodyPartVM
-                            {
-                                Id = item.Id,
-                                Name = item.Name,
-                            });
-                        }
-                        ViewBag.BodyParts = bodyPartListVM;*/
+
             var bodyParts = _context.BodyParts.ToList();
             var checkedBodyPartsVM = new List<BodyPartVM>();
             foreach (var bodyPart in bodyParts)
