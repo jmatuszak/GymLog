@@ -9,10 +9,9 @@ namespace GymLog.Models
         public int? Reps { get; set; }
         public string? Description { get; set; }
 
-        public int ExcerciseId { get; set; }
-        public Excercise? Excercise { get; set; }
 
-        public int OrderedSetListId { get; set; }
-        public OrderedSetList? OrderedSetList { get; set; }
+
+        public int SetCollectionId { get; set; }
+        public SetCollection? SetCollection { get; set; }
 }
 }

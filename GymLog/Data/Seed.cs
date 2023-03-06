@@ -149,31 +149,34 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
-                if (!context.OrderedSetLists.Any())
+                if (!context.SetCollections.Any())
                 {
-                    context.OrderedSetLists.AddRange(new List<OrderedSetList>()
+                    context.SetCollections.AddRange(new List<SetCollection>()
                     {
-                        new OrderedSetList()
+                        new SetCollection()
                         {
                             Order = 1,
                             Description = "3 x 1-4",
                             TemplateId = 1,
+                            ExcerciseId= 1,
 
                         },
-                        new OrderedSetList()
+                        new SetCollection()
                         {
                             Order = 2,
                             Description = "3 x 1-4",
                             TemplateId = 1,
+							ExcerciseId= 2,
 
-                        },
-                        new OrderedSetList()
+						},
+                        new SetCollection()
                         {
                             Order = 3,
                             Description = "3 x 1-4",
                             TemplateId = 1,
+							ExcerciseId= 3,
 
-                        },
+						},
 
                     });
                     context.SaveChanges();
@@ -187,73 +190,64 @@ namespace GymLog.Data
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-                            ExcerciseId = 1,
-                            OrderedSetListId = 1,
+                            SetCollectionId= 1,
                         },
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-                            ExcerciseId = 1,
-                            OrderedSetListId = 1,
-                        },
+							SetCollectionId= 1,
+						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-                            ExcerciseId = 1,
-                            OrderedSetListId = 1,
-                        },
+							SetCollectionId= 1,
+						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-                            ExcerciseId = 2,
-                            OrderedSetListId = 2
-                        },
+							SetCollectionId= 2,
+						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-                            ExcerciseId = 2,
-                            OrderedSetListId = 2,
-                        },
+							SetCollectionId= 2,
+						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-                            ExcerciseId = 2,
-                            OrderedSetListId = 2,
-                        },
+							SetCollectionId= 2,
+						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-                            ExcerciseId = 3,
-                            OrderedSetListId = 3
-                        },
+							SetCollectionId= 3,
+						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-                            ExcerciseId = 3,
-                            OrderedSetListId = 3,
-                        },
+							SetCollectionId= 2,
+						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-                            ExcerciseId = 3,
-                            OrderedSetListId = 3,
-                        },
+							SetCollectionId= 3,
+						},
                     });
                     context.SaveChanges();
                 }

@@ -1,0 +1,14 @@
+﻿@model Set
+
+<h1>Are you sure you want to delete this Set?</h1>
+
+<h4>Id - @Model.Id</h4>
+<h4>Weight - @Model.Weight</h4>
+<h4>Reps - @Model.Reps</h4>
+<h4>SetColID - @Model.SetCollectionId</h4>
+<div class="form-group">
+    <form action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+    </form>
+</div>

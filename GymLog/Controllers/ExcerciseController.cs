@@ -33,6 +33,14 @@ namespace GymLog.Controllers
             var createExcerciseVM = new CreateExcerciseVM() { BodyPartsVM = checkedBodyPartsVM};
             return View(createExcerciseVM);
         }
+
+        public IActionResult CreateNew(CreateExcerciseVM excerciseVM)
+        {
+            return View(excerciseVM);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateExcerciseVM excerciseVM)
         {
@@ -71,20 +79,56 @@ namespace GymLog.Controllers
         }
 
 
-        public async Task<IActionResult> Delete(int id)
+
+		public async Task<IActionResult> Delete(int id)
         {
             var excercise = await _context.Excercises.FirstOrDefaultAsync(i => i.Id == id);
             if (excercise == null) return View("Error");
             return View(excercise);
         }
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteBodyPartPart(int id)
+        public IActionResult DeleteExcercise(Excercise excercise)
         {
-            var excercise = await _context.Excercises.FirstOrDefaultAsync(i => i.Id == id);
-            if (excercise == null) return View("Error");
             _context.Remove(excercise);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-    }
+
+		/*public async Task<IActionResult> Edit(int id)
+		{
+			var excercise = await _context.Excercises.Include(b => b.BodyParts).FirstOrDefaultAsync(e => e.Id == id);
+			if (excercise == null) return View("Error");
+			var excerciseVM = new CreateExcerciseVM()
+			{
+				Id = id,
+				Name = excercise.Name,
+				WeightType = excercise.WeightType,
+
+				if (excercise.BodyParts != null) BodyPartsVM = excercise.BodyParts,
+			};
+			return View(setVM);
+	}
+	[HttpPost]
+	public async Task<IActionResult> Edit(SetVM setVM)
+	{
+		if (!ModelState.IsValid)
+		{
+			ModelState.AddModelError("", "Failed to edit Set");
+			return View(setVM);
+		}
+		var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);
+
+		if (set != null)
+		{
+			set.Weight = setVM.Weight;
+			set.Reps = setVM.Reps;
+			set.Description = setVM.Description;
+			set.SetCollectionId = setVM.SetCollectionId;
+			_context.Update(set);
+			_context.SaveChanges();
+		}
+		return RedirectToAction("Index");
+	}*/
+
+}
 }

@@ -74,20 +74,27 @@ namespace GymLog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderedSetLists",
+                name: "SetCollections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Order = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExcerciseId = table.Column<int>(type: "int", nullable: false),
                     TemplateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderedSetLists", x => x.Id);
+                    table.PrimaryKey("PK_SetCollections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderedSetLists_Templates_TemplateId",
+                        name: "FK_SetCollections_Excercises_ExcerciseId",
+                        column: x => x.ExcerciseId,
+                        principalTable: "Excercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SetCollections_Templates_TemplateId",
                         column: x => x.TemplateId,
                         principalTable: "Templates",
                         principalColumn: "Id",
@@ -123,22 +130,15 @@ namespace GymLog.Migrations
                     Weight = table.Column<float>(type: "real", nullable: true),
                     Reps = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExcerciseId = table.Column<int>(type: "int", nullable: false),
-                    OrderedSetListId = table.Column<int>(type: "int", nullable: false)
+                    SetCollectionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sets_Excercises_ExcerciseId",
-                        column: x => x.ExcerciseId,
-                        principalTable: "Excercises",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Sets_OrderedSetLists_OrderedSetListId",
-                        column: x => x.OrderedSetListId,
-                        principalTable: "OrderedSetLists",
+                        name: "FK_Sets_SetCollections_SetCollectionId",
+                        column: x => x.SetCollectionId,
+                        principalTable: "SetCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -149,19 +149,19 @@ namespace GymLog.Migrations
                 column: "ExcerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderedSetLists_TemplateId",
-                table: "OrderedSetLists",
-                column: "TemplateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sets_ExcerciseId",
-                table: "Sets",
+                name: "IX_SetCollections_ExcerciseId",
+                table: "SetCollections",
                 column: "ExcerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sets_OrderedSetListId",
+                name: "IX_SetCollections_TemplateId",
+                table: "SetCollections",
+                column: "TemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_SetCollectionId",
                 table: "Sets",
-                column: "OrderedSetListId");
+                column: "SetCollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_TemplateId",
@@ -184,10 +184,10 @@ namespace GymLog.Migrations
                 name: "BodyParts");
 
             migrationBuilder.DropTable(
-                name: "Excercises");
+                name: "SetCollections");
 
             migrationBuilder.DropTable(
-                name: "OrderedSetLists");
+                name: "Excercises");
 
             migrationBuilder.DropTable(
                 name: "Templates");

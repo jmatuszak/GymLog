@@ -11,6 +11,6 @@ namespace GymLog.Models
 
         public List<BodyPart>? BodyParts { get; set; }
         public List<BodyPartExcercise>? BodyPartExcercises { get; set; }
-        public List<Set>? Set { get; set; }
+        public List<SetCollection>? SetCollection { get; set; }
     }
 }

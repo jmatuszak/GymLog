@@ -6,6 +6,6 @@ namespace GymLog.ViewModels
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public List<OrderedSetList>? OrderedSetsLists { get; set; }
+		public List<SetCollection>? SetCollections { get; set; }
 	}
 }
