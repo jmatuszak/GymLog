@@ -1,50 +1,14 @@
-﻿@model IEnumerable<SetCollection>
+﻿@model IEnumerable<Template>
 
 
-	<a asp-controller="SetCollection" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
+	<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
 	@foreach(var Item in Model)
 	{
 
-		<h4>@Item.Id - @Item.Excercise.Name - @Item.Excercise.WeightType</h4>
-		<h4> Order: @Item.Order</h4>
-		<h4> Description: @Item.Description</h4>
-		<h4>Template: @Item.TemplateId - @Item.Template.Name</h4>
-        
-            if (Item.Sets != null)
-            {
-                <table>
-                <tr>
-                        <th width="7%">Set</th>
-                    <th>Weight</th>
-                    <th>Reps</th>
-                </tr>
-                @for (int i = 0; i < Item.Sets.Count; i++)
-                {
-                    <tr>
-                            <td>@(i + 1)</td>
-                        <td>
-                             <div class="form-group">
-                                <input asp-for="@Item.Sets[i].Weight" class="form-control" placeholder="Weight">
-                                <span asp-validation-for="@Item.Sets[i].Weight" class="text-danger"></span>
-                            </div>
-                        </td>
+		<h4>@Item.Id - @Item.Name</h4>
 
 
-                            <td>
-                                <div class="form-group">
-                                <input asp-for="@Item.Sets[i].Reps" class="form-control" placeholder="Reps">
-                                <span asp-validation-for="@Item.Sets[i].Reps" class="text-danger"></span>
-                                </div>
-                            </td>
-                    </tr>
-                    <input asp-for="@Item.Sets[i].Id" type="hidden" class="form-control">
-                }
-                </table>
-            }
-
-        
-
-		<a  asp-controller="SetCollection" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-    <a asp-controller="SetCollection" method="post" asp-action="DeleteSetCollection" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+		<a  asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+		<a asp-controller="Template" method="post" asp-action="DeleteSetCollection" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
 
 	}

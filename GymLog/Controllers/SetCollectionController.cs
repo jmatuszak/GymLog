@@ -82,11 +82,7 @@ namespace GymLog.Controllers
                 var excercisesConcatVM = await CreateExcerciseConcatList();
                 setCollectionVM.ExcercisesConcatVM = excercisesConcatVM;
             }
-            if (setCollectionVM.SetsVM == null)
-            {
-                setCollectionVM.SetsVM = new List<SetVM>();
-                setCollectionVM.SetsVM.Add(new SetVM());
-            }
+            setCollectionVM = AddSet(setCollectionVM);
             return View(setCollectionVM);
         }
 
