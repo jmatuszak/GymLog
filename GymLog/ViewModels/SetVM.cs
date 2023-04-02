@@ -10,6 +10,6 @@ namespace GymLog.ViewModels
 		public string? Description { get; set; }
 
 		public int SetCollectionId { get; set; }
-		public SetCollection? SetCollection { get; set; }
+		public SetCollectionVM? SetCollectionVM { get; set; }
 	}
 }
