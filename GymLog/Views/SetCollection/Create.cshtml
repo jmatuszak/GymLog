@@ -4,7 +4,6 @@
 
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
-    
     <div class="form-group">
         <label asp-for="ExcerciseId">Excercise</label>
         <select class="form-select-sm" asp-for="ExcerciseId"
@@ -85,19 +84,8 @@
 
 
     <button type="submit" formaction="/SetCollection/AddSetCreate" class="btn btn-outline-primary">AddSet</button>
-    <input type="button" id="addSet" class="btn btn-outline-primary"/>
     <button type="submit" formaction="/SetCollection/RemoveSetCreate" class="btn btn-outline-danger">RemoveSet</button>
     </br>
     </br>
     <button type="submit" formaction="/SetCollection/CreateSetCollection" class="btn btn-primary">Submit</button>
-    <script src="https://code.jquery.com/jquery-3.6.4.js"
-            integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
-            crossorigin="anonymous"></script>
-            <script>
-                $(document).on(ready, function(){
-                $("#addSet").on("click", function(){
-                alert("Dupa");
-                };
-                };
-            </script>
 </form>

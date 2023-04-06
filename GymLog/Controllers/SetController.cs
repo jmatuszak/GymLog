@@ -27,18 +27,12 @@ namespace GymLog.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(SetVM setVM)
+		public IActionResult Create(Set set)
 		{
 			if(!ModelState.IsValid)
 			{
-				return View(setVM);
+				return View(set);
 			}
-			Set set = new Set()
-			{
-				Reps = setVM.Reps,
-				Weight = setVM.Weight,
-				SetCollectionId = setVM.SetCollectionId,
-			};
 			_context.Sets.Add(set);
 			_context.SaveChanges();
 			return RedirectToAction("Index");
