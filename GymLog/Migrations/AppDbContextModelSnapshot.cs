@@ -74,34 +74,7 @@ namespace GymLog.Migrations
                     b.ToTable("Excercises");
                 });
 
-            modelBuilder.Entity("GymLog.Models.Set", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Reps")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SetCollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<float?>("Weight")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SetCollectionId");
-
-                    b.ToTable("Sets");
-                });
-
-            modelBuilder.Entity("GymLog.Models.SetCollection", b =>
+            modelBuilder.Entity("GymLog.Models.ExcerciseSet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +100,34 @@ namespace GymLog.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("SetCollections");
+                    b.ToTable("ExcerciseSets");
+                });
+
+            modelBuilder.Entity("GymLog.Models.Set", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExcerciseSetId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Reps")
+                        .HasColumnType("int");
+
+                    b.Property<float?>("Weight")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExcerciseSetId");
+
+                    b.ToTable("Sets");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
@@ -187,27 +187,16 @@ namespace GymLog.Migrations
                     b.Navigation("Excercise");
                 });
 
-            modelBuilder.Entity("GymLog.Models.Set", b =>
-                {
-                    b.HasOne("GymLog.Models.SetCollection", "SetCollection")
-                        .WithMany("Sets")
-                        .HasForeignKey("SetCollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SetCollection");
-                });
-
-            modelBuilder.Entity("GymLog.Models.SetCollection", b =>
+            modelBuilder.Entity("GymLog.Models.ExcerciseSet", b =>
                 {
                     b.HasOne("GymLog.Models.Excercise", "Excercise")
-                        .WithMany("SetCollection")
+                        .WithMany("ExcerciseSet")
                         .HasForeignKey("ExcerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GymLog.Models.Template", "Template")
-                        .WithMany("SetCollections")
+                        .WithMany("ExcerciseSets")
                         .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -215,6 +204,17 @@ namespace GymLog.Migrations
                     b.Navigation("Excercise");
 
                     b.Navigation("Template");
+                });
+
+            modelBuilder.Entity("GymLog.Models.Set", b =>
+                {
+                    b.HasOne("GymLog.Models.ExcerciseSet", "ExcerciseSet")
+                        .WithMany("Sets")
+                        .HasForeignKey("ExcerciseSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExcerciseSet");
                 });
 
             modelBuilder.Entity("GymLog.Models.Workout", b =>
@@ -237,17 +237,17 @@ namespace GymLog.Migrations
                 {
                     b.Navigation("BodyPartExcercises");
 
-                    b.Navigation("SetCollection");
+                    b.Navigation("ExcerciseSet");
                 });
 
-            modelBuilder.Entity("GymLog.Models.SetCollection", b =>
+            modelBuilder.Entity("GymLog.Models.ExcerciseSet", b =>
                 {
                     b.Navigation("Sets");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
                 {
-                    b.Navigation("SetCollections");
+                    b.Navigation("ExcerciseSets");
                 });
 #pragma warning restore 612, 618
         }

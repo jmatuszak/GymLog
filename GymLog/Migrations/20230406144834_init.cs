@@ -74,7 +74,7 @@ namespace GymLog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SetCollections",
+                name: "ExcerciseSets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -86,15 +86,15 @@ namespace GymLog.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SetCollections", x => x.Id);
+                    table.PrimaryKey("PK_ExcerciseSets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SetCollections_Excercises_ExcerciseId",
+                        name: "FK_ExcerciseSets_Excercises_ExcerciseId",
                         column: x => x.ExcerciseId,
                         principalTable: "Excercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SetCollections_Templates_TemplateId",
+                        name: "FK_ExcerciseSets_Templates_TemplateId",
                         column: x => x.TemplateId,
                         principalTable: "Templates",
                         principalColumn: "Id",
@@ -130,15 +130,15 @@ namespace GymLog.Migrations
                     Weight = table.Column<float>(type: "real", nullable: true),
                     Reps = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SetCollectionId = table.Column<int>(type: "int", nullable: false)
+                    ExcerciseSetId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sets_SetCollections_SetCollectionId",
-                        column: x => x.SetCollectionId,
-                        principalTable: "SetCollections",
+                        name: "FK_Sets_ExcerciseSets_ExcerciseSetId",
+                        column: x => x.ExcerciseSetId,
+                        principalTable: "ExcerciseSets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -149,19 +149,19 @@ namespace GymLog.Migrations
                 column: "ExcerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetCollections_ExcerciseId",
-                table: "SetCollections",
+                name: "IX_ExcerciseSets_ExcerciseId",
+                table: "ExcerciseSets",
                 column: "ExcerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetCollections_TemplateId",
-                table: "SetCollections",
+                name: "IX_ExcerciseSets_TemplateId",
+                table: "ExcerciseSets",
                 column: "TemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sets_SetCollectionId",
+                name: "IX_Sets_ExcerciseSetId",
                 table: "Sets",
-                column: "SetCollectionId");
+                column: "ExcerciseSetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_TemplateId",
@@ -184,7 +184,7 @@ namespace GymLog.Migrations
                 name: "BodyParts");
 
             migrationBuilder.DropTable(
-                name: "SetCollections");
+                name: "ExcerciseSets");
 
             migrationBuilder.DropTable(
                 name: "Excercises");

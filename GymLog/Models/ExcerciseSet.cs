@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymLog.Models
 {
-    public class SetCollection
+    public class ExcerciseSet
     {
         public int Id { get; set; }
         public int Order { get; set; }

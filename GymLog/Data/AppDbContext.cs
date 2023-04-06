@@ -14,7 +14,7 @@ namespace GymLog.Data
         public DbSet<BodyPart> BodyParts { get; set; }
         public DbSet<BodyPartExcercise> BodyPartExcercises { get; set; }
         public DbSet<Set> Sets { get; set; }
-        public DbSet<SetCollection> SetCollections { get; set; }
+        public DbSet<ExcerciseSet> ExcerciseSets { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<Workout> Workouts { get; set; }
         

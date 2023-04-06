@@ -39,24 +39,24 @@ namespace GymLog.Controllers
             }
             return excercisesVM;
         }
-        public SetCollectionVM AddSet(SetCollectionVM setCollectionVM)
+        public ExcerciseSetVM AddSet(ExcerciseSetVM ExcerciseSetVM)
         {
-            if (setCollectionVM.SetsVM == null) setCollectionVM.SetsVM = new List<SetVM>();
-            setCollectionVM.SetsVM.Add(new SetVM());
-            return setCollectionVM;
+            if (ExcerciseSetVM.SetsVM == null) ExcerciseSetVM.SetsVM = new List<SetVM>();
+            ExcerciseSetVM.SetsVM.Add(new SetVM());
+            return ExcerciseSetVM;
 
         }
-        public SetCollectionVM RemoveSet(SetCollectionVM setCollectionVM)
+        public ExcerciseSetVM RemoveSet(ExcerciseSetVM ExcerciseSetVM)
         {
-            if (setCollectionVM.SetsVM.Count < 1) return setCollectionVM;
-            setCollectionVM.SetsVM.RemoveAt(setCollectionVM.SetsVM.Count - 1);
-            return setCollectionVM;
+            if (ExcerciseSetVM.SetsVM.Count < 1) return ExcerciseSetVM;
+            ExcerciseSetVM.SetsVM.RemoveAt(ExcerciseSetVM.SetsVM.Count - 1);
+            return ExcerciseSetVM;
         }
 
-        public TemplateVM AddSetCollection(TemplateVM templateVM)
+        public TemplateVM AddExcerciseSet(TemplateVM templateVM)
         {
-            if (templateVM.SetCollectionsVM == null) templateVM.SetCollectionsVM = new List<SetCollectionVM>();
-            templateVM.SetCollectionsVM.Add(new SetCollectionVM());
+            if (templateVM.ExcerciseSetsVM == null) templateVM.ExcerciseSetsVM = new List<ExcerciseSetVM>();
+            templateVM.ExcerciseSetsVM.Add(new ExcerciseSetVM());
             return templateVM;
 
         }
@@ -66,18 +66,18 @@ namespace GymLog.Controllers
         //<-----------------------  CREATE   --------------------->   
 
 
-        public IActionResult AddSetCollectionCreate(TemplateVM templateVM)
+        public IActionResult AddExcerciseSetCreate(TemplateVM templateVM)
         {
-            if (templateVM.SetCollectionsVM == null) templateVM.SetCollectionsVM = new List<SetCollectionVM>();
-            templateVM = AddSetCollection(templateVM);
+            if (templateVM.ExcerciseSetsVM == null) templateVM.ExcerciseSetsVM = new List<ExcerciseSetVM>();
+            templateVM = AddExcerciseSet(templateVM);
             return View("Create", templateVM);
 
         }
-        public IActionResult RemoveSetCollectionCreate(SetCollectionVM setCollectionVM)
+        public IActionResult RemoveExcerciseSetCreate(ExcerciseSetVM ExcerciseSetVM)
         {
-            if (setCollectionVM.SetsVM == null) return View("Error");
-            setCollectionVM = RemoveSet(setCollectionVM);
-            return View("Create", setCollectionVM);
+            if (ExcerciseSetVM.SetsVM == null) return View("Error");
+            ExcerciseSetVM = RemoveSet(ExcerciseSetVM);
+            return View("Create", ExcerciseSetVM);
         }
 
         public async Task<IActionResult> Create(TemplateVM? templateVM)
@@ -88,7 +88,7 @@ namespace GymLog.Controllers
                 var excercisesConcatVM = await CreateExcerciseConcatList();
                 templateVM.ExcercisesConcatVM = excercisesConcatVM;
             }
-            templateVM = AddSetCollection(templateVM);
+            templateVM = AddExcerciseSet(templateVM);
             return View(templateVM);
         }
         [HttpPost]

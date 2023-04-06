@@ -1,7 +1,7 @@
-﻿@model IEnumerable<SetCollection>
+﻿@model IEnumerable<ExcerciseSet>
 
 
-	<a asp-controller="SetCollection" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
+	<a asp-controller="ExcerciseSet" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
 	@foreach(var Item in Model)
 	{
 
@@ -44,7 +44,7 @@
 
         
 
-		<a  asp-controller="SetCollection" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-    <a asp-controller="SetCollection" method="post" asp-action="DeleteSetCollection" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+		<a  asp-controller="ExcerciseSet" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+    <a asp-controller="ExcerciseSet" method="post" asp-action="DeleteExcerciseSet" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
 
 	}

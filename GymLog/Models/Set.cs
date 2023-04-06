@@ -11,7 +11,7 @@ namespace GymLog.Models
 
 
 
-        public int SetCollectionId { get; set; }
-        public SetCollection? SetCollection { get; set; }
+        public int ExcerciseSetId { get; set; }
+        public ExcerciseSet? ExcerciseSet { get; set; }
 }
 }

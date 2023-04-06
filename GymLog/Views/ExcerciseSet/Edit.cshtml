@@ -1,9 +1,11 @@
 ﻿@using GymLog.ViewModels
-@model SetCollectionVM
+@model ExcerciseSetVM
 
 
 
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <input asp-for="Id" type="hidden" class="form-control">
+
     <div class="form-group">
         <label asp-for="ExcerciseId">Excercise</label>
         <select class="form-select-sm" asp-for="ExcerciseId"
@@ -49,21 +51,21 @@
             if (Model.SetsVM != null)
             {
                 <table>
-                <tr>
-                        <th width="7%">Set</th>
-                    <th>Weight</th>
-                    <th>Reps</th>
-                </tr>
-                @for (int i = 0; i < Model.SetsVM.Count; i++)
-                {
                     <tr>
+                        <th width="7%">Set</th>
+                        <th>Weight</th>
+                        <th>Reps</th>
+                    </tr>
+                    @for (int i = 0; i < Model.SetsVM.Count; i++)
+                    {
+                        <tr>
                             <td>@(i + 1)</td>
-                        <td>
-                             <div class="form-group">
-                                <input asp-for="SetsVM[i].Weight" class="form-control" placeholder="Weight">
-                                <span asp-validation-for="SetsVM[i].Weight" class="text-danger"></span>
-                            </div>
-                        </td>
+                            <td>
+                                <div class="form-group">
+                                    <input asp-for="SetsVM[i].Weight" class="form-control" placeholder="Weight">
+                                    <span asp-validation-for="SetsVM[i].Weight" class="text-danger"></span>
+                                </div>
+                            </td>
 
 
                             <td>
@@ -72,7 +74,7 @@
                                     <span asp-validation-for="SetsVM[i].Reps" class="text-danger"></span>
                                 </div>
                             </td>
-                    </tr>
+                        </tr>
                         <input asp-for="SetsVM[i].Id" type="hidden" class="form-control">
                     }
                 </table>
@@ -83,9 +85,9 @@
 
 
 
-    <button type="submit" formaction="/SetCollection/AddSetCreate" class="btn btn-outline-primary">AddSet</button>
-    <button type="submit" formaction="/SetCollection/RemoveSetCreate" class="btn btn-outline-danger">RemoveSet</button>
+    <button type="submit" formaction="/ExcerciseSet/AddSetEdit" class="btn btn-outline-primary">AddSet</button>
+    <button type="submit" formaction="/ExcerciseSet/RemoveSetEdit" class="btn btn-outline-danger">RemoveSet</button>
     </br>
     </br>
-    <button type="submit" formaction="/SetCollection/CreateSetCollection" class="btn btn-primary">Submit</button>
+    <button type="submit" formaction="/ExcerciseSet/Edit" class="btn btn-primary">Submit</button>
 </form>

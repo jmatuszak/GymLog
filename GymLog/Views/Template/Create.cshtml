@@ -16,7 +16,7 @@
 
     <div class="form-group">
         @{
-            if(Model.SetCollectionsVM != null)
+            if(Model.ExcerciseSetsVM != null)
             {
             
                 @for (int i = 0; i < Model.ExcercisesConcatVM.Count; i++)
@@ -25,7 +25,7 @@
                     <input asp-for="@Model.ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
 
                 }
-                foreach(var item in Model.SetCollectionsVM)
+                foreach(var item in Model.ExcerciseSetsVM)
                 {
                     if (Model.ExcercisesConcatVM != null)
                     {
@@ -50,9 +50,9 @@
                         <span asp-validation-for="@item.Description" class="text-danger"></span>
                     </div>
                         <input asp-for="@item.TemplateId" type="hidden" class="form-control">
-                @for (int i = 0; i < Model.SetCollectionsVM.Count; i++)
+                @for (int i = 0; i < Model.ExcerciseSetsVM.Count; i++)
                 {
-                            <input asp-for="@Model.SetCollectionsVM[i].Id" type="hidden" class="form-control" placeholder="SetCollectionsVM[i].Id">
+                            <input asp-for="@Model.ExcerciseSetsVM[i].Id" type="hidden" class="form-control" placeholder="ExcerciseSetsVM[i].Id">
 
                 }
                        
@@ -87,8 +87,8 @@
                             }
                                 </table>
                         }
-                    <button type="submit" formaction="/SetCollection/AddSetCreate/@item" class="btn btn-outline-primary">AddSet</button>
-                    <button type="submit" formaction="/SetCollection/RemoveSetCreate" class="btn btn-outline-danger">RemoveSet</button>
+                    <button type="submit" formaction="/ExcerciseSet/AddSetCreate/@item" class="btn btn-outline-primary">AddSet</button>
+                    <button type="submit" formaction="/ExcerciseSet/RemoveSetCreate" class="btn btn-outline-danger">RemoveSet</button>
                     }
                 }
             }
@@ -96,9 +96,9 @@
     </div>
 
 
-    <button type="submit" formaction="/Template/AddSetCollectionCreate" class="btn btn-outline-primary">Add Excercise</button>
+    <button type="submit" formaction="/Template/AddExcerciseSetCreate" class="btn btn-outline-primary">Add Excercise</button>
     <button type="submit" formaction="/Template/RemoveExcercise" class="btn btn-outline-danger">Remove Excercise</button>
     </br>
     </br>
-    <button type="submit" formaction="/SetCollection/CreateSetCollection" class="btn btn-primary">Submit</button>
+    <button type="submit" formaction="/ExcerciseSet/CreateExcerciseSet" class="btn btn-primary">Submit</button>
 </form>

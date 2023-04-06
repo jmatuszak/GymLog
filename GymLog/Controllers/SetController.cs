@@ -48,7 +48,7 @@ namespace GymLog.Controllers
 				Weight = set.Weight,
 				Reps = set.Reps,
 				Description = set.Description,
-				SetCollectionId = set.SetCollectionId,
+				ExcerciseSetId = set.ExcerciseSetId,
 			};
 			return View(setVM);
 		}
@@ -67,7 +67,7 @@ namespace GymLog.Controllers
 				set.Weight = setVM.Weight;
 				set.Reps = setVM.Reps;
 				set.Description = setVM.Description;
-				set.SetCollectionId = setVM.SetCollectionId;
+				set.ExcerciseSetId = setVM.ExcerciseSetId;
 				_context.Update(set);
 				_context.SaveChanges();
 			}

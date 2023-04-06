@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymLog.ViewModels
 {
-	public class SetCollectionVM
+	public class ExcerciseSetVM
 	{
 		public int Id { get; set; }
 		public int Order { get; set; }
