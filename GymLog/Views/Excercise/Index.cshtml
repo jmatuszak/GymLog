@@ -2,6 +2,24 @@
 @using GymLog.ViewModels
 @model IEnumerable<Excercise>
 
+<script type="text/javascript">
+    var count=0;
+    function addFunc() {
+        count++;
+        document.getElementById("count").innerHTML = count;
+    }
+    function subFunc() {
+        count--;
+        document.getElementById("count").innerHTML = count;
+    }
+</script>
+<button class="btn btn-sm btn-outline-info" onclick="addFunc()">Add </button>
+<button class="btn btn-sm btn-outline-danger"  onclick="subFunc()">Substract </button>
+
+
+<p>
+    Button Clicked <span id="count">0</span> Times
+</p>
 
 	<a asp-controller="Excercise" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Excercise</a>
 	@foreach(var Item in Model)
