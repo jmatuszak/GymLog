@@ -3,6 +3,7 @@ using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace GymLog.Controllers
 {
@@ -48,17 +49,27 @@ namespace GymLog.Controllers
             return templateVM;
 
         }
-        public ExcerciseSetVM RemoveSet(ExcerciseSetVM ExcerciseSetVM)
+        public TemplateVM RemoveSet(TemplateVM templateVM, int element, int set)
         {
-            if (ExcerciseSetVM.SetsVM.Count < 1) return ExcerciseSetVM;
-            ExcerciseSetVM.SetsVM.RemoveAt(ExcerciseSetVM.SetsVM.Count - 1);
-            return ExcerciseSetVM;
+            if (templateVM == null) throw new ArgumentNullException();
+            if (templateVM.ExcerciseSetsVM == null) throw new ArgumentNullException();
+            if (templateVM.ExcerciseSetsVM[element].SetsVM == null)
+                templateVM.ExcerciseSetsVM[element].SetsVM = new List<SetVM>();
+            var delete = templateVM.ExcerciseSetsVM[element].SetsVM[set];
+            templateVM.ExcerciseSetsVM[element].SetsVM.RemoveAt(set);
+            return templateVM;
         }
 
 
-        public IActionResult AddSetCreate(int id,TemplateVM templateVM)
+        public IActionResult AddSetCreate(TemplateVM templateVM, [FromQuery(Name = "set")] int i)
         {
-            templateVM = AddSet(templateVM,id);
+            templateVM = AddSet(templateVM, i);
+            return View("Create", templateVM);
+        }
+        public IActionResult RemoveSetCreate(TemplateVM templateVM, [FromQuery(Name = "element")] int i, [FromQuery(Name = "set")] int j)
+        {
+            templateVM = RemoveSet(templateVM, i,j);
+            ModelState.Clear();
             return View("Create", templateVM);
         }
 
@@ -72,10 +83,11 @@ namespace GymLog.Controllers
             templateVM.ExcerciseSetsVM.Add(new ExcerciseSetVM());
             return templateVM;
         }
-        public TemplateVM RemoveExcerciseSet(TemplateVM templateVM)
+        public TemplateVM RemoveExcerciseSet(TemplateVM templateVM, int element)
         {
             if (templateVM.ExcerciseSetsVM == null) templateVM.ExcerciseSetsVM = new List<ExcerciseSetVM>();
-            templateVM.ExcerciseSetsVM.RemoveAt(templateVM.ExcerciseSetsVM.Count-1);
+            templateVM.ExcerciseSetsVM.RemoveAt(element);
+            ModelState.Clear();
             return templateVM;
         }
 
@@ -86,10 +98,10 @@ namespace GymLog.Controllers
             return View("Create", templateVM);
 
         }
-        public IActionResult RemoveExcerciseSetCreate(TemplateVM templateVM)
+        public IActionResult RemoveExcerciseSetCreate(TemplateVM templateVM, [FromQuery(Name = "element")] int element)
         {
             if (templateVM.ExcerciseSetsVM == null) return View("Error");
-            templateVM = RemoveExcerciseSet(templateVM);
+            templateVM = RemoveExcerciseSet(templateVM,element);
             return View("Create", templateVM);
         }
 
