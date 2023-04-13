@@ -123,7 +123,7 @@ namespace GymLog.Controllers
 			set.Weight = setVM.Weight;
 			set.Reps = setVM.Reps;
 			set.Description = setVM.Description;
-			set.ExcerciseSetId = setVM.ExcerciseSetId;
+			set.TemplateSegmentId = setVM.TemplateSegmentId;
 			_context.Update(set);
 			_context.SaveChanges();
 		}

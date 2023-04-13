@@ -9,7 +9,7 @@ namespace GymLog.ViewModels
 		public int? Reps { get; set; }
 		public string? Description { get; set; }
 
-		public int ExcerciseSetId { get; set; }
-		public ExcerciseSet? ExcerciseSet { get; set; }
+		public int TemplateSegmentId { get; set; }
+		public TemplateSegment? TemplateSegment { get; set; }
 	}
 }

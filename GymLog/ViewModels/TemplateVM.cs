@@ -6,7 +6,7 @@ namespace GymLog.ViewModels
 	{
 		public int Id { get; set; }
 		public string? Name { get; set; }
-		public List<ExcerciseSetVM>? ExcerciseSetsVM { get; set; }
+		public List<TemplateSegmentVM>? TemplateSegmentsVM { get; set; }
         public List<CreateExcerciseConcatVM>? ExcercisesConcatVM { get; set; }
     }
 }

@@ -149,11 +149,11 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
-                if (!context.ExcerciseSets.Any())
+                if (!context.TemplateSegments.Any())
                 {
-                    context.ExcerciseSets.AddRange(new List<ExcerciseSet>()
+                    context.TemplateSegments.AddRange(new List<TemplateSegment>()
                     {
-                        new ExcerciseSet()
+                        new TemplateSegment()
                         {
                             Order = 1,
                             Description = "3 x 1-4",
@@ -161,7 +161,7 @@ namespace GymLog.Data
                             ExcerciseId= 1,
 
                         },
-                        new ExcerciseSet()
+                        new TemplateSegment()
                         {
                             Order = 2,
                             Description = "3 x 1-4",
@@ -169,7 +169,7 @@ namespace GymLog.Data
 							ExcerciseId= 2,
 
 						},
-                        new ExcerciseSet()
+                        new TemplateSegment()
                         {
                             Order = 3,
                             Description = "3 x 1-4",
@@ -190,63 +190,63 @@ namespace GymLog.Data
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-                            ExcerciseSetId= 1,
+                            TemplateSegmentId= 1,
                         },
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							ExcerciseSetId= 1,
+							TemplateSegmentId= 1,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							ExcerciseSetId= 1,
+							TemplateSegmentId= 1,
 						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-							ExcerciseSetId= 2,
+							TemplateSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							ExcerciseSetId= 2,
+							TemplateSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							ExcerciseSetId= 2,
+							TemplateSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-							ExcerciseSetId= 3,
+							TemplateSegmentId= 3,
 						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							ExcerciseSetId= 2,
+							TemplateSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							ExcerciseSetId= 3,
+							TemplateSegmentId= 3,
 						},
                     });
                     context.SaveChanges();

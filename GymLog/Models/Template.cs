@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<ExcerciseSet>? ExcerciseSets { get; set; }
+        public List<TemplateSegment>? TemplateSegments { get; set; }
     }
 }

@@ -14,9 +14,9 @@
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" style="border:ridge" >
     @{
-        if(Model.ExcerciseSetsVM != null)
+        if(Model.TemplateSegmentsVM != null)
         {
             
             @for (int i = 0; i < Model.ExcercisesConcatVM.Count; i++)
@@ -25,40 +25,40 @@
                 <input asp-for="@Model.ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
 
             }
-            for(int i = 0; i<Model.ExcerciseSetsVM.Count; i++)
+            for(int i = 0; i<Model.TemplateSegmentsVM.Count; i++)
             {
                 if (Model.ExcercisesConcatVM != null)
                 {
 
                     <div class="form-group">
-                        <label asp-for="@Model.ExcerciseSetsVM[i].ExcerciseId">Excercise</label>
-                        <select class="form-select-sm" asp-for="@Model.ExcerciseSetsVM[i].ExcerciseId"
+                        <label asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId">Excercise</label>
+                        <select class="form-select-sm" asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId"
                     asp-items="new SelectList(@Model.ExcercisesConcatVM, nameof(CreateExcerciseConcatVM.Id),
                     nameof(CreateExcerciseConcatVM.Name))">
                             <option>Please Select</option>
                         </select>
-                        <span asp-validation-for="@Model.ExcerciseSetsVM[i].Excercise" class="text-danger"></span>
-                            <button type="submit" formaction="/Template/RemoveExcerciseSetCreate?element=@i" class="btn btn-outline-danger">Remove Excercise</button>
+                        <span asp-validation-for="@Model.TemplateSegmentsVM[i].Excercise" class="text-danger"></span>
+                            <button type="submit" formaction="/Template/RemoveTemplateSegmentCreate?segment=@i" class="btn btn-outline-danger">Remove Excercise</button>
 
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.ExcerciseSetsVM[i].Order">Order</label>
-                        <input asp-for="@Model.ExcerciseSetsVM[i].Order" class="form-control" placeholder="Order">
-                        <span asp-validation-for="@Model.ExcerciseSetsVM[i].Order" class="text-danger"></span>
+                        <label asp-for="@Model.TemplateSegmentsVM[i].Order">Order</label>
+                        <input asp-for="@Model.TemplateSegmentsVM[i].Order" class="form-control" placeholder="Order">
+                        <span asp-validation-for="@Model.TemplateSegmentsVM[i].Order" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.ExcerciseSetsVM[i].Description">Description</label>
-                        <input asp-for="@Model.ExcerciseSetsVM[i].Description" class="form-control" placeholder="Description">
-                        <span asp-validation-for="@Model.ExcerciseSetsVM[i].Description" class="text-danger"></span>
+                        <label asp-for="@Model.TemplateSegmentsVM[i].Description">Description</label>
+                        <input asp-for="@Model.TemplateSegmentsVM[i].Description" class="form-control" placeholder="Description">
+                        <span asp-validation-for="@Model.TemplateSegmentsVM[i].Description" class="text-danger"></span>
                     </div>
-                    <input asp-for="@Model.ExcerciseSetsVM[i].TemplateId" type="hidden" class="form-control">
-                    @for (int j = 0; j < Model.ExcerciseSetsVM.Count; j++)
+                    <input asp-for="@Model.TemplateSegmentsVM[i].TemplateId" type="hidden" class="form-control">
+                    @for (int j = 0; j < Model.TemplateSegmentsVM.Count; j++)
                     {
-                        <input asp-for="@Model.ExcerciseSetsVM[j].Id" type="hidden" class="form-control" placeholder="ExcerciseSetsVM[j].Id">
+                        <input asp-for="@Model.TemplateSegmentsVM[j].Id" type="hidden" class="form-control" placeholder="TemplateSegmentsVM[j].Id">
 
                     }
 
-                    if (@Model.ExcerciseSetsVM[i].SetsVM != null)
+                    if (@Model.TemplateSegmentsVM[i].SetsVM != null)
                     {
                         <table>
                             <tr>
@@ -66,7 +66,7 @@
                                 <th>Weight</th>
                                 <th>Reps</th>
                             </tr>
-                            @for (int j = 0; j < @Model.ExcerciseSetsVM[i].SetsVM.Count; j++)
+                            @for (int j = 0; j < @Model.TemplateSegmentsVM[i].SetsVM.Count; j++)
                             {
                                 <tr>
                                     <td>@(
@@ -74,25 +74,25 @@
                                         )</td>
                                     <td>
                                         <div class="form-group">
-                                            <input asp-for="@Model.ExcerciseSetsVM[i].SetsVM[j].Weight" class="form-control" placeholder="Weight">
-                                            <span asp-validation-for="@Model.ExcerciseSetsVM[i].SetsVM[j].Weight" class="text-danger"></span>
+                                            <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Weight" class="form-control" placeholder="Weight">
+                                            <span asp-validation-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Weight" class="text-danger"></span>
                                         </div>
                                     </td>
 
 
                                     <td>
                                         <div class="form-group">
-                                            <input asp-for="@Model.ExcerciseSetsVM[i].SetsVM[j].Reps" class="form-control" placeholder="Reps">
-                                            <span asp-validation-for="@Model.ExcerciseSetsVM[i].SetsVM[j].Reps" class="text-danger"></span>
+                                            <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Reps" class="form-control" placeholder="Reps">
+                                            <span asp-validation-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Reps" class="text-danger"></span>
                                         </div>
                                     </td>
                                     <td>
-                                            <button type="submit" formaction="/Template/RemoveSetCreate?element=@i&set=@j" class="btn btn-outline-danger">RemoveSet</button>
+                                            <button type="submit" formaction="/Template/RemoveSetCreate?segment=@i" class="btn btn-outline-danger">RemoveSet</button>
 
                                         </td>
 
                                 </tr>
-                                <input asp-for="@Model.ExcerciseSetsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
+                                <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
                             }
                         </table>
                     }
@@ -105,8 +105,8 @@
     </br>
 
 
-    <button type="submit" formaction="/Template/AddExcerciseSetCreate" class="btn btn-outline-primary">Add Excercise</button>
+    <button type="submit" formaction="/Template/AddTemplateSegmentCreate" class="btn btn-outline-primary">Add Excercise</button>
     </br>
     </br>
-    <button type="submit" formaction="/ExcerciseSet/CreateExcerciseSet" class="btn btn-primary">Submit</button>
+    <button type="submit" formaction="/Template/CreateTemplate" class="btn btn-primary">Submit</button>
 </form>
