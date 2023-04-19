@@ -42,7 +42,7 @@ namespace GymLog.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,7 +82,7 @@ namespace GymLog.Migrations
                     Order = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExcerciseId = table.Column<int>(type: "int", nullable: false),
-                    TemplateId = table.Column<int>(type: "int", nullable: false)
+                    TemplateId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,8 +97,7 @@ namespace GymLog.Migrations
                         name: "FK_TemplateSegments_Templates_TemplateId",
                         column: x => x.TemplateId,
                         principalTable: "Templates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -149,6 +148,11 @@ namespace GymLog.Migrations
                 column: "ExcerciseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sets_TemplateSegmentId",
+                table: "Sets",
+                column: "TemplateSegmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TemplateSegments_ExcerciseId",
                 table: "TemplateSegments",
                 column: "ExcerciseId");
@@ -157,11 +161,6 @@ namespace GymLog.Migrations
                 name: "IX_TemplateSegments_TemplateId",
                 table: "TemplateSegments",
                 column: "TemplateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sets_TemplateSegmentId",
-                table: "Sets",
-                column: "TemplateSegmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_TemplateId",

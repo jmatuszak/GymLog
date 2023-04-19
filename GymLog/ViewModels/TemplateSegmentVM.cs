@@ -15,5 +15,6 @@ namespace GymLog.ViewModels
 		public Template? Template { get; set; }
 		public List<SetVM>? SetsVM { get; set; }
 		public SetVM? SetVM { get; set; }
+		public string? ActionName { get; set; }
 	}
 }

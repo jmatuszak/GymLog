@@ -42,7 +42,7 @@ namespace GymLog.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateExcerciseVM excerciseVM)
+        public IActionResult Create(CreateExcerciseVM excerciseVM)
         {
             if (!ModelState.IsValid)
             {

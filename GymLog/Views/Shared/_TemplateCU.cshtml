@@ -4,30 +4,34 @@
 
 
 
-    <input asp-for="@Model.Id" type="hidden" class="form-control">
+    <input asp-for="Id" type="hidden" class="form-control">
+    <input asp-for="ActionName" type="hidden" class="form-control">
 
 
     <div class="form-group">
-        <label asp-for="@Model.Name">Name</label>
-        <input asp-for="@Model.Name" class="form-control" placeholder="Name">
-        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group" style="border:ridge" >
+    <div class="form-group"  >
     @{
         if(Model.TemplateSegmentsVM != null)
         {
-            
+            if(Model.ExcercisesConcatVM!=null){
             @for (int i = 0; i < Model.ExcercisesConcatVM.Count; i++)
             {
-                <input asp-for="@Model.ExcercisesConcatVM[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
-                <input asp-for="@Model.ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
+                <input asp-for="ExcercisesConcatVM[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
+                <input asp-for="ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
 
             }
+        }
             for(int i = 0; i<Model.TemplateSegmentsVM.Count; i++)
             {
+                
                 if (Model.ExcercisesConcatVM != null)
                 {
+                    <div id="segment">
 
                     <div class="form-group">
                         <label asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId">Excercise</label>
@@ -37,7 +41,7 @@
                             <option>Please Select</option>
                         </select>
                         <span asp-validation-for="@Model.TemplateSegmentsVM[i].Excercise" class="text-danger"></span>
-                            <button type="submit" formaction="/Template/RemoveTemplateSegmentCreate?segment=@i" class="btn btn-outline-danger">Remove Excercise</button>
+                            <button type="submit" formaction="/Template/RemoveTemplateSegment?segment=@i" class="btn btn-outline-danger">Remove Excercise</button>
 
                     </div>
                     <div class="form-group">
@@ -57,7 +61,7 @@
 
                     }
 
-                    if (@Model.TemplateSegmentsVM[i].SetsVM != null)
+                    @if (@Model.TemplateSegmentsVM[i].SetsVM != null)
                     {
                         <table>
                             <tr>
@@ -85,17 +89,15 @@
                                             <span asp-validation-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Reps" class="text-danger"></span>
                                         </div>
                                     </td>
-                                    <td>
-                                            <button type="submit" formaction="/Template/RemoveSetCreate?segment=@i" class="btn btn-outline-danger">RemoveSet</button>
-
-                                        </td>
-
                                 </tr>
                                 <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
                             }
                         </table>
                     }
-                    <button type="submit" formaction="/Template/AddSetCreate?set=@i" class="btn btn-outline-primary">AddSet</button>
+                    <button type="submit" formaction="/Template/AddSet?segment=@i" class="btn btn-outline-primary">+</button>
+                    <button type="submit" formaction="/Template/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
+
+                </div>
                 }
             }
         }
@@ -104,5 +106,5 @@
     </br>
 
 
-    <button type="submit" formaction="/Template/AddTemplateSegmentCreate" class="btn btn-outline-primary">Add Excercise</button>
+    <button type="submit" formaction="/Template/AddTemplateSegment" class="btn btn-outline-primary">Add Excercise</button>
     </br>

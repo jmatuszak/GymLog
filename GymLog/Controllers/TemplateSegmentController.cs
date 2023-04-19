@@ -41,94 +41,69 @@ namespace GymLog.Controllers
 			}
             return excercisesVM;
         }
-        public TemplateSegmentVM AddSet(TemplateSegmentVM TemplateSegmentVM)
+
+        public IActionResult AddSet(TemplateSegmentVM templateSegmentVM)
         {
-            if (TemplateSegmentVM.SetsVM == null) TemplateSegmentVM.SetsVM = new List<SetVM>();
-            TemplateSegmentVM.SetsVM.Add(new SetVM());
-            return TemplateSegmentVM;
+            
+            if (templateSegmentVM.SetsVM == null) templateSegmentVM.SetsVM = new List<SetVM>();
+            templateSegmentVM.SetsVM.Add(new SetVM());
+            return View(templateSegmentVM.ActionName, templateSegmentVM);
 
         }
-        public TemplateSegmentVM RemoveSet(TemplateSegmentVM TemplateSegmentVM)
+        public IActionResult RemoveSet(TemplateSegmentVM templateSegmentVM)
         {
-            if (TemplateSegmentVM.SetsVM.Count < 1) return TemplateSegmentVM;
-            TemplateSegmentVM.SetsVM.RemoveAt(TemplateSegmentVM.SetsVM.Count - 1);
-            return TemplateSegmentVM;
+            if (templateSegmentVM.SetsVM == null) return View("Error");
+            templateSegmentVM.SetsVM.RemoveAt(templateSegmentVM.SetsVM.Count - 1);
+            return View(templateSegmentVM.ActionName, templateSegmentVM);
         }
 
-
-        //<-----------------------  CREATE   --------------------->   
-
-
-        public IActionResult AddSetCreate(TemplateSegmentVM TemplateSegmentVM)
+        //<-----------------------  CREATE   --------------------->
+        public async Task<IActionResult> Create(TemplateSegmentVM? templateSegmentVM)
         {
-            if (TemplateSegmentVM.SetsVM == null) TemplateSegmentVM.SetsVM = new List<SetVM>();
-            TemplateSegmentVM = AddSet(TemplateSegmentVM);
-            return View("Create", TemplateSegmentVM);
-
-        }
-        public IActionResult RemoveSetCreate(TemplateSegmentVM TemplateSegmentVM)
-        {
-            if (TemplateSegmentVM.SetsVM == null) return View("Error");
-            TemplateSegmentVM = RemoveSet(TemplateSegmentVM);
-            return View("Create", TemplateSegmentVM);
-        }
-
-
-        public async Task<IActionResult> Create(TemplateSegmentVM? TemplateSegmentVM)
-        {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
-            if (TemplateSegmentVM.ExcercisesConcatVM == null)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(templateSegmentVM == null) templateSegmentVM = new TemplateSegmentVM();
+                if (templateSegmentVM.ExcercisesConcatVM == null)
             {
                 var excercisesConcatVM = await CreateExcerciseConcatList();
-                TemplateSegmentVM.ExcercisesConcatVM = excercisesConcatVM;
+                templateSegmentVM.ExcercisesConcatVM = excercisesConcatVM;
             }
-            TemplateSegmentVM = AddSet(TemplateSegmentVM);
-            return View(TemplateSegmentVM);
+            if(templateSegmentVM.SetsVM==null) templateSegmentVM.SetsVM= new List<SetVM>();
+            templateSegmentVM.SetsVM.Add(new SetVM());
+            templateSegmentVM.ActionName = "Create";
+            return View(templateSegmentVM);
         }
 
         [HttpPost]
-		public async Task<IActionResult> CreateTemplateSegment(TemplateSegmentVM TemplateSegmentVM)
+		public async Task<IActionResult> CreateTemplateSegment(TemplateSegmentVM templateSegmentVM)
 		{
 			if(!ModelState.IsValid)
 			{
 				return View("Error");
 			}
+
             var sets = new List<Set>();
-            if (TemplateSegmentVM.SetsVM != null)
-			{
-				foreach (var item in TemplateSegmentVM.SetsVM)
-				{
-					var set = new Set() 
-					{
-						Weight = item.Weight,
-						Reps = item.Reps,
-						TemplateSegmentId = item.TemplateSegmentId	
-					};
-					sets.Add(set);
-				}
-				var TemplateSegment = new TemplateSegment()
-				{
-					Order = TemplateSegmentVM.Order,
-					Description = TemplateSegmentVM.Description,
-					ExcerciseId = TemplateSegmentVM.ExcerciseId,
-					TemplateId = TemplateSegmentVM.TemplateId,
-					Sets = sets
-				};
-                _context.TemplateSegments.Add(TemplateSegment);
-                _context.SaveChanges();
-            }
-			else
-			{
-                var TemplateSegment = new TemplateSegment()
+            if (templateSegmentVM.SetsVM != null)
+                foreach (var item in templateSegmentVM.SetsVM)
                 {
-                    Order = TemplateSegmentVM.Order,
-                    Description = TemplateSegmentVM.Description,
-                    ExcerciseId = TemplateSegmentVM.ExcerciseId,
-                    TemplateId = TemplateSegmentVM.TemplateId,
-                };
-                _context.TemplateSegments.Add(TemplateSegment);
-                _context.SaveChanges();
-            }
+                    var set = new Set()
+                    {
+                        Weight = item.Weight,
+                        Reps = item.Reps,
+                        TemplateSegmentId = item.TemplateSegmentId
+                    };
+                    sets.Add(set);
+                }
+            
+            var templateSegment = new TemplateSegment()
+            {
+                Order = templateSegmentVM.Order,
+                Description = templateSegmentVM.Description,
+                ExcerciseId = templateSegmentVM.ExcerciseId,
+                TemplateId = templateSegmentVM.TemplateId,
+                Sets = sets
+            };
+            _context.TemplateSegments.Add(templateSegment);
+            _context.SaveChanges();
             return RedirectToAction("Index");
 		}
 
@@ -137,28 +112,13 @@ namespace GymLog.Controllers
         //<-----------------------  UPDATE   --------------------->   
 
 
-        public IActionResult AddSetEdit(TemplateSegmentVM TemplateSegmentVM)
-        {
-            if (TemplateSegmentVM.SetsVM == null) TemplateSegmentVM.SetsVM = new List<SetVM>();
-            TemplateSegmentVM = AddSet(TemplateSegmentVM);
-            return View("Edit", TemplateSegmentVM);
-
-        }
-        public IActionResult RemoveSetEdit(TemplateSegmentVM TemplateSegmentVM)
-        {
-            if (TemplateSegmentVM.SetsVM == null) return View("Error");
-            TemplateSegmentVM = RemoveSet(TemplateSegmentVM);
-            return View("Edit", TemplateSegmentVM);
-        }
-
-
         public async Task<IActionResult> Edit(int id)
 		{
             var excercisesConcatVM = await CreateExcerciseConcatList();
             
-            var TemplateSegment  = await _context.TemplateSegments.Include(x=>x.Sets).FirstOrDefaultAsync(x => x.Id == id);
+            var templateSegment  = await _context.TemplateSegments.Include(x=>x.Sets).FirstOrDefaultAsync(x => x.Id == id);
 			var setsVM = new List<SetVM>();
-            foreach (var item in TemplateSegment.Sets)
+            foreach (var item in templateSegment.Sets)
             {
                 SetVM setVM = new SetVM()
                 {
@@ -169,34 +129,35 @@ namespace GymLog.Controllers
                 };
                 setsVM.Add(setVM);
             }
-			var TemplateSegmentVM = new TemplateSegmentVM()
+			var templateSegmentVM = new TemplateSegmentVM()
 			{
-				Id = TemplateSegment.Id,
-				Order = TemplateSegment.Order,
-				Description = TemplateSegment.Description,
-				TemplateId = TemplateSegment.TemplateId,
-				ExcerciseId = TemplateSegment.ExcerciseId,
+				Id = templateSegment.Id,
+				Order = templateSegment.Order,
+				Description = templateSegment.Description,
+				TemplateId = templateSegment.TemplateId,
+				ExcerciseId = templateSegment.ExcerciseId,
 				ExcercisesConcatVM = excercisesConcatVM,
 				SetsVM = setsVM
 			};
 
-			return View(TemplateSegmentVM);
+            templateSegmentVM.ActionName = "Edit";
+            return View(templateSegmentVM);
 		}
 
         [HttpPost]
-        public async Task<IActionResult> Edit(TemplateSegmentVM TemplateSegmentVM)
+        public async Task<IActionResult> Edit(TemplateSegmentVM templateSegmentVM)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit Set");
-                return View(TemplateSegmentVM);
+                ModelState.AddModelError("", "Failed to edit Set. Model Error.");
+                return View(templateSegmentVM);
             }
-            var oldSets = _context.Sets.Where(x => x.TemplateSegmentId == TemplateSegmentVM.Id).ToList();
+            var oldSets = _context.Sets.Where(x => x.TemplateSegmentId == templateSegmentVM.Id).ToList();
             _context.Sets.RemoveRange(oldSets);
 
-            var TemplateSegment = await _context.TemplateSegments.FirstOrDefaultAsync(x => x.Id == TemplateSegmentVM.Id);
+            var templateSegment = await _context.TemplateSegments.FirstOrDefaultAsync(x => x.Id == templateSegmentVM.Id);
 			var sets = new List<Set>();
-            foreach (var item in TemplateSegmentVM.SetsVM)
+            foreach (var item in templateSegmentVM.SetsVM)
             {
                 Set set = new Set()
                 {
@@ -206,15 +167,15 @@ namespace GymLog.Controllers
                 };
                 sets.Add(set);
             }
-            if (TemplateSegment != null)
+            if (templateSegment != null)
             {
-                TemplateSegment.Id = TemplateSegmentVM.Id;
-                TemplateSegment.Order = TemplateSegmentVM.Order;
-                TemplateSegment.Description = TemplateSegmentVM.Description;
-                TemplateSegment.ExcerciseId = TemplateSegmentVM.ExcerciseId;
-                TemplateSegment.TemplateId = TemplateSegmentVM.TemplateId;
-                TemplateSegment.Sets = sets;
-                _context.Update(TemplateSegment);
+                templateSegment.Id = templateSegmentVM.Id;
+                templateSegment.Order = templateSegmentVM.Order;
+                templateSegment.Description = templateSegmentVM.Description;
+                templateSegment.ExcerciseId = templateSegmentVM.ExcerciseId;
+                templateSegment.TemplateId = templateSegmentVM.TemplateId;
+                templateSegment.Sets = sets;
+                _context.Update(templateSegment);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
