@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing.Template;
+﻿
 
 namespace GymLog.Models
 {
@@ -8,9 +8,7 @@ namespace GymLog.Models
         public float? Weight { get; set; }
         public int? Reps { get; set; }
         public string? Description { get; set; }
-
-
-
+        public bool IsDone { get; set; }
         public int TemplateSegmentId { get; set; }
         public TemplateSegment? TemplateSegment { get; set; }
 }

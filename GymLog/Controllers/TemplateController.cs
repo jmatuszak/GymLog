@@ -2,6 +2,7 @@
 using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
@@ -75,8 +76,11 @@ namespace GymLog.Controllers
 
         public IActionResult AddTemplateSegment(TemplateVM templateVM)
         {
-            if (templateVM.TemplateSegmentsVM == null) templateVM.TemplateSegmentsVM = new List<TemplateSegmentVM>();
-            templateVM.TemplateSegmentsVM.Add(new TemplateSegmentVM());
+            templateVM.TemplateSegmentsVM ??= new List<TemplateSegmentVM>() { new TemplateSegmentVM()  };
+            templateVM.TemplateSegmentsVM.Add(new TemplateSegmentVM()
+            {
+                SetsVM = new List<SetVM>() { new SetVM() }
+            });
             return View(templateVM.ActionName, templateVM);
 
         }
@@ -112,13 +116,17 @@ namespace GymLog.Controllers
         [HttpPost]
         public IActionResult CreateTemplate(TemplateVM templateVM)
         {
+            TemplateSegment templ = new TemplateSegment();
             if (!ModelState.IsValid)
             {
                 return View(templateVM);
             }
-            Template template = new Template() { Name = templateVM.Name };
+            Template template = new Template() 
+            { 
+                Name = templateVM.Name,
+                TemplateSegments = new List<TemplateSegment>()
+            };
 
-            template.TemplateSegments = new List<TemplateSegment>();
             if (templateVM.TemplateSegmentsVM != null)
                 foreach (var segment in templateVM.TemplateSegmentsVM)
                 {
@@ -159,11 +167,12 @@ namespace GymLog.Controllers
         {
             if (id != null)
             {
-                var template = await _context.Templates.FirstOrDefaultAsync(t => t.Id == id);
+                var template = await _context.Templates.Include(t => t.TemplateSegments).FirstOrDefaultAsync(t => t.Id == id);
                 templateVM = templateVM ?? new TemplateVM();
                 templateVM.TemplateSegmentsVM = templateVM.TemplateSegmentsVM ?? new List<TemplateSegmentVM>();
                 templateVM.Id = template.Id;
                 templateVM.Name = template.Name;
+                templateVM.ActionName = "Edit";
                 if (templateVM.ExcercisesConcatVM == null)
                 {
                     var excercisesConcatVM = await CreateExcerciseConcatList();
@@ -178,7 +187,7 @@ namespace GymLog.Controllers
                     segmentVM.Id = segment.Id;
                     segmentVM.TemplateId = segment.TemplateId;
                     segmentVM.ExcerciseId = segment.ExcerciseId;
-
+                    if(segment.Sets!= null)
                     foreach(var set in segment.Sets)
                     {
                         setsVM.Add(new SetVM()
@@ -195,9 +204,23 @@ namespace GymLog.Controllers
                 }
                 
             }
+            
             return View(templateVM);
-
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditTemplate(TemplateVM templateVM)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit. ModelState Error.");
+                return View(templateVM);
+            }
+            var template = await _context.Templates.FirstOrDefaultAsync(i => i.Id == templateVM.Id);
+            template.Name = templateVM.Name;
+            var templateSegments = new List<TemplateSegment>();
+            return RedirectToAction("Index");
+        }
     }
 }

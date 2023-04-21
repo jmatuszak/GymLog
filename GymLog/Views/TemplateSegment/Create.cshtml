@@ -1,12 +1,8 @@
 ﻿@using GymLog.ViewModels
-@model TemplateSegmentVM
-
-
+@model             GymLog.ViewModels.TemplateSegment
 
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
     <partial name="_TemplateSegmentCU" />
-    </br>
-    </br>
     <button type="submit" formaction="/TemplateSegment/CreateTemplateSegment" class="btn btn-primary">Submit</button>
 </form>
