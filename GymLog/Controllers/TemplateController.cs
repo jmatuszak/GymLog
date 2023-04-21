@@ -265,11 +265,14 @@ namespace GymLog.Controllers
                         Sets = sets
                     });
                 }
+                _context.RemoveRange(template.TemplateSegments);
+                //_context.RemoveRange(segments) ;
                 template.Id = templateVM.Id;
                 template.Name ??= templateVM.Name;
                 template.TemplateSegments = segments;
                 _context.Update(template);
                 _context.SaveChanges();
+                _context.Sets.Where(s => s.TemplateSegmentId == null);
             }
             return RedirectToAction("Index");
         }

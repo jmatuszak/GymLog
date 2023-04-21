@@ -7,9 +7,13 @@
 
 		<h4>@Item.Id - @Item.Excercise.Name - @Item.Excercise.WeightType</h4>
 		<h4> Order: @Item.Order</h4>
-		<h4> Description: @Item.Description</h4>
-		<h4>Template: @Item.TemplateId - @Item.Template.Name</h4>
-        
+    <h4> Description: @Item.Description</h4>
+    if (@Item.Template != null && @Item.Template.Name != null)
+    {
+
+        <h4>Template: @Item.TemplateId - @Item.Template.Name</h4>
+    }
+
             if (Item.Sets != null)
             {
                 <table>

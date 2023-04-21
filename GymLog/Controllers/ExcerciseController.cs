@@ -18,7 +18,7 @@ namespace GymLog.Controllers
         public IActionResult Index()
         {
             var excercises = new List<Excercise>();
-            excercises = _context.Excercises.ToList();
+            excercises = _context.Excercises.Include(b=>b.BodyParts).ToList();
             return View(excercises);
         }
         public IActionResult Create()

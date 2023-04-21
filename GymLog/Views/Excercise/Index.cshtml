@@ -3,66 +3,39 @@
 @model IEnumerable<Excercise>
 
 
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-        $(document).ready(function () {
-    var max_fields = 10;
-    var wrapper = $(".container1");
-    var add_button = $(".add_form_field");
-
-    var x = 1;
-    $(add_button).click(function(e) {
-    e.preventDefault();
-    if (x < max_fields) {
-    x++;
-    $(wrapper).append('<div><input type="text" name="mytext[]" /><a href="#" class="delete">Delete</a></div>'); //add input box
-    } else {
-    alert('You Reached the limits')
-    }
-    });
-
-    $(wrapper).on("click", ".delete", function(e) {
-    e.preventDefault();
-    $(this).parent('div').remove();
-    x--;
-    })
-    });
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <div class="container1">
-        <button class="add_form_field">
-            Add New Field &nbsp;
-            <span style="font-size:16px; font-weight:bold;">+ </span>
-        </button>
-        <div><input type="text" name="mytext[]"></div>
-    </div>
-
-
-@*<script type="text/javascript">
-    var count=0;
-    function addFunc() {
-        count++;
-        document.getElementById("count").innerHTML = count;
-    }
-    function subFunc() {
-        count--;
-        document.getElementById("count").innerHTML = count;
-    }
-</script>
-<button class="btn btn-sm btn-outline-info" onclick="addFunc()">Add </button>
-<button class="btn btn-sm btn-outline-danger"  onclick="subFunc()">Substract </button>*@
-
-
-<p>
-    Button Clicked <span id="count">0</span> Times
-</p>
-
 	<a asp-controller="Excercise" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Excercise</a>
-	@foreach(var Item in Model)
-	{
-		<h4>@Item.Id - @Item.Name</h4>
-	<a  asp-controller="Excercise" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-	<a asp-controller="Excercise" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
 
-	}
+    <table>
+        <tr>
+            <th width="7%">Id</th>
+            <th>Name</th>
+            <th>Engaged body parts</th>
+        </tr>
+        @foreach (var Item in @Model)
+        {
+            <tr>
+                <td>
+                    @Item.Id
+                </td>
+                <td>
+                    @Item.Name
+                </td>
+                <td>
+                    @if(@Item.BodyPartExcercises!=null)
+                    {
+                        @foreach (var part in Item.BodyParts)
+                        {
+                            @part.Name 
+                        }
+                    }
+                    
+                </td>
+                <td>
+                    <a asp-controller="Excercise" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                </td>
+                <td>
+                    <a asp-controller="Excercise" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>

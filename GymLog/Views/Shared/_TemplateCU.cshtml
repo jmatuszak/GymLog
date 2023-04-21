@@ -32,6 +32,7 @@
                 if (Model.ExcercisesConcatVM != null)
                 {
                     <div id="segment">
+                        <input asp-for="TemplateSegmentsVM[i].Id" type="hidden" class="form-control">
 
                     <div class="form-group">
                         <label asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId">Excercise</label>
@@ -73,6 +74,9 @@
                             </tr>
                             @for (int j = 0; j < @Model.TemplateSegmentsVM[i].SetsVM.Count; j++)
                             {
+                                <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
+                                <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].TemplateSegmentId" type="hidden" class="form-control">
+
                                 <tr>
                                     <td>@(
                                         j + 1
