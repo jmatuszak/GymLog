@@ -6,7 +6,7 @@ namespace GymLog.Models
     public class TemplateSegment
     {
         public int Id { get; set; }
-        public int Order { get; set; }
+        public int? Order { get; set; }
         public string? Description { get; set; }
 		public int ExcerciseId { get; set; }
 		public Excercise? Excercise { get; set; }

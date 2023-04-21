@@ -4,6 +4,7 @@ using GymLog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymLog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230421124113_ordernullable")]
+    partial class ordernullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,12 +114,7 @@ namespace GymLog.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SetId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SetId");
 
                     b.ToTable("Templates");
                 });
@@ -200,15 +197,6 @@ namespace GymLog.Migrations
                         .IsRequired();
 
                     b.Navigation("TemplateSegment");
-                });
-
-            modelBuilder.Entity("GymLog.Models.Template", b =>
-                {
-                    b.HasOne("GymLog.Models.Set", "Set")
-                        .WithMany()
-                        .HasForeignKey("SetId");
-
-                    b.Navigation("Set");
                 });
 
             modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
