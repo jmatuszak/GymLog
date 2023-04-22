@@ -28,8 +28,7 @@ namespace GymLog.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WeightType = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,9 +78,10 @@ namespace GymLog.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Order = table.Column<int>(type: "int", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExcerciseId = table.Column<int>(type: "int", nullable: false),
+                    WeightType = table.Column<int>(type: "int", nullable: true),
                     TemplateId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

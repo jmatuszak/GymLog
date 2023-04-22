@@ -21,7 +21,7 @@ namespace GymLog.Controllers
             return View(templates);
         }
 
-
+/*
         public async Task<List<CreateExcerciseConcatVM>> CreateExcerciseConcatList()
         {
             var excercises = await _context.Excercises.ToListAsync();
@@ -36,7 +36,7 @@ namespace GymLog.Controllers
                 });
             }
             return excercisesVM;
-        }
+        }*/
 
         //<-----------------------   Set   ---------------------> 
 
@@ -49,7 +49,7 @@ namespace GymLog.Controllers
             templateVM.TemplateSegmentsVM[segment].SetsVM.Add(new SetVM());
             return View(templateVM.ActionName, templateVM);
         }
-        /*        public IActionResult RemoveSet(TemplateVM templateVM, [FromQuery(Name = "segment")] int segment, [FromQuery(Name = "set")] int set)
+                public IActionResult RemoveSet(TemplateVM templateVM, [FromQuery(Name = "segment")] int segment, [FromQuery(Name = "set")] int set)
                 {
                     if (templateVM == null) throw new ArgumentNullException();
                     if (templateVM.TemplateSegmentsVM == null) throw new ArgumentNullException();
@@ -58,7 +58,7 @@ namespace GymLog.Controllers
                     templateVM.TemplateSegmentsVM[segment].SetsVM.RemoveAt(set);
                     ModelState.Clear();
                     return View(templateVM.ActionName, templateVM);
-                }*/
+                }
         public IActionResult RemoveSet(TemplateVM templateVM, [FromQuery(Name = "segment")] int segment)
         {
             if (templateVM == null) throw new ArgumentNullException();
@@ -98,11 +98,13 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             templateVM ??= new TemplateVM();
-            if (templateVM.ExcercisesConcatVM == null)
+/*            if (templateVM.ExcercisesConcatVM == null)
             {
                 var excercisesConcatVM = await CreateExcerciseConcatList();
                 templateVM.ExcercisesConcatVM = excercisesConcatVM;
-            }
+            }*/
+
+            templateVM.Excercises =  _context.Excercises.ToList();
             templateVM.TemplateSegmentsVM ??= new List<TemplateSegmentVM>()
                 {
                     new TemplateSegmentVM()
@@ -142,6 +144,7 @@ namespace GymLog.Controllers
                             });
                     template.TemplateSegments.Add(new TemplateSegment
                     {
+                        WeightType = segment.WeightType,
                         Description = segment.Description,
                         Order = segment.Order,
                         Sets = sets,
@@ -174,11 +177,11 @@ namespace GymLog.Controllers
                 templateVM.Id = template.Id;
                 templateVM.Name = template.Name;
                 templateVM.ActionName = "Edit";
-                if (templateVM.ExcercisesConcatVM == null)
+/*                if (templateVM.ExcercisesConcatVM == null)
                 {
                     var excercisesConcatVM = await CreateExcerciseConcatList();
                     templateVM.ExcercisesConcatVM = excercisesConcatVM;
-                }
+                }*/
                 var segmentsVM = new List<TemplateSegmentVM>();
                 if (template.TemplateSegments != null && template.TemplateSegments.Count > 0)
                     for (int t = 0; t < template.TemplateSegments.Count; t++) 
@@ -189,6 +192,7 @@ namespace GymLog.Controllers
                         segmentVM.Id = template.TemplateSegments[t].Id;
                         segmentVM.TemplateId = template.TemplateSegments[t].TemplateId;
                         segmentVM.ExcerciseId = template.TemplateSegments[t].ExcerciseId;
+                        segmentVM.WeightType = template.TemplateSegments[t].WeightType;
                         if (template.TemplateSegments[t].Sets != null)
                         {
                             for (var s = 0; s < template.TemplateSegments[t].Sets.Count; s++)
@@ -262,6 +266,7 @@ namespace GymLog.Controllers
                         ExcerciseId= segmentVM.ExcerciseId,
                         Order= segmentVM.Order,
                         Description= segmentVM.Description,
+                        WeightType= segmentVM.WeightType,
                         Sets = sets
                     });
                 }

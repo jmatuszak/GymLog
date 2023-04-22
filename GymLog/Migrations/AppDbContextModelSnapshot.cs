@@ -66,9 +66,6 @@ namespace GymLog.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WeightType")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Excercises");
@@ -112,12 +109,7 @@ namespace GymLog.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SetId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SetId");
 
                     b.ToTable("Templates");
                 });
@@ -140,6 +132,9 @@ namespace GymLog.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WeightType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -200,15 +195,6 @@ namespace GymLog.Migrations
                         .IsRequired();
 
                     b.Navigation("TemplateSegment");
-                });
-
-            modelBuilder.Entity("GymLog.Models.Template", b =>
-                {
-                    b.HasOne("GymLog.Models.Set", "Set")
-                        .WithMany()
-                        .HasForeignKey("SetId");
-
-                    b.Navigation("Set");
                 });
 
             modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymLog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230421124113_ordernullable")]
-    partial class ordernullable
+    [Migration("20230421195925_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,9 +67,6 @@ namespace GymLog.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("WeightType")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -137,6 +134,9 @@ namespace GymLog.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WeightType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

@@ -1,4 +1,5 @@
-﻿@using GymLog.ViewModels
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
 @model TemplateSegmentVM
 
 
@@ -7,13 +8,21 @@
 
 <div class="form-group">
     <label asp-for="ExcerciseId">Excercise</label>
-    <select class="form-select-sm" asp-for="ExcerciseId"
-            asp-items="new SelectList(@Model.ExcercisesConcatVM, nameof(CreateExcerciseConcatVM.Id),
-                   nameof(CreateExcerciseConcatVM.Name))">
-        <option>Please Select</option>
+    <select asp-for="ExcerciseId"
+            asp-items="new SelectList(@Model.Excercises, nameof(Excercise.Id),
+                   nameof(Excercise.Name))">
+        <option>Select Excercise</option>
     </select>
     <span asp-validation-for="Excercise" class="text-danger"></span>
 </div>
+<div class="form-group">
+    <label asp-for="WeightType">Weight Type</label>
+    <select asp-for="WeightType" asp-items="@Html.GetEnumSelectList<WeightType>()">
+        <option>Select WeightType</option>
+    </select>
+    <span asp-validation-for="WeightType" class="text-danger"></span>
+</div>
+
 <div class="form-group">
     <label asp-for="Order">Order</label>
     <input asp-for="Order" class="form-control" placeholder="Order">
@@ -33,12 +42,12 @@
 
 
 @{
-    if (Model.ExcercisesConcatVM != null)
+    if (Model.Excercises != null)
     {
-        @for (int i = 0; i < Model.ExcercisesConcatVM.Count; i++)
+        @for (int i = 0; i < Model.Excercises.Count; i++)
         {
-            <input asp-for="ExcercisesConcatVM[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
-            <input asp-for="ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
+            <input asp-for="Excercises[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
+            <input asp-for="Excercises[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
 
         }
 

@@ -3,11 +3,10 @@ using GymLog.Models;
 
 namespace GymLog.ViewModels
 {
-    public class CreateExcerciseVM
+    public class ExcerciseVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public WeightType? WeightType { get; set; }
         public List<BodyPartVM>? BodyPartsVM { get; set; }
     }
 }

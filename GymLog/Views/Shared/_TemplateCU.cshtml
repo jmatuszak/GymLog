@@ -1,8 +1,6 @@
-﻿@using GymLog.ViewModels
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
 @model TemplateVM
-
-
-
 
     <input asp-for="Id" type="hidden" class="form-control">
     <input asp-for="ActionName" type="hidden" class="form-control">
@@ -14,44 +12,39 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group"  >
+    <div class="form-group">
     @{
         if(Model.TemplateSegmentsVM != null)
         {
-            if(Model.ExcercisesConcatVM!=null){
-            @for (int i = 0; i < Model.ExcercisesConcatVM.Count; i++)
+            @for (int i = 0; i < Model.Excercises.Count; i++)
             {
-                <input asp-for="ExcercisesConcatVM[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
-                <input asp-for="ExcercisesConcatVM[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
+                <input asp-for="Excercises[i].Id" type="hidden" class="form-control">
+                <input asp-for="Excercises[i].Name" type="hidden" class="form-control">
 
             }
-        }
-            for(int i = 0; i<Model.TemplateSegmentsVM.Count; i++)
+
+            for (int i = 0; i < Model.TemplateSegmentsVM.Count; i++)
             {
-                
-                if (Model.ExcercisesConcatVM != null)
-                {
-                    <div id="segment">
-                        <input asp-for="TemplateSegmentsVM[i].Id" type="hidden" class="form-control">
+                <div id="segment">
 
                     <div class="form-group">
                         <label asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId">Excercise</label>
-                        <select class="form-select-sm" asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId"
-                    asp-items="new SelectList(@Model.ExcercisesConcatVM, nameof(CreateExcerciseConcatVM.Id),
-                    nameof(CreateExcerciseConcatVM.Name))">
-                            <option>Please Select</option>
+                        <select asp-for="@Model.TemplateSegmentsVM[i].ExcerciseId"
+                    asp-items="new SelectList(@Model.Excercises, nameof(Excercise.Id),
+                    nameof(Excercise.Name))">
+                            <option>Select Excercise</option>
                         </select>
                         <span asp-validation-for="@Model.TemplateSegmentsVM[i].Excercise" class="text-danger"></span>
-                            <button type="submit" formaction="/Template/RemoveTemplateSegment?segment=@i" class="btn btn-outline-danger">Remove Excercise</button>
-
                     </div>
-                    @*
                     <div class="form-group">
-                        <label asp-for="@Model.TemplateSegmentsVM[i].Order">Order</label>
-                        <input asp-for="@Model.TemplateSegmentsVM[i].Order" class="form-control" placeholder="Order">
-                        <span asp-validation-for="@Model.TemplateSegmentsVM[i].Order" class="text-danger"></span>
+                        <label asp-for="@Model.TemplateSegmentsVM[i].WeightType">Weight Type</label>
+                        <select asp-for="@Model.TemplateSegmentsVM[i].WeightType" asp-items="@Html.GetEnumSelectList<WeightType>()">
+                            <option>Select WeightType</option>
+                        </select>
+                        <span asp-validation-for="@Model.TemplateSegmentsVM[i]WeightType" class="text-danger"></span>
                     </div>
-                    *@
+                    <input asp-for="TemplateSegmentsVM[i].Id" type="hidden" class="form-control">
+
                     <div class="form-group">
                         <label asp-for="@Model.TemplateSegmentsVM[i].Description">Description</label>
                         <input asp-for="@Model.TemplateSegmentsVM[i].Description" class="form-control" placeholder="Description">
@@ -78,9 +71,7 @@
                                 <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].TemplateSegmentId" type="hidden" class="form-control">
 
                                 <tr>
-                                    <td>@(
-                                        j + 1
-                                        )</td>
+                                    <td>@(j + 1)</td>
                                     <td>
                                         <div class="form-group">
                                             <input asp-for="@Model.TemplateSegmentsVM[i].SetsVM[j].Weight" class="form-control" placeholder="Weight">
@@ -104,13 +95,14 @@
                     <button type="submit" formaction="/Template/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
 
                 </div>
-                }
             }
+            
         }
     }
+    
     </div>
     </br>
 
 
     <button type="submit" formaction="/Template/AddTemplateSegment" class="btn btn-outline-primary">Add Excercise</button>
-    </br>
+    

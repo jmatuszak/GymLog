@@ -3,6 +3,9 @@
 @model ExcerciseVM
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
+
+    <input asp-for="Id" type="hidden" class="form-control">
+
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" class="form-control" placeholder="Name">
@@ -27,5 +30,5 @@
         }
         </div>
 
-        <button type="submit" formaction="CreatePost" class="btn btn-primary">Create</button>
+        <button type="submit" formaction="CreatePost" class="btn btn-primary">Sumbit</button>
     </form>

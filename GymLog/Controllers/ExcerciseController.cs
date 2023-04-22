@@ -30,19 +30,12 @@ namespace GymLog.Controllers
             {
                 checkedBodyPartsVM.Add(new BodyPartVM() { Id= bodyPart.Id, Name=bodyPart.Name, IsChecked=false});
             }
-            var createExcerciseVM = new CreateExcerciseVM() { BodyPartsVM = checkedBodyPartsVM};
+            var createExcerciseVM = new ExcerciseVM() { BodyPartsVM = checkedBodyPartsVM};
             return View(createExcerciseVM);
         }
 
-        public IActionResult CreateNew(CreateExcerciseVM excerciseVM)
-        {
-            return View(excerciseVM);
-        }
-
-
-
         [HttpPost]
-        public IActionResult Create(CreateExcerciseVM excerciseVM)
+        public IActionResult CreatePost(ExcerciseVM excerciseVM)
         {
             if (!ModelState.IsValid)
             {
@@ -64,9 +57,7 @@ namespace GymLog.Controllers
                         BodyPartExcercise bodyPartExcercise = new BodyPartExcercise()
                         {
                             BodyPartId = bodyPart.Id,
-                            ExcerciseId = excercise.Id,
-                            BodyPart = _context.BodyParts.Where(x => x.Id == bodyPart.Id).FirstOrDefault(),
-                            Excercise = excercise
+                            ExcerciseId = excercise.Id
                         };
                         _context.BodyPartExcercises.Add(bodyPartExcercise);
                         _context.SaveChanges();
@@ -94,41 +85,65 @@ namespace GymLog.Controllers
             return RedirectToAction("Index");
         }
 
-		/*public async Task<IActionResult> Edit(int id)
-		{
-			var excercise = await _context.Excercises.Include(b => b.BodyParts).FirstOrDefaultAsync(e => e.Id == id);
-			if (excercise == null) return View("Error");
-			var excerciseVM = new CreateExcerciseVM()
-			{
-				Id = id,
-				Name = excercise.Name,
-				WeightType = excercise.WeightType,
-
-				if (excercise.BodyParts != null) BodyPartsVM = excercise.BodyParts,
+        public async Task<IActionResult> Edit(int id)
+        {
+            var excercise = await _context.Excercises.Include(b => b.BodyParts).FirstOrDefaultAsync(e => e.Id == id);
+            var bodyParts =  _context.BodyParts.ToList();
+            if (excercise == null) return View("Error");
+            var bodyPartsVM = new List<BodyPartVM>();
+            if (bodyParts != null) 
+                foreach(var part in bodyParts)
+                {
+                    bodyPartsVM.Add(new BodyPartVM
+                    {
+                        Id = part.Id,
+                        Name = part.Name,
+                    });
+                }
+            if(excercise.BodyParts != null)
+            foreach(var part in excercise.BodyParts)
+            {
+                    bodyPartsVM.FirstOrDefault(i => i.Id == part.Id).IsChecked = true;
+            }
+            var excerciseVM = new ExcerciseVM()
+            {
+                Id = id,
+                Name = excercise.Name,
+                BodyPartsVM = bodyPartsVM,
 			};
-			return View(setVM);
-	}
-	[HttpPost]
-	public async Task<IActionResult> Edit(SetVM setVM)
-	{
-		if (!ModelState.IsValid)
-		{
-			ModelState.AddModelError("", "Failed to edit Set");
-			return View(setVM);
-		}
-		var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);
+			return View(excerciseVM);
+    }
+    [HttpPost]
+    public async Task<IActionResult> Edit(ExcerciseVM excerciseVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(excerciseVM);
+            }
+            var excercise = await _context.Excercises.FirstOrDefaultAsync(i=>i.Id == excerciseVM.Id);
+            if(excercise == null) return View("Error");
+            excercise.Name = excerciseVM.Name;
+            _context.Update(excercise);
+             var bodyPartExcercises = _context.BodyPartExcercises.Where(i=>i.ExcerciseId == excerciseVM.Id).ToList();
+            _context.RemoveRange(bodyPartExcercises);
+            if (excerciseVM.BodyPartsVM != null)
+            {
+                foreach (var bodyPart in excerciseVM.BodyPartsVM)
+                {
+                    if (bodyPart.IsChecked == true)
+                    {
+                        BodyPartExcercise bodyPartExcercise = new BodyPartExcercise()
+                        {
+                            BodyPartId = bodyPart.Id,
+                            ExcerciseId = excercise.Id
+                        };
+                        _context.BodyPartExcercises.Add(bodyPartExcercise);
+                    }
+                }
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
-		if (set != null)
-		{
-			set.Weight = setVM.Weight;
-			set.Reps = setVM.Reps;
-			set.Description = setVM.Description;
-			set.TemplateSegmentId = setVM.TemplateSegmentId;
-			_context.Update(set);
-			_context.SaveChanges();
-		}
-		return RedirectToAction("Index");
-	}*/
-
-}
+    }
 }

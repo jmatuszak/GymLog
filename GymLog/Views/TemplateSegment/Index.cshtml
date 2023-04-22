@@ -4,9 +4,6 @@
 	<a asp-controller="TemplateSegment" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
 	@foreach(var Item in Model)
 	{
-
-		<h4>@Item.Id - @Item.Excercise.Name - @Item.Excercise.WeightType</h4>
-		<h4> Order: @Item.Order</h4>
     <h4> Description: @Item.Description</h4>
     if (@Item.Template != null && @Item.Template.Name != null)
     {

@@ -73,37 +73,16 @@ namespace GymLog.Data
                         {
                             
                             Name = "Bench Press",
-                            WeightType = WeightType.Barbell
                         },
                         new Excercise()
                         {
                             
                             Name = "Incline Bench Press",
-                            WeightType = WeightType.Barbell
                         },
                         new Excercise()
                         {
                             
                             Name = "Decline Bench Press",
-                            WeightType = WeightType.Barbell
-                        },
-                        new Excercise()
-                        {
-                            
-                            Name = "Bench Press",
-                            WeightType = WeightType.Dumbell
-                        },
-                        new Excercise()
-                        {
-                            
-                            Name = "Incline Bench Press",
-                            WeightType = WeightType.Dumbell
-                        },
-                        new Excercise()
-                        {
-                            
-                            Name = "Decline Bench Press",
-                            WeightType = WeightType.Dumbell
                         },
                     });
                     context.SaveChanges();
@@ -155,6 +134,7 @@ namespace GymLog.Data
                     {
                         new TemplateSegment()
                         {
+                            WeightType = WeightType.Barbell,
                             Order = 1,
                             Description = "3 x 1-4",
                             TemplateId = 1,
@@ -163,6 +143,7 @@ namespace GymLog.Data
                         },
                         new TemplateSegment()
                         {
+                            WeightType = WeightType.Dumbell,
                             Order = 2,
                             Description = "3 x 1-4",
                             TemplateId = 1,
@@ -171,6 +152,7 @@ namespace GymLog.Data
 						},
                         new TemplateSegment()
                         {
+                            WeightType = WeightType.Dumbell,
                             Order = 3,
                             Description = "3 x 1-4",
                             TemplateId = 1,
