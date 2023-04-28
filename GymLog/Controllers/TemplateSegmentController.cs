@@ -163,16 +163,16 @@ namespace GymLog.Controllers
 
         //<-----------------------  DELETE   ---------------------> 
 
-        public async Task<IActionResult> DeleteTemplateSegment(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var TemplateSegment = await _context.TemplateSegments.FirstOrDefaultAsync(x => x.Id == id);
-            if (TemplateSegment != null)
+            var templateSegment = await _context.TemplateSegments.FirstOrDefaultAsync(x => x.Id == id);
+            if (templateSegment != null)
             {
-                _context.TemplateSegments.Remove(TemplateSegment);
+                _context.TemplateSegments.Remove(templateSegment);
+                var sets = _context.Sets.Where(x => x.TemplateSegmentId == id).ToList();
+                if (sets.Any()) _context.RemoveRange(sets);
+                _context.SaveChanges();
             }
-            var sets = _context.Sets.Where(x => x.TemplateSegmentId== id).ToList();
-            if(sets.Any()) _context.RemoveRange(sets);
-            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 

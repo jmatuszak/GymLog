@@ -18,7 +18,6 @@
 <div class="form-group">
     <label asp-for="WeightType">Weight Type</label>
     <select asp-for="WeightType" asp-items="@Html.GetEnumSelectList<WeightType>()">
-        <option>Select WeightType</option>
     </select>
     <span asp-validation-for="WeightType" class="text-danger"></span>
 </div>

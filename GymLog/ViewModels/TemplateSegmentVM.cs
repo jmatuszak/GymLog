@@ -1,6 +1,7 @@
 ﻿using GymLog.Data.Enum;
 using GymLog.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace GymLog.ViewModels
 {
@@ -9,7 +10,8 @@ namespace GymLog.ViewModels
 		public int Id { get; set; }
 		public int? Order { get; set; }
 		public string? Description { get; set; }
-		public int ExcerciseId { get; set; }
+        [Required(ErrorMessage = "You must choose an excercise")]
+        public int ExcerciseId { get; set; }
 		public Excercise? Excercise { get; set; }
 		public List<Excercise>? Excercises { get; set; }
 		public int? TemplateId { get; set; }

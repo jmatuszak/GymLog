@@ -171,8 +171,10 @@ namespace GymLog.Controllers
         {
             if (id != null)
             {
+
                 var template = await _context.Templates.Include(t => t.TemplateSegments).FirstOrDefaultAsync(t => t.Id == id);
                 templateVM = templateVM ?? new TemplateVM();
+                templateVM.Excercises = _context.Excercises.ToList();
                 templateVM.TemplateSegmentsVM = templateVM.TemplateSegmentsVM ?? new List<TemplateSegmentVM>();
                 templateVM.Id = template.Id;
                 templateVM.Name = template.Name;
@@ -192,6 +194,7 @@ namespace GymLog.Controllers
                         segmentVM.Id = template.TemplateSegments[t].Id;
                         segmentVM.TemplateId = template.TemplateSegments[t].TemplateId;
                         segmentVM.ExcerciseId = template.TemplateSegments[t].ExcerciseId;
+                        segmentVM.Description = template.TemplateSegments[t].Description;
                         segmentVM.WeightType = template.TemplateSegments[t].WeightType;
                         if (template.TemplateSegments[t].Sets != null)
                         {
@@ -278,6 +281,24 @@ namespace GymLog.Controllers
                 _context.Update(template);
                 _context.SaveChanges();
                 _context.Sets.Where(s => s.TemplateSegmentId == null);
+            }
+            return RedirectToAction("Index");
+        }
+        
+        public async Task<IActionResult> Delete(int id)
+        {
+            var template = await _context.Templates.FirstOrDefaultAsync(s => s.Id == id);
+            if (template != null)
+            {
+                _context.Templates.Remove(template);
+                var segments = _context.TemplateSegments.Where(x => x.TemplateId == id).ToList();
+                if (segments.Any()) _context.RemoveRange(segments);
+                foreach(var segment in segments)
+                {
+                    var sets = _context.Sets.Where(x => x.TemplateSegmentId == id).ToList();
+                    if (sets.Any()) _context.RemoveRange(sets);
+                }
+                _context.SaveChanges();
             }
             return RedirectToAction("Index");
         }

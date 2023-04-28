@@ -1,10 +1,10 @@
 ﻿using GymLog.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace GymLog.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -34,7 +34,7 @@ namespace GymLog.Data
                         .HasForeignKey(be => be.BodyPartId)
                     );
 
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

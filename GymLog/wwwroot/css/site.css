@@ -43,3 +43,8 @@ td {
 #white{
     border-color: white;
 }
+
+#rightMenu {
+    position: absolute;
+    right: 1%;
+}
