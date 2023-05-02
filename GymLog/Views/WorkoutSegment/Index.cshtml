@@ -1,7 +1,7 @@
-﻿@model IEnumerable<TemplateSegment>
+﻿@model IEnumerable<WorkoutSegment>
 
 
-	<a asp-controller="TemplateSegment" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
+	<a asp-controller="WorkoutSegment" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
 	@foreach(var Item in Model)
 	{
     <h4> Description: @Item.Description</h4>
@@ -45,7 +45,7 @@
 
         
 
-		<a  asp-controller="TemplateSegment" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-    <a asp-controller="TemplateSegment" method="post" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+		<a  asp-controller="WorkoutSegment" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+    <a asp-controller="WorkoutSegment" method="post" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
 
 	}

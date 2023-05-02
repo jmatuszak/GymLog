@@ -11,7 +11,7 @@ namespace GymLog.Models
 
 
 
-        public int TemplateSegmentId { get; set; }
-        public TemplateSegment? TemplateSegment { get; set; }
+        public int WorkoutSegmentId { get; set; }
+        public WorkoutSegment? WorkoutSegment { get; set; }
 }
 }

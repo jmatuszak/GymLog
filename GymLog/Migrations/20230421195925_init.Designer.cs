@@ -87,7 +87,7 @@ namespace GymLog.Migrations
                     b.Property<int?>("Reps")
                         .HasColumnType("int");
 
-                    b.Property<int>("TemplateSegmentId")
+                    b.Property<int>("WorkoutSegmentId")
                         .HasColumnType("int");
 
                     b.Property<float?>("Weight")
@@ -95,7 +95,7 @@ namespace GymLog.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TemplateSegmentId");
+                    b.HasIndex("WorkoutSegmentId");
 
                     b.ToTable("Sets");
                 });
@@ -116,7 +116,7 @@ namespace GymLog.Migrations
                     b.ToTable("Templates");
                 });
 
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +145,7 @@ namespace GymLog.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("TemplateSegments");
+                    b.ToTable("WorkoutSegments");
                 });
 
             modelBuilder.Entity("GymLog.Models.Workout", b =>
@@ -190,25 +190,25 @@ namespace GymLog.Migrations
 
             modelBuilder.Entity("GymLog.Models.Set", b =>
                 {
-                    b.HasOne("GymLog.Models.TemplateSegment", "TemplateSegment")
+                    b.HasOne("GymLog.Models.WorkoutSegment", "WorkoutSegment")
                         .WithMany("Sets")
-                        .HasForeignKey("TemplateSegmentId")
+                        .HasForeignKey("WorkoutSegmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TemplateSegment");
+                    b.Navigation("WorkoutSegment");
                 });
 
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.HasOne("GymLog.Models.Excercise", "Excercise")
-                        .WithMany("TemplateSegment")
+                        .WithMany("WorkoutSegment")
                         .HasForeignKey("ExcerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GymLog.Models.Template", "Template")
-                        .WithMany("TemplateSegments")
+                        .WithMany("WorkoutSegments")
                         .HasForeignKey("TemplateId");
 
                     b.Navigation("Excercise");
@@ -236,15 +236,15 @@ namespace GymLog.Migrations
                 {
                     b.Navigation("BodyPartExcercises");
 
-                    b.Navigation("TemplateSegment");
+                    b.Navigation("WorkoutSegment");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
                 {
-                    b.Navigation("TemplateSegments");
+                    b.Navigation("WorkoutSegments");
                 });
 
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.Navigation("Sets");
                 });

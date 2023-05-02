@@ -131,11 +131,11 @@ namespace GymLog.Data
                     });
                     context.SaveChanges();
                 }
-                if (!context.TemplateSegments.Any())
+                if (!context.WorkoutSegments.Any())
                 {
-                    context.TemplateSegments.AddRange(new List<TemplateSegment>()
+                    context.WorkoutSegments.AddRange(new List<WorkoutSegment>()
                     {
-                        new TemplateSegment()
+                        new WorkoutSegment()
                         {
                             WeightType = WeightType.Barbell,
                             Order = 1,
@@ -144,7 +144,7 @@ namespace GymLog.Data
                             ExcerciseId= 1,
 
                         },
-                        new TemplateSegment()
+                        new WorkoutSegment()
                         {
                             WeightType = WeightType.Dumbell,
                             Order = 2,
@@ -153,7 +153,7 @@ namespace GymLog.Data
 							ExcerciseId= 2,
 
 						},
-                        new TemplateSegment()
+                        new WorkoutSegment()
                         {
                             WeightType = WeightType.Dumbell,
                             Order = 3,
@@ -175,63 +175,63 @@ namespace GymLog.Data
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-                            TemplateSegmentId= 1,
+                            WorkoutSegmentId= 1,
                         },
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							TemplateSegmentId= 1,
+							WorkoutSegmentId= 1,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							TemplateSegmentId= 1,
+							WorkoutSegmentId= 1,
 						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-							TemplateSegmentId= 2,
+							WorkoutSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							TemplateSegmentId= 2,
+							WorkoutSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							TemplateSegmentId= 2,
+							WorkoutSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 80,
                             Reps = 1,
                             Description = "Easy",
-							TemplateSegmentId= 3,
+							WorkoutSegmentId= 3,
 						},
                         new Set()
                         {
                             Weight = 90,
                             Reps = 1,
                             Description = "Harder",
-							TemplateSegmentId= 2,
+							WorkoutSegmentId= 2,
 						},
                         new Set()
                         {
                             Weight = 100,
                             Reps = 1,
                             Description = "Hard",
-							TemplateSegmentId= 3,
+							WorkoutSegmentId= 3,
 						},
                     });
                     context.SaveChanges();
@@ -242,7 +242,7 @@ namespace GymLog.Data
                     {
                         new Workout()
                         {
-                            Date = DateTime.Now,
+                            StartDate = DateTime.Now,
                             TemplateId = 1,
 
                         },

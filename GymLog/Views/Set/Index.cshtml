@@ -8,7 +8,7 @@
             <th width="5%">Id</th>
             <th>Weight</th>
             <th>Reps</th>
-            <th>TemplateSegmentId</th>
+            <th>WorkoutSegmentId</th>
       </tr>
     @foreach (var Item in @Model)
     {
@@ -23,7 +23,7 @@
                     @Item.Reps
                 </td>
                 <td>
-                    @Item.TemplateSegmentId
+                    @Item.WorkoutSegmentId
                 </td>
                 <td id="tableButtons">
                     <a asp-controller="Set" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>

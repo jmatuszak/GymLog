@@ -1,9 +1,8 @@
 ﻿using GymLog.Data.Enum;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymLog.Models
 {
-    public class TemplateSegment
+    public class WorkoutSegment
     {
         public int Id { get; set; }
         public int? Order { get; set; }
@@ -12,7 +11,9 @@ namespace GymLog.Models
 		public Excercise? Excercise { get; set; }
         public WeightType? WeightType { get; set; }
         public int? TemplateId { get; set; }
+        public int? WorkoutId { get; set; }
         public Template? Template { get; set; }
+        public Workout? Workout { get; set; }
         public List<Set>? Sets { get; set; }
 
 	}

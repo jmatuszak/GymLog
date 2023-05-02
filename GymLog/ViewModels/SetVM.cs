@@ -8,8 +8,10 @@ namespace GymLog.ViewModels
 		public float? Weight { get; set; }
 		public int? Reps { get; set; }
 		public string? Description { get; set; }
+        public bool isDone { get; set; }
 
-		public int TemplateSegmentId { get; set; }
-		public TemplateSegment? TemplateSegment { get; set; }
+
+        public int WorkoutSegmentId { get; set; }
+		public WorkoutSegment? WorkoutSegment { get; set; }
 	}
 }

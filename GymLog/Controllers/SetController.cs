@@ -48,30 +48,31 @@ namespace GymLog.Controllers
 				Weight = set.Weight,
 				Reps = set.Reps,
 				Description = set.Description,
-				TemplateSegmentId = set.TemplateSegmentId,
+				WorkoutSegmentId = set.WorkoutSegmentId,
 			};
 			return View(setVM);
 		}
 		[HttpPost]
-		public async Task<IActionResult> Edit(SetVM setVM)
+		public async Task<IActionResult> EditPost(SetVM setVM)
 		{
 			if(!ModelState.IsValid) 
 			{
 				ModelState.AddModelError("", "Failed to edit Set");
 				return View(setVM);
 			}
-			var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);
+            var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);
 
-			if(set != null)
-			{
-				set.Weight = setVM.Weight;
-				set.Reps = setVM.Reps;
-				set.Description = setVM.Description;
-				set.TemplateSegmentId = setVM.TemplateSegmentId;
-				_context.Update(set);
-				_context.SaveChanges();
-			}
-			return RedirectToAction("Index");
+            if (set != null)
+            {
+                set.Weight = setVM.Weight;
+                set.Reps = setVM.Reps;
+                set.Description = setVM.Description;
+                set.WorkoutSegmentId = setVM.WorkoutSegmentId;
+                _context.Update(set);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
 		}
 
 		public async Task<IActionResult> Delete(int id)

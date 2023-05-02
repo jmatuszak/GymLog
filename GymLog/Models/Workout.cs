@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace GymLog.Models
+﻿namespace GymLog.Models
 {
     public class Workout
     {
         public int Id { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+        public string? AppUserId { get; set; }
+        public AppUser? AppUser { get; set; }
         public int TemplateId { get; set; }
         public Template? Template { get; set; }
+        public List<WorkoutSegment>? WorkoutSegments { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

@@ -1,0 +1,11 @@
+﻿@using GymLog.ViewModels
+@model WorkoutSegmentVM
+
+
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <partial name="_WorkoutSegmentCU" />
+    </br>
+    </br>
+    <button type="submit" formaction="/WorkoutSegment/EditPost" class="btn btn-primary">Submit</button>
+</form>

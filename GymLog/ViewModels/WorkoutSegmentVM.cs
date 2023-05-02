@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GymLog.ViewModels
 {
-	public class TemplateSegmentVM
+	public class WorkoutSegmentVM
 	{
 		public int Id { get; set; }
 		public int? Order { get; set; }
@@ -19,6 +19,7 @@ namespace GymLog.ViewModels
 		public List<SetVM>? SetsVM { get; set; }
 		public SetVM? SetVM { get; set; }
 		public string? ActionName { get; set; }
+
         public WeightType? WeightType { get; set; }
     }
 }

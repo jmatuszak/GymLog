@@ -150,15 +150,15 @@ namespace GymLog.Migrations
                     b.Property<int?>("Reps")
                         .HasColumnType("int");
 
-                    b.Property<int>("TemplateSegmentId")
-                        .HasColumnType("int");
-
                     b.Property<float?>("Weight")
                         .HasColumnType("real");
 
+                    b.Property<int>("WorkoutSegmentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("TemplateSegmentId");
+                    b.HasIndex("WorkoutSegmentId");
 
                     b.ToTable("Sets");
                 });
@@ -177,6 +177,9 @@ namespace GymLog.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -184,7 +187,39 @@ namespace GymLog.Migrations
                     b.ToTable("Templates");
                 });
 
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
+            modelBuilder.Entity("GymLog.Models.Workout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("Workouts");
+                });
+
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -207,39 +242,18 @@ namespace GymLog.Migrations
                     b.Property<int?>("WeightType")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkoutId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExcerciseId");
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("TemplateSegments");
-                });
+                    b.HasIndex("WorkoutId");
 
-            modelBuilder.Entity("GymLog.Models.Workout", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TemplateId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("TemplateId");
-
-                    b.ToTable("Workouts");
+                    b.ToTable("WorkoutSegments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -396,13 +410,13 @@ namespace GymLog.Migrations
 
             modelBuilder.Entity("GymLog.Models.Set", b =>
                 {
-                    b.HasOne("GymLog.Models.TemplateSegment", "TemplateSegment")
+                    b.HasOne("GymLog.Models.WorkoutSegment", "WorkoutSegment")
                         .WithMany("Sets")
-                        .HasForeignKey("TemplateSegmentId")
+                        .HasForeignKey("WorkoutSegmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TemplateSegment");
+                    b.Navigation("WorkoutSegment");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
@@ -410,23 +424,6 @@ namespace GymLog.Migrations
                     b.HasOne("GymLog.Models.AppUser", null)
                         .WithMany("Templates")
                         .HasForeignKey("AppUserId");
-                });
-
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
-                {
-                    b.HasOne("GymLog.Models.Excercise", "Excercise")
-                        .WithMany("TemplateSegment")
-                        .HasForeignKey("ExcerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GymLog.Models.Template", "Template")
-                        .WithMany("TemplateSegments")
-                        .HasForeignKey("TemplateId");
-
-                    b.Navigation("Excercise");
-
-                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("GymLog.Models.Workout", b =>
@@ -442,6 +439,29 @@ namespace GymLog.Migrations
                         .IsRequired();
 
                     b.Navigation("Template");
+                });
+
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
+                {
+                    b.HasOne("GymLog.Models.Excercise", "Excercise")
+                        .WithMany("WorkoutSegment")
+                        .HasForeignKey("ExcerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymLog.Models.Template", "Template")
+                        .WithMany("WorkoutSegments")
+                        .HasForeignKey("TemplateId");
+
+                    b.HasOne("GymLog.Models.Workout", "Workout")
+                        .WithMany("WorkoutSegments")
+                        .HasForeignKey("WorkoutId");
+
+                    b.Navigation("Excercise");
+
+                    b.Navigation("Template");
+
+                    b.Navigation("Workout");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -511,15 +531,20 @@ namespace GymLog.Migrations
                 {
                     b.Navigation("BodyPartExcercises");
 
-                    b.Navigation("TemplateSegment");
+                    b.Navigation("WorkoutSegment");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
                 {
-                    b.Navigation("TemplateSegments");
+                    b.Navigation("WorkoutSegments");
                 });
 
-            modelBuilder.Entity("GymLog.Models.TemplateSegment", b =>
+            modelBuilder.Entity("GymLog.Models.Workout", b =>
+                {
+                    b.Navigation("WorkoutSegments");
+                });
+
+            modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.Navigation("Sets");
                 });
