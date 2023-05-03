@@ -1,6 +1,7 @@
 ﻿using GymLog.Data;
 using GymLog.Models;
 using GymLog.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -12,16 +13,16 @@ namespace GymLog.Controllers
 	public class WorkoutController : Controller
 	{
 		private readonly AppDbContext _context;
-		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly UserManager<AppUser> _userManager;
 
-		public WorkoutController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+		public WorkoutController(AppDbContext context, UserManager<AppUser> userManager)
 		{
 			_context = context;
-			//_httpContextAccessor = httpContextAccessor;
+			_userManager = userManager;
 		}
 		public IActionResult Index()
 		{
-			var list = _context.WorkoutSegments.Include(s => s.Sets).Include(e => e.Excercise).Include(t => t.Template).ToList();
+			var list = _context.Workouts.Include(t => t.Template).ToList();
 			return View(list);
 		}
 
@@ -34,16 +35,6 @@ namespace GymLog.Controllers
             if (workoutVM.WorkoutSegmentsVM[segment] == null) throw new ArgumentNullException();
             workoutVM.WorkoutSegmentsVM[segment].SetsVM ??= new List<SetVM>();
             workoutVM.WorkoutSegmentsVM[segment].SetsVM.Add(new SetVM());
-            return View(workoutVM.ActionName, workoutVM);
-        }
-        public IActionResult RemoveSet(WorkoutVM workoutVM, [FromQuery(Name = "segment")] int segment, [FromQuery(Name = "set")] int set)
-        {
-            if (workoutVM == null) throw new ArgumentNullException();
-            if (workoutVM.WorkoutSegmentsVM == null) throw new ArgumentNullException();
-            if (workoutVM.WorkoutSegmentsVM[segment].SetsVM == null) return View("Error");
-            if (workoutVM.WorkoutSegmentsVM[segment].SetsVM[set] == null) return View("Error");
-            workoutVM.WorkoutSegmentsVM[segment].SetsVM.RemoveAt(set);
-            ModelState.Clear();
             return View(workoutVM.ActionName, workoutVM);
         }
         public IActionResult RemoveSet(WorkoutVM workoutVM, [FromQuery(Name = "segment")] int segment)
@@ -84,7 +75,7 @@ namespace GymLog.Controllers
         public async Task<IActionResult> Create(WorkoutVM? workoutVM)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            workoutVM ??= new WorkoutVM()
+			workoutVM ??= new WorkoutVM()
             {
                 StartDate = DateTime.Now,
             };
@@ -102,16 +93,19 @@ namespace GymLog.Controllers
 
         }
         [HttpPost]
-        public IActionResult CreatePost(WorkoutVM workoutVM)
+        public async Task<IActionResult> CreatePost(WorkoutVM workoutVM)
         {
             if (!ModelState.IsValid)
             {
                 return View(workoutVM);
             }
-
+			var user = await _userManager.GetUserAsync(HttpContext.User);
             Workout workout = new Workout()
             {
-
+                AppUserId = user.Id,
+                StartDate = workoutVM.StartDate,
+                EndDate = DateTime.Now,
+                TemplateId = workoutVM.TemplateId,
             };
 
             if (workoutVM.WorkoutSegmentsVM != null)

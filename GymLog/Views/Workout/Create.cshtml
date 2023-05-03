@@ -2,13 +2,10 @@
 @model TemplateVM
 
 
-<h1>Edit Template</h1>
-
-<form method="post" asp-action="Edit" enctype="multipart/form-data">
-
-    <partial name="_TemplateCU" />
-    </br>
-    <button type="submit" formaction="/Template/EditPost" class="btn btn-primary">Submit</button>
+<h2>Create Workout Template</h2>
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <partial name="_TemplateCU"/>
+    <button type="submit" formaction="/Template/CreatePost" class="btn btn-primary">Submit</button>
 </form>
 
     <script>

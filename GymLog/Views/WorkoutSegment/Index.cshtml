@@ -1,51 +1,51 @@
 ﻿@model IEnumerable<WorkoutSegment>
 
+    <h1>WorkoutSegments</h1>
+	<a asp-controller="WorkoutSegment" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new</a>
 
-	<a asp-controller="WorkoutSegment" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
-	@foreach(var Item in Model)
-	{
-    <h4> Description: @Item.Description</h4>
-    if (@Item.Template != null && @Item.Template.Name != null)
+        <table>
+        <tr>
+            <th width="5%">Id</th>
+            <th>Description</th>
+            <th>Excercise ID</th>
+            <th>Weight Type</th>
+            <th>Template ID</th>
+            <th>Workout ID</th>
+            <th>Sets</th>
+      </tr>
+    @foreach (var Item in @Model)
     {
-
-        <h4>Template: @Item.TemplateId - @Item.Template.Name</h4>
-    }
-
-            if (Item.Sets != null)
-            {
-                <table>
-                <tr>
-                        <th width="7%">Set</th>
-                    <th>Weight</th>
-                    <th>Reps</th>
-                </tr>
-                @for (int i = 0; i < Item.Sets.Count; i++)
+            <tr>
+                <td>
+                    @Item.Id
+                </td>
+                <td>
+                    @Item.Description
+                </td>
+                <td>
+                    @Item.ExcerciseId
+                </td>
+                <td>
+                    @Item.WeightType
+                </td>
+                <td>
+                    @Item.TemplateId
+                </td>
+                <td>
+                    @Item.WorkoutId
+                </td>
+                <td>
+                @if (Item.Sets != null)
                 {
-                    <tr>
-                            <td>@(i + 1)</td>
-                        <td>
-                             <div class="form-group">
-                                <input asp-for="@Item.Sets[i].Weight" class="form-control" placeholder="Weight">
-                                <span asp-validation-for="@Item.Sets[i].Weight" class="text-danger"></span>
-                            </div>
-                        </td>
-
-
-                            <td>
-                                <div class="form-group">
-                                <input asp-for="@Item.Sets[i].Reps" class="form-control" placeholder="Reps">
-                                <span asp-validation-for="@Item.Sets[i].Reps" class="text-danger"></span>
-                                </div>
-                            </td>
-                    </tr>
-                    <input asp-for="@Item.Sets[i].Id" type="hidden" class="form-control">
+                    @Item.Sets.Count
                 }
-                </table>
-            }
-
-        
-
-		<a  asp-controller="WorkoutSegment" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-    <a asp-controller="WorkoutSegment" method="post" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
-
-	}
+                </td>
+                <td id="tableButtons">
+                    <a asp-controller="Set" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                </td>
+                <td id="tableButtons">
+                    <a asp-controller="Set" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                </td>
+            </tr>
+    }
+    </table>

@@ -1,14 +1,43 @@
-﻿@model IEnumerable<Template>
+﻿@using GymLog.ViewModels
+@model IEnumerable<TemplateVM>
 
 
-	<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
-	@foreach(var Item in Model)
-	{
+    <h1>Templates</h1>
+	<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new</a>
 
-		<h4>@Item.Id - @Item.Name</h4>
+        <table>
+        <tr>
+            <th width="5%">Id</th>
+            <th>Name</th>
+            <th>User</th>
+            <th>Segments</th>
 
+      </tr>
+    @foreach (var Item in @Model)
+    {
+            <tr>
+                <td>
+                    @Item.Id
+                </td>
+                <td>
+                    @Item.Name
+                </td>
+                <td>
+                    @Item.AppUserId
+                </td>
+                <td>
+                @if (Item.WorkoutSegmentsVM != null)
+                {
+                    @Item.WorkoutSegmentsVM.Count
+                }
+                </td>
 
-		<a  asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-		<a asp-controller="Template" method="post" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
-
-	}
+                <td id="tableButtons">
+                    <a asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                </td>
+                <td id="tableButtons">
+                    <a asp-controller="Template" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                </td>
+            </tr>
+    }
+    </table>
