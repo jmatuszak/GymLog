@@ -8,7 +8,6 @@ namespace GymLog.ViewModels
 	public class WorkoutSegmentVM
 	{
 		public int Id { get; set; }
-		public int? Order { get; set; }
 		public string? Description { get; set; }
         [Required(ErrorMessage = "You must choose an excercise")]
         public int ExcerciseId { get; set; }

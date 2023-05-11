@@ -1,16 +1,23 @@
 ﻿@model IEnumerable<Workout>
 
 
-	<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Set Collection</a>
+	
+	<h2>Your Templates:</h2>
+<table>
 	@foreach(var Item in Model)
 	{
-	@if (Item.Template != null)
-	{
-		<h4>@Item.Id - @Item.Template.Name</h4>
+
+		@if (Item.Template != null)
+		{
+			<tr class="noBorder">
+				<td>
+					@Item.Id - @Item.Template.Name
+				</td>
+				<td>
+					<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+				</td>
+			</tr>
+		}
 	}
-
-
-		<a  asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
-		<a asp-controller="Template" method="post" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
-
-	}
+</table>
+<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>

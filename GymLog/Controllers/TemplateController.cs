@@ -4,6 +4,7 @@ using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
@@ -137,10 +138,10 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid)
             {
-				return BadRequest(ModelState);
-			}
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			Template template = new Template()
+                return BadRequest(ModelState);
+            }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var template = new Template()
             {
                 Name = templateVM.Name,
                 WorkoutSegments = new List<WorkoutSegment>(),
@@ -163,12 +164,12 @@ namespace GymLog.Controllers
                     {
                         WeightType = segment.WeightType,
                         Description = segment.Description,
-                        Order = segment.Order,
+                        //Order = segment.Order,
                         Sets = sets,
                         ExcerciseId = segment.ExcerciseId,
                     });
                 }
-			_context.Add(template);
+            _context.Add(template);
             _context.SaveChanges();
 
             foreach (var segment in template.WorkoutSegments)
@@ -180,6 +181,7 @@ namespace GymLog.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
 
         //<-----------------------   Edit   ---------------------> 

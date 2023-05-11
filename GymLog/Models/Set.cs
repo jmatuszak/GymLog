@@ -8,9 +8,6 @@ namespace GymLog.Models
         public float? Weight { get; set; }
         public int? Reps { get; set; }
         public string? Description { get; set; }
-
-
-
         public int WorkoutSegmentId { get; set; }
         public WorkoutSegment? WorkoutSegment { get; set; }
 }

@@ -5,22 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymLog.Migrations
 {
-    public partial class identity : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "AppUserId",
-                table: "Workouts",
-                type: "nvarchar(450)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "AppUserId",
-                table: "Templates",
-                type: "nvarchar(450)",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -58,6 +46,32 @@ namespace GymLog.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BodyParts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BodyParts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Excercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Excercises", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,15 +180,130 @@ namespace GymLog.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Workouts_AppUserId",
-                table: "Workouts",
-                column: "AppUserId");
+            migrationBuilder.CreateTable(
+                name: "Templates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Templates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Templates_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Templates_AppUserId",
-                table: "Templates",
-                column: "AppUserId");
+            migrationBuilder.CreateTable(
+                name: "BodyPartExcercises",
+                columns: table => new
+                {
+                    BodyPartId = table.Column<int>(type: "int", nullable: false),
+                    ExcerciseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BodyPartExcercises", x => new { x.BodyPartId, x.ExcerciseId });
+                    table.ForeignKey(
+                        name: "FK_BodyPartExcercises_BodyParts_BodyPartId",
+                        column: x => x.BodyPartId,
+                        principalTable: "BodyParts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BodyPartExcercises_Excercises_ExcerciseId",
+                        column: x => x.ExcerciseId,
+                        principalTable: "Excercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TemplateId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workouts_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Workouts_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkoutSegments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExcerciseId = table.Column<int>(type: "int", nullable: false),
+                    WeightType = table.Column<int>(type: "int", nullable: true),
+                    TemplateId = table.Column<int>(type: "int", nullable: true),
+                    WorkoutId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutSegments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkoutSegments_Excercises_ExcerciseId",
+                        column: x => x.ExcerciseId,
+                        principalTable: "Excercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkoutSegments_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WorkoutSegments_Workouts_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workouts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Weight = table.Column<float>(type: "real", nullable: true),
+                    Reps = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkoutSegmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sets_WorkoutSegments_WorkoutSegmentId",
+                        column: x => x.WorkoutSegmentId,
+                        principalTable: "WorkoutSegments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -215,31 +344,50 @@ namespace GymLog.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Templates_AspNetUsers_AppUserId",
-                table: "Templates",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_BodyPartExcercises_ExcerciseId",
+                table: "BodyPartExcercises",
+                column: "ExcerciseId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Workouts_AspNetUsers_AppUserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_WorkoutSegmentId",
+                table: "Sets",
+                column: "WorkoutSegmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Templates_AppUserId",
+                table: "Templates",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_AppUserId",
                 table: "Workouts",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_TemplateId",
+                table: "Workouts",
+                column: "TemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSegments_ExcerciseId",
+                table: "WorkoutSegments",
+                column: "ExcerciseId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSegments_TemplateId",
+                table: "WorkoutSegments",
+                column: "TemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSegments_WorkoutId",
+                table: "WorkoutSegments",
+                column: "WorkoutId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Templates_AspNetUsers_AppUserId",
-                table: "Templates");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Workouts_AspNetUsers_AppUserId",
-                table: "Workouts");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -256,26 +404,31 @@ namespace GymLog.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BodyPartExcercises");
+
+            migrationBuilder.DropTable(
+                name: "Sets");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "BodyParts");
+
+            migrationBuilder.DropTable(
+                name: "WorkoutSegments");
+
+            migrationBuilder.DropTable(
+                name: "Excercises");
+
+            migrationBuilder.DropTable(
+                name: "Workouts");
+
+            migrationBuilder.DropTable(
+                name: "Templates");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Workouts_AppUserId",
-                table: "Workouts");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Templates_AppUserId",
-                table: "Templates");
-
-            migrationBuilder.DropColumn(
-                name: "AppUserId",
-                table: "Workouts");
-
-            migrationBuilder.DropColumn(
-                name: "AppUserId",
-                table: "Templates");
         }
     }
 }

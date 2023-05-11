@@ -1,8 +1,8 @@
 ﻿@using GymLog.Data.Enum
 @using GymLog.ViewModels
-@model TemplateVM
+@model WorkoutVM
 
-    <input asp-for="Id" type="hidden" class="form-control">
+    <input asp-for="TemplateId" type="hidden" class="form-control">
     <input asp-for="ActionName" type="hidden" class="form-control">
 
 
@@ -28,7 +28,7 @@
 
 
                 <div id="segment">
-                    <button id="removeButton" type="submit" formaction="/Template/RemoveWorkoutSegment?segment=@i" class="btn btn-outline-danger">Remove excercise</button>
+                    <button id="removeButton" type="submit" formaction="/Workout/RemoveWorkoutSegment?segment=@i" class="btn btn-outline-danger">Remove excercise</button>
 
                     <div class="form-group">
                         <label asp-for="@Model.WorkoutSegmentsVM[i].ExcerciseId">Excercise</label>
@@ -62,11 +62,12 @@
 
                     @if (@Model.WorkoutSegmentsVM[i].SetsVM != null)
                     {
-                        <table>
+                        <table >
                             <tr class="noBorder">
                                 <th width="7%">Set</th>
                                 <th>Weight</th>
                                 <th>Reps</th>
+                                <th></th>
                             </tr>
                             @for (int j = 0; j < @Model.WorkoutSegmentsVM[i].SetsVM.Count; j++)
                             {
@@ -89,13 +90,19 @@
                                             <span asp-validation-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps" class="text-danger"></span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="line">
+                                            <input type="checkbox" class="my-checkbox-x2" value="false" />
+                                        </div>
+                                    </td>
+
                                 </tr>
                                 <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
                             }
                         </table>
                     }
-                    <button type="submit" formaction="/Template/AddSet?segment=@i" class="btn btn-outline-primary">+</button>
-                    <button type="submit" formaction="/Template/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
+                    <button type="submit" formaction="/Workout/AddSet?segment=@i" class="btn btn-outline-primary">+</button>
+                    <button type="submit" formaction="/Workout/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
 
                 </div>
             }
@@ -107,5 +114,5 @@
     </br>
 
 
-    <button type="submit" formaction="/Template/AddWorkoutSegment" class="btn btn-outline-primary">Add Excercise</button>
+    <button type="submit" formaction="/Workout/AddWorkoutSegment" class="btn btn-outline-primary">Add Excercise</button>
     

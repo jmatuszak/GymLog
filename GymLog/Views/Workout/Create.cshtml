@@ -1,11 +1,11 @@
 ﻿@using GymLog.ViewModels
-@model TemplateVM
+@model WorkoutVM
 
 
-<h2>Create Workout Template</h2>
+<h2>Do Workout</h2>
 <form method="post" asp-action="Create" enctype="multipart/form-data">
-    <partial name="_TemplateCU"/>
-    <button type="submit" formaction="/Template/CreatePost" class="btn btn-primary">Submit</button>
+    <partial name="_WorkoutCU"/>
+    <button type="submit" formaction="/Workout/CreatePost" class="btn btn-primary">Submit</button>
 </form>
 
     <script>

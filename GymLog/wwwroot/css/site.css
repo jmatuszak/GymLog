@@ -1,5 +1,6 @@
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -7,6 +8,9 @@ html {
         font-size: 16px;
         scroll-behavior: auto !important;
     }
+}
+button{
+    margin-top: 10px;
 }
 
 html {
@@ -47,4 +51,29 @@ td {
 #rightMenu {
     position: absolute;
     right: 1%;
+}
+#removeButton {
+    float: right;
+}
+
+.my-checkbox-x2 {
+    transform: scale(2);
+    margin-left: 10px
+}
+input[type=checkbox] {
+    accent-color: green;
+}
+tr.noBorder td {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+tr.noBorder th {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+#marginedButton {
+    margin-top: 10px;
 }

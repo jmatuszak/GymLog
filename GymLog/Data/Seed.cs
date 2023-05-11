@@ -138,7 +138,7 @@ namespace GymLog.Data
                         new WorkoutSegment()
                         {
                             WeightType = WeightType.Barbell,
-                            Order = 1,
+                            //Order = 1,
                             Description = "3 x 1-4",
                             TemplateId = 1,
                             ExcerciseId= 1,
@@ -147,7 +147,7 @@ namespace GymLog.Data
                         new WorkoutSegment()
                         {
                             WeightType = WeightType.Dumbell,
-                            Order = 2,
+                            //Order = 2,
                             Description = "3 x 1-4",
                             TemplateId = 1,
 							ExcerciseId= 2,
@@ -156,7 +156,7 @@ namespace GymLog.Data
                         new WorkoutSegment()
                         {
                             WeightType = WeightType.Dumbell,
-                            Order = 3,
+                            //Order = 3,
                             Description = "3 x 1-4",
                             TemplateId = 1,
 							ExcerciseId= 3,

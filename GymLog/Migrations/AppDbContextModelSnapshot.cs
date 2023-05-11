@@ -177,9 +177,6 @@ namespace GymLog.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -207,9 +204,6 @@ namespace GymLog.Migrations
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -233,9 +227,6 @@ namespace GymLog.Migrations
                     b.Property<int>("ExcerciseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Order")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TemplateId")
                         .HasColumnType("int");
 
@@ -247,7 +238,8 @@ namespace GymLog.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExcerciseId");
+                    b.HasIndex("ExcerciseId")
+                        .IsUnique();
 
                     b.HasIndex("TemplateId");
 
@@ -421,14 +413,16 @@ namespace GymLog.Migrations
 
             modelBuilder.Entity("GymLog.Models.Template", b =>
                 {
-                    b.HasOne("GymLog.Models.AppUser", null)
+                    b.HasOne("GymLog.Models.AppUser", "AppUser")
                         .WithMany("Templates")
                         .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("GymLog.Models.Workout", b =>
                 {
-                    b.HasOne("GymLog.Models.AppUser", null)
+                    b.HasOne("GymLog.Models.AppUser", "AppUser")
                         .WithMany("Workouts")
                         .HasForeignKey("AppUserId");
 
@@ -438,14 +432,16 @@ namespace GymLog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AppUser");
+
                     b.Navigation("Template");
                 });
 
             modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
                     b.HasOne("GymLog.Models.Excercise", "Excercise")
-                        .WithMany("WorkoutSegment")
-                        .HasForeignKey("ExcerciseId")
+                        .WithOne("WorkoutSegment")
+                        .HasForeignKey("GymLog.Models.WorkoutSegment", "ExcerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

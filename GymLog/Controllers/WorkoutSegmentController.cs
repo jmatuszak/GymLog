@@ -72,10 +72,8 @@ namespace GymLog.Controllers
                     };
                     sets.Add(set);
                 }
-            var r = new WorkoutSegment();
             var WorkoutSegment = new WorkoutSegment()
             {
-                Order = WorkoutSegmentVM.Order,
                 Description = WorkoutSegmentVM.Description,
                 ExcerciseId = WorkoutSegmentVM.ExcerciseId,
                 TemplateId = WorkoutSegmentVM.TemplateId,
@@ -112,7 +110,7 @@ namespace GymLog.Controllers
 			var WorkoutSegmentVM = new WorkoutSegmentVM()
 			{
 				Id = WorkoutSegment.Id,
-				Order = WorkoutSegment.Order,
+				//Order = WorkoutSegment.Order,
 				Description = WorkoutSegment.Description,
 				TemplateId = WorkoutSegment.TemplateId,
 				ExcerciseId = WorkoutSegment.ExcerciseId,
@@ -151,7 +149,7 @@ namespace GymLog.Controllers
             if (WorkoutSegment != null)
             {
                 WorkoutSegment.Id = WorkoutSegmentVM.Id;
-                WorkoutSegment.Order = WorkoutSegmentVM.Order;
+                //WorkoutSegment.Order = WorkoutSegmentVM.Order;
                 WorkoutSegment.Description = WorkoutSegmentVM.Description;
                 WorkoutSegment.ExcerciseId = WorkoutSegmentVM.ExcerciseId;
                 WorkoutSegment.TemplateId = WorkoutSegmentVM.TemplateId;
