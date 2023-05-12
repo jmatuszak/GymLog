@@ -6,8 +6,9 @@ namespace GymLog.ViewModels
 {
 	public class WorkoutsAndTemplatesVM
 	{
-		public List<TemplateVM>? TemplatesVM { get; set; }
-		public List<WorkoutVM>? WorkoutsVM { get; set; }
+        public List<TemplateVM>? UserTemplatesVM { get; set; }
+        public List<TemplateVM>? SampleTemplatesVM { get; set; }
+        public List<WorkoutVM>? UserWorkoutsVM { get; set; }
 
 
     }

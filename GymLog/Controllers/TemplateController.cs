@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace GymLog.Controllers
 {
-    public class TemplateController : Controller
+    public class TemplateController : BaseController
     {
         private readonly AppDbContext _context;
 		//private readonly HttpContextAccessor _httpContextAccessor;
@@ -190,62 +190,12 @@ namespace GymLog.Controllers
         {
             if (id != null)
             {
-
                 var template = await _context.Templates.Include(t => t.WorkoutSegments).FirstOrDefaultAsync(t => t.Id == id);
-                templateVM = templateVM ?? new TemplateVM();
-                templateVM.Excercises = _context.Excercises.ToList();
-                templateVM.WorkoutSegmentsVM = templateVM.WorkoutSegmentsVM ?? new List<WorkoutSegmentVM>();
-                templateVM.Id = template.Id;
-                templateVM.Name = template.Name;
+                templateVM ??= new TemplateVM();
                 templateVM.ActionName = "Edit";
-
-                var segmentsVM = new List<WorkoutSegmentVM>();
-                if (template.WorkoutSegments != null && template.WorkoutSegments.Count > 0)
-                    for (int t = 0; t < template.WorkoutSegments.Count; t++)
-                    {
-                        template.WorkoutSegments[t].Sets = _context.Sets.Where(s => s.WorkoutSegmentId == template.WorkoutSegments[t].Id).ToList();
-                        var setsVM = new List<SetVM>();
-                        var segmentVM = new WorkoutSegmentVM();
-                        segmentVM.Id = template.WorkoutSegments[t].Id;
-                        segmentVM.TemplateId = template.WorkoutSegments[t].TemplateId;
-                        segmentVM.ExcerciseId = template.WorkoutSegments[t].ExcerciseId;
-                        segmentVM.Description = template.WorkoutSegments[t].Description;
-                        segmentVM.WeightType = template.WorkoutSegments[t].WeightType;
-                        if (template.WorkoutSegments[t].Sets != null)
-                        {
-                            for (var s = 0; s < template.WorkoutSegments[t].Sets.Count; s++)
-                            {
-                                if (template.WorkoutSegments[t].Sets[s].Id != null)
-                                {
-                                    setsVM.Add(new SetVM()
-                                    {
-                                        Id = template.WorkoutSegments[t].Sets[s].Id,
-                                        Description = template.WorkoutSegments[t].Sets[s].Description,
-                                        Weight = template.WorkoutSegments[t].Sets[s].Weight,
-                                        Reps = template.WorkoutSegments[t].Sets[s].Reps,
-                                        WorkoutSegmentId = template.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-                                    });
-                                }
-                                else
-                                {
-                                    setsVM.Add(new SetVM()
-                                    {
-                                        Description = template.WorkoutSegments[t].Sets[s].Description,
-                                        Weight = template.WorkoutSegments[t].Sets[s].Weight,
-                                        Reps = template.WorkoutSegments[t].Sets[s].Reps,
-                                        WorkoutSegmentId = template.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-                                    });
-                                }
-
-                            }
-                        }
-
-                        segmentVM.SetsVM = setsVM;
-                        templateVM.WorkoutSegmentsVM.Add(segmentVM);
-                    }
-
+                if (template == null) return View("Error");
+                templateVM = TemplateToTemplateVM(template, templateVM);
             }
-
             return View(templateVM);
         }
 

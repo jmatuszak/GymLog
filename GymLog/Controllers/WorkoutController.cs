@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace GymLog.Controllers
 {
-	public class WorkoutController : Controller
+	public class WorkoutController : BaseController
 	{
 		private readonly AppDbContext _context;
 		private readonly UserManager<AppUser> _userManager;
@@ -20,10 +20,36 @@ namespace GymLog.Controllers
 			_context = context;
 			_userManager = userManager;
 		}
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			var list = _context.Workouts.Include(t => t.Template).ToList();
-			return View(list);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
+            var userWorkouts = _context.Workouts.Include(t => t.Template).Where(x=>x.AppUserId.Equals(user.Id)).ToList();
+			var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals(null)).ToList();
+			var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();
+
+            var workoutsAndTemplatesVM = new WorkoutsAndTemplatesVM()
+            {
+                UserTemplatesVM = new List<TemplateVM>(),
+                UserWorkoutsVM = new List<WorkoutVM>(),
+                SampleTemplatesVM = new List<TemplateVM>(),
+            };
+            foreach (var item in sampleTemplates)
+            {
+                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
+                workoutsAndTemplatesVM.SampleTemplatesVM.Add(itemVM);
+            }
+            foreach (var item in userTemplates)
+            {
+                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
+                workoutsAndTemplatesVM.UserTemplatesVM.Add(itemVM);
+            }
+            foreach (var item in userWorkouts)
+            {
+                var itemVM = WorkoutToWorkoutVM(item, new WorkoutVM());
+                workoutsAndTemplatesVM.UserWorkoutsVM.Add(itemVM);
+            }
+            return View(workoutsAndTemplatesVM);
 		}
 
         //<-----------------------   Set   ---------------------> 
@@ -68,71 +94,16 @@ namespace GymLog.Controllers
             ModelState.Clear();
             return View(workoutVM.ActionName, workoutVM);
         }
-        // TEMPLATE TO  VIEW MODEL
-        public async Task<TemplateVM> TemplateToTemplateVM(int id)
-        {
-            var templateVM = new TemplateVM();
-		    var template = await _context.Templates.Include(t => t.WorkoutSegments).FirstOrDefaultAsync(t => t.Id == id);
-		    templateVM = templateVM ?? new TemplateVM();
-		    templateVM.Excercises = _context.Excercises.ToList();
-		    templateVM.WorkoutSegmentsVM = templateVM.WorkoutSegmentsVM ?? new List<WorkoutSegmentVM>();
-		    templateVM.Id = template.Id;
-		    templateVM.Name = template.Name;
-		    templateVM.ActionName = "Create";
 
-		    var segmentsVM = new List<WorkoutSegmentVM>();
-		    if (template.WorkoutSegments != null && template.WorkoutSegments.Count > 0)
-			    for (int t = 0; t < template.WorkoutSegments.Count; t++)
-			    {
-				    template.WorkoutSegments[t].Sets = _context.Sets.Where(s => s.WorkoutSegmentId == template.WorkoutSegments[t].Id).ToList();
-				    var setsVM = new List<SetVM>();
-				    var segmentVM = new WorkoutSegmentVM();
-				    segmentVM.Id = template.WorkoutSegments[t].Id;
-				    segmentVM.TemplateId = template.WorkoutSegments[t].TemplateId;
-				    segmentVM.ExcerciseId = template.WorkoutSegments[t].ExcerciseId;
-				    segmentVM.Description = template.WorkoutSegments[t].Description;
-				    segmentVM.WeightType = template.WorkoutSegments[t].WeightType;
-				    if (template.WorkoutSegments[t].Sets != null)
-				    {
-					    for (var s = 0; s < template.WorkoutSegments[t].Sets.Count; s++)
-					    {
-						    if (template.WorkoutSegments[t].Sets[s].Id != null)
-						    {
-							    setsVM.Add(new SetVM()
-							    {
-								    Id = template.WorkoutSegments[t].Sets[s].Id,
-								    Description = template.WorkoutSegments[t].Sets[s].Description,
-								    Weight = template.WorkoutSegments[t].Sets[s].Weight,
-								    Reps = template.WorkoutSegments[t].Sets[s].Reps,
-								    WorkoutSegmentId = template.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-							    });
-						    }
-						    else
-						    {
-							    setsVM.Add(new SetVM()
-							    {
-								    Description = template.WorkoutSegments[t].Sets[s].Description,
-								    Weight = template.WorkoutSegments[t].Sets[s].Weight,
-								    Reps = template.WorkoutSegments[t].Sets[s].Reps,
-								    WorkoutSegmentId = template.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-							    });
-						    }
-
-					    }
-				    }
-
-				    segmentVM.SetsVM = setsVM;
-				    templateVM.WorkoutSegmentsVM.Add(segmentVM);
-			    }
-
-			return templateVM;
-		}
 
 		//<-----------------------   Workout   ---------------------> 
 		public async Task<IActionResult> Execute(int id)
 		{
+            var template = await Context.Templates.Include(t => t.WorkoutSegments).FirstOrDefaultAsync(t => t.Id == id);
             var templateVM = new TemplateVM() { ActionName = "Create" };
-            templateVM = await  TemplateToTemplateVM(id);
+            if (template == null) return View("Error");
+
+            templateVM = TemplateToTemplateVM(template,templateVM);
 
 			var workoutVM = new WorkoutVM()
             {
@@ -165,8 +136,8 @@ namespace GymLog.Controllers
                 };
             workoutVM.ActionName = "create";
             return View(workoutVM);
-
         }
+
         [HttpPost]
         public async Task<IActionResult> CreatePost(WorkoutVM workoutVM)
         {
@@ -177,6 +148,7 @@ namespace GymLog.Controllers
 			var user = await _userManager.GetUserAsync(HttpContext.User);
             Workout workout = new Workout()
             {
+                Name = workoutVM.Name,
                 AppUserId = user.Id,
                 StartDate = workoutVM.StartDate,
                 EndDate = DateTime.Now,

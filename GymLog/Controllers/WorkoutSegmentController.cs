@@ -111,12 +111,10 @@ namespace GymLog.Controllers
 			var WorkoutSegmentVM = new WorkoutSegmentVM()
 			{
 				Id = WorkoutSegment.Id,
-				//Order = WorkoutSegment.Order,
 				Description = WorkoutSegment.Description,
 				TemplateId = WorkoutSegment.TemplateId,
 				ExcerciseId = WorkoutSegment.ExcerciseId,
                 Excercises = excercises,
-				//Excercises = excercisesConcatVM,
 				SetsVM = setsVM
 			};
 
@@ -150,7 +148,6 @@ namespace GymLog.Controllers
             if (WorkoutSegment != null)
             {
                 WorkoutSegment.Id = WorkoutSegmentVM.Id;
-                //WorkoutSegment.Order = WorkoutSegmentVM.Order;
                 WorkoutSegment.Description = WorkoutSegmentVM.Description;
                 WorkoutSegment.ExcerciseId = WorkoutSegmentVM.ExcerciseId;
                 WorkoutSegment.TemplateId = WorkoutSegmentVM.TemplateId;

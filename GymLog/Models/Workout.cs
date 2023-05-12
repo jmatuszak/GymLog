@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string? AppUserId { get; set; }
+        public string Name { get; set; }
         public AppUser? AppUser { get; set; }
         public int TemplateId { get; set; }
         public Template? Template { get; set; }

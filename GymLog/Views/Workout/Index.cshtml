@@ -1,23 +1,95 @@
-﻿@model IEnumerable<Workout>
+﻿@using GymLog.ViewModels
+@model WorkoutsAndTemplatesVM
+@*
+<div id="centerDiv">
+	<div id="leftDiv">
+
+	</div>
+
+	<div id="rightDiv">
+
+	</div>
+</div>
 
 
-	
-	<h2>Your Templates:</h2>
-<table>
-	@foreach(var Item in Model)
-	{
+<div id="centerDiv">
 
-		@if (Item.Template != null)
+</div>
+*@
+
+
+<div class="container">
+	<div class="left">
+		<h2>Your Templates:</h2>
+		@if (Model.UserTemplatesVM != null)
 		{
-			<tr class="noBorder">
-				<td>
-					@Item.Id - @Item.Template.Name
-				</td>
-				<td>
-					<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
-				</td>
-			</tr>
+			<table>
+				@foreach (var Item in Model.UserTemplatesVM)
+				{
+
+					@if (Item != null)
+					{
+						<tr class="noBorder">
+							<td>
+								@Item.Id - @Item.Name
+							</td>
+							<td>
+								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+							</td>
+						</tr>
+					}
+				}
+			</table>
 		}
+	</div>
+	<div class="right">
+		<h2>Sample Templates:</h2>
+		@if (Model.SampleTemplatesVM != null)
+		{
+			<table>
+				@foreach (var Item in Model.SampleTemplatesVM)
+				{
+
+					@if (Item != null)
+					{
+						<tr class="noBorder">
+							<td>
+								@Item.Id - @Item.Name
+							</td>
+							<td>
+								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+							</td>
+						</tr>
+					}
+				}
+			</table>
+		}
+	</div>
+</div>
+<div class="center">
+		<h2>Your Workouts:</h2>
+	@if (Model.UserWorkoutsVM != null)
+	{
+		<table>
+			@foreach (var Item in Model.UserWorkoutsVM)
+			{
+
+				@if (Item != null)
+				{
+					<tr class="noBorder">
+						<td>
+							@Item.Id - @Item.Name
+						</td>
+						<td>
+							<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Details TO change</a>
+						</td>
+					</tr>
+				}
+			}
+		</table>
 	}
-</table>
-<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>
+
+
+
+	<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>
+</div>
