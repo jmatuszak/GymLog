@@ -1,4 +1,5 @@
 ﻿using GymLog.Data.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymLog.Models
 {

@@ -77,7 +77,8 @@ namespace GymLog.Controllers
                 Description = WorkoutSegmentVM.Description,
                 ExcerciseId = WorkoutSegmentVM.ExcerciseId,
                 TemplateId = WorkoutSegmentVM.TemplateId,
-                Sets = sets
+                Sets = sets,
+                WeightType = WorkoutSegmentVM.WeightType,
             };
             _context.WorkoutSegments.Add(WorkoutSegment);
             _context.SaveChanges();
