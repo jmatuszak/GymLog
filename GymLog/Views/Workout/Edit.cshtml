@@ -1,23 +1,33 @@
 ﻿@using GymLog.ViewModels
-@model TemplateVM
+@model WorkoutVM
 
 
-<h1>Edit Workout</h1>
-<form method="post" asp-action="Edit" enctype="multipart/form-data">
+<h2>Edit Workout</h2>
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <partial name="_WorkoutCU" />
+    <input asp-for="Id" type="hidden" class="form-control">
 
-    <partial name="_TemplateCU" />
-    </br>
-    <button type="submit" formaction="/Template/EditPost" class="btn btn-primary">Submit</button>
+    <div class="form-group">
+        <label asp-for="@Model.StartDate">Start Date</label>
+        <input asp-for="@Model.StartDate" class="form-control">
+        <span asp-validation-for="@Model.StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.EndDate">End Date</label>
+        <input asp-for="@Model.EndDate" class="form-control">
+        <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+    </div>
+    <button type="submit" formaction="/Workout/EditPost" class="btn btn-primary">Submit</button>
 </form>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) { 
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo(0,scrollpos);
-        });
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
 
-        window.onbeforeunload = function(e) {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
+    window.onbeforeunload = function (e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
 
-    </script>
+</script>

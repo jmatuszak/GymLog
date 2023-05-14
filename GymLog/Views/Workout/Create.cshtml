@@ -4,6 +4,7 @@
 
 <h2>Do Workout</h2>
 <form method="post" asp-action="Create" enctype="multipart/form-data">
+    <input asp-for="StartDate" type="hidden" class="form-control">
     <partial name="_WorkoutCU"/>
     <button type="submit" formaction="/Workout/CreatePost" class="btn btn-primary">Submit</button>
 </form>

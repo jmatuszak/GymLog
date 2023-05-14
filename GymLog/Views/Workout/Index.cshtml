@@ -1,25 +1,10 @@
 ﻿@using GymLog.ViewModels
 @model WorkoutsAndTemplatesVM
-@*
-<div id="centerDiv">
-	<div id="leftDiv">
-
-	</div>
-
-	<div id="rightDiv">
-
-	</div>
-</div>
 
 
-<div id="centerDiv">
-
-</div>
-*@
-
-
-<div class="container">
-	<div class="left">
+<div class="container1">
+	<div class="box box1">
+		<div class="box box2">
 		<h2>Your Templates:</h2>
 		@if (Model.UserTemplatesVM != null)
 		{
@@ -41,9 +26,9 @@
 				}
 			</table>
 		}
-	</div>
-	<div class="right">
-		<h2>Sample Templates:</h2>
+		</div>
+		<div class="box box2">
+			<h2>Sample Templates:</h2>
 		@if (Model.SampleTemplatesVM != null)
 		{
 			<table>
@@ -64,30 +49,61 @@
 				}
 			</table>
 		}
+		</div>
 	</div>
-</div>
-<div class="center">
-		<h2>Your Workouts:</h2>
-	@if (Model.UserWorkoutsVM != null)
-	{
-		<table>
-			@foreach (var Item in Model.UserWorkoutsVM)
-			{
+		<div class="box box3">
+			<div id="calendar"></div>
+		</div>
+	</div>
 
-				@if (Item != null)
-				{
-					<tr class="noBorder">
-						<td>
-							@Item.Id - @Item.Name
-						</td>
-						<td>
-							<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Details TO change</a>
-						</td>
-					</tr>
-				}
-			}
-		</table>
-	}
+
+
+
+
+
+
+@section scripts {
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' />
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#calendar').fullCalendar( {
+				events: [
+		@foreach (var workout in Model.UserWorkoutsVM)
+		{
+			<text>
+						{
+							title: '@workout.Name',
+							start: '@workout.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							end: '@workout.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							id: '@workout.Id'
+						},
+			</text>
+		}
+						],
+				eventClick: function (calEvent, jsEvent, view) {
+					window.location.href = 'Workout/Edit/' + calEvent.id;
+				},
+				eventMouseover: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '#006699 ');
+				},
+				eventMouseout: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '');
+				},
+				firstDay: 1,
+				height: 'auto',
+				initialView: 'dayGridMonth',
+				displayEventTime: false,
+			});
+		});
+	</script>
+}
+
+
+
+
 
 
 

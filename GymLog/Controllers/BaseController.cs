@@ -80,6 +80,8 @@ namespace GymLog.Controllers
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             workoutVM.Id = workout.Id;
             workoutVM.Name = workout.Name;
+            workoutVM.StartDate = workout.StartDate;
+            workoutVM.EndDate = workout.EndDate;
 
             var segmentsVM = new List<WorkoutSegmentVM>();
             if (workout.WorkoutSegments != null && workout.WorkoutSegments.Count > 0)
@@ -98,28 +100,16 @@ namespace GymLog.Controllers
                     {
                         for (var s = 0; s < workout.WorkoutSegments[t].Sets.Count; s++)
                         {
+                            var setVM = new SetVM();
+                            
                             if (workout.WorkoutSegments[t].Sets[s].Id != null)
-                            {
-                                setsVM.Add(new SetVM()
-                                {
-                                    Id = workout.WorkoutSegments[t].Sets[s].Id,
-                                    Description = workout.WorkoutSegments[t].Sets[s].Description,
-                                    Weight = workout.WorkoutSegments[t].Sets[s].Weight,
-                                    Reps = workout.WorkoutSegments[t].Sets[s].Reps,
-                                    WorkoutSegmentId = workout.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-                                });
-                            }
-                            else
-                            {
-                                setsVM.Add(new SetVM()
-                                {
-                                    Description = workout.WorkoutSegments[t].Sets[s].Description,
-                                    Weight = workout.WorkoutSegments[t].Sets[s].Weight,
-                                    Reps = workout.WorkoutSegments[t].Sets[s].Reps,
-                                    WorkoutSegmentId = workout.WorkoutSegments[t].Sets[s].WorkoutSegmentId,
-                                });
-                            }
-
+                                setVM.Id = workout.WorkoutSegments[t].Sets[s].Id;
+                            setVM.Description = workout.WorkoutSegments[t].Sets[s].Description;
+                            setVM.Weight = workout.WorkoutSegments[t].Sets[s].Weight;
+                            setVM.Reps = workout.WorkoutSegments[t].Sets[s].Reps;
+                            setVM.WorkoutSegmentId = workout.WorkoutSegments[t].Sets[s].WorkoutSegmentId;
+                            if(workoutVM.ActionName.Equals("Edit")) setVM.isDone= true;
+                            setsVM.Add(setVM);
                         }
                     }
                     segmentVM.SetsVM = setsVM;

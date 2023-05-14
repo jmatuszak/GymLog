@@ -6,6 +6,7 @@
     <input asp-for="ActionName" type="hidden" class="form-control">
 
 
+
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" class="form-control" placeholder="Name">
@@ -92,7 +93,7 @@
                                     </td>
                                     <td>
                                         <div class="line">
-                                            <input type="checkbox" class="my-checkbox-x2" value="false" />
+                                            <input type="checkbox" class="my-checkbox-x2" asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].isDone">
                                         </div>
                                     </td>
 
