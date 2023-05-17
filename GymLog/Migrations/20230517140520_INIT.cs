@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymLog.Migrations
 {
-    public partial class init : Migration
+    public partial class INIT : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,7 +62,7 @@ namespace GymLog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Excercises",
+                name: "Exercises",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,7 +71,7 @@ namespace GymLog.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Excercises", x => x.Id);
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,25 +200,25 @@ namespace GymLog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BodyPartExcercises",
+                name: "BodyPartExercises",
                 columns: table => new
                 {
                     BodyPartId = table.Column<int>(type: "int", nullable: false),
-                    ExcerciseId = table.Column<int>(type: "int", nullable: false)
+                    ExerciseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BodyPartExcercises", x => new { x.BodyPartId, x.ExcerciseId });
+                    table.PrimaryKey("PK_BodyPartExercises", x => new { x.BodyPartId, x.ExerciseId });
                     table.ForeignKey(
-                        name: "FK_BodyPartExcercises_BodyParts_BodyPartId",
+                        name: "FK_BodyPartExercises_BodyParts_BodyPartId",
                         column: x => x.BodyPartId,
                         principalTable: "BodyParts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BodyPartExcercises_Excercises_ExcerciseId",
-                        column: x => x.ExcerciseId,
-                        principalTable: "Excercises",
+                        name: "FK_BodyPartExercises_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,6 +230,7 @@ namespace GymLog.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TemplateId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -257,7 +258,7 @@ namespace GymLog.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExcerciseId = table.Column<int>(type: "int", nullable: false),
+                    ExerciseId = table.Column<int>(type: "int", nullable: false),
                     WeightType = table.Column<int>(type: "int", nullable: true),
                     TemplateId = table.Column<int>(type: "int", nullable: true),
                     WorkoutId = table.Column<int>(type: "int", nullable: true)
@@ -266,9 +267,9 @@ namespace GymLog.Migrations
                 {
                     table.PrimaryKey("PK_WorkoutSegments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkoutSegments_Excercises_ExcerciseId",
-                        column: x => x.ExcerciseId,
-                        principalTable: "Excercises",
+                        name: "FK_WorkoutSegments_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -345,9 +346,9 @@ namespace GymLog.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BodyPartExcercises_ExcerciseId",
-                table: "BodyPartExcercises",
-                column: "ExcerciseId");
+                name: "IX_BodyPartExercises_ExerciseId",
+                table: "BodyPartExercises",
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sets_WorkoutSegmentId",
@@ -370,10 +371,9 @@ namespace GymLog.Migrations
                 column: "TemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkoutSegments_ExcerciseId",
+                name: "IX_WorkoutSegments_ExerciseId",
                 table: "WorkoutSegments",
-                column: "ExcerciseId",
-                unique: true);
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkoutSegments_TemplateId",
@@ -404,7 +404,7 @@ namespace GymLog.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BodyPartExcercises");
+                name: "BodyPartExercises");
 
             migrationBuilder.DropTable(
                 name: "Sets");
@@ -419,7 +419,7 @@ namespace GymLog.Migrations
                 name: "WorkoutSegments");
 
             migrationBuilder.DropTable(
-                name: "Excercises");
+                name: "Exercises");
 
             migrationBuilder.DropTable(
                 name: "Workouts");

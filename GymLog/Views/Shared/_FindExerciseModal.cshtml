@@ -1,16 +1,16 @@
 ﻿@using GymLog.Data.Enum
 @using GymLog.ViewModels
-@model FindExcerciseVM
+@model FindExerciseVM
 <script src="~/js/site.js"></script>
 
 
-<form asp-controller="Excercise" asp-action="FindExcercise">
+<form asp-controller="Exercise" asp-action="FindExercise">
     <p>
         <div class="form-group">
-            <label asp-for="SearchString">Search for excercise</label>
+            <label asp-for="SearchString">Search for Exercise</label>
             <input asp-for="SearchString" class="form-control" placeholder="SearchString">
             <span asp-validation-for="SearchString" class="text-danger"></span>
         </div>
-        <button type="submit" formaction="/Excercise/FindExcercise" class="btn btn-outline-primary">Find</button>
+        <button type="submit" formaction="/Exercise/FindExercise" class="btn btn-outline-primary">Find</button>
     </p>
 </form>

@@ -21,7 +21,7 @@ namespace GymLog.Controllers
 
         public IActionResult Index()
 		{
-			var list = _context.WorkoutSegments.Include(s=> s.Sets).Include(a => a.Excercise).Include(a => a.Template).ToList();
+			var list = _context.WorkoutSegments.Include(s=> s.Sets).Include(a => a.Exercise).Include(a => a.Template).ToList();
 			return View(list);
 		}
 
@@ -48,7 +48,7 @@ namespace GymLog.Controllers
             WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
             WorkoutSegmentVM.SetsVM.Add(new SetVM());
             WorkoutSegmentVM.ActionName = "Create";
-            WorkoutSegmentVM.Excercises = _context.Excercises.ToList();
+            WorkoutSegmentVM.Exercises = _context.Exercises.ToList();
             return View(WorkoutSegmentVM);
         }
         public IActionResult Create2(WorkoutSegmentVM? WorkoutSegmentVM)
@@ -58,7 +58,7 @@ namespace GymLog.Controllers
             WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
             WorkoutSegmentVM.SetsVM.Add(new SetVM());
             WorkoutSegmentVM.ActionName = "Create";
-            WorkoutSegmentVM.Excercises = _context.Excercises.ToList();
+            WorkoutSegmentVM.Exercises = _context.Exercises.ToList();
             return View(WorkoutSegmentVM);
         }
 
@@ -85,7 +85,7 @@ namespace GymLog.Controllers
             var WorkoutSegment = new WorkoutSegment()
             {
                 Description = WorkoutSegmentVM.Description,
-                ExcerciseId = WorkoutSegmentVM.ExcerciseId,
+                ExerciseId = WorkoutSegmentVM.ExerciseId,
                 TemplateId = WorkoutSegmentVM.TemplateId,
                 Sets = sets,
                 WeightType = WorkoutSegmentVM.WeightType,
@@ -102,8 +102,8 @@ namespace GymLog.Controllers
 
         public async Task<IActionResult> Edit(int id)
 		{
-            var excercises = _context.Excercises.ToList();
-            //var excercisesConcatVM = await CreateExcerciseConcatList();
+            var exercises = _context.Exercises.ToList();
+            //var exercisesConcatVM = await CreateExerciseConcatList();
             
             var WorkoutSegment  = await _context.WorkoutSegments.Include(x=>x.Sets).FirstOrDefaultAsync(x => x.Id == id);
 			var setsVM = new List<SetVM>();
@@ -123,8 +123,8 @@ namespace GymLog.Controllers
 				Id = WorkoutSegment.Id,
 				Description = WorkoutSegment.Description,
 				TemplateId = WorkoutSegment.TemplateId,
-				ExcerciseId = WorkoutSegment.ExcerciseId,
-                Excercises = excercises,
+				ExerciseId = WorkoutSegment.ExerciseId,
+                Exercises = exercises,
 				SetsVM = setsVM
 			};
 
@@ -159,7 +159,7 @@ namespace GymLog.Controllers
             {
                 WorkoutSegment.Id = WorkoutSegmentVM.Id;
                 WorkoutSegment.Description = WorkoutSegmentVM.Description;
-                WorkoutSegment.ExcerciseId = WorkoutSegmentVM.ExcerciseId;
+                WorkoutSegment.ExerciseId = WorkoutSegmentVM.ExerciseId;
                 WorkoutSegment.TemplateId = WorkoutSegmentVM.TemplateId;
                 WorkoutSegment.Sets = sets;
                 _context.Update(WorkoutSegment);
@@ -186,7 +186,7 @@ namespace GymLog.Controllers
 
         //Nowe
 
-        public IActionResult ExcerciseList()
+        public IActionResult ExerciseList()
         {
            
 

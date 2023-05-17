@@ -1,10 +1,10 @@
 ﻿@using GymLog.Data.Enum
 @using GymLog.ViewModels
-@model IEnumerable<Excercise>
+@model IEnumerable<Exercise>
 
 
-	<a asp-controller="Excercise" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Excercise</a>
-	<a asp-controller="Excercise" asp-action="FindExcercise" class="btn btn-sm btn-outline-info ">Find Excercise</a>
+	<a asp-controller="Exercise" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new Exercise</a>
+	<a asp-controller="Exercise" asp-action="FindExercise" class="btn btn-sm btn-outline-info ">Find Exercise</a>
 
     <table>
         <tr>
@@ -22,7 +22,7 @@
                     @Item.Name
                 </td>
                 <td>
-                    @if(@Item.BodyPartExcercises!=null)
+                    @if(@Item.BodyPartExercises!=null)
                     {
                         @foreach (var part in Item.BodyParts)
                         {
@@ -32,10 +32,10 @@
                     
                 </td>
                 <td id="tableButtons">
-                    <a asp-controller="Excercise" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                    <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
                 </td>
                 <td id="tableButtons">
-                    <a asp-controller="Excercise" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                    <a asp-controller="Exercise" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
                 </td>
             </tr>
         }

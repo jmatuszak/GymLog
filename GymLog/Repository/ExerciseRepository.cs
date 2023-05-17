@@ -4,38 +4,38 @@ using GymLog.Models;
 
 namespace GymLog.Repository
 {
-    public class ExcerciseRepository : IExcerciseRepository
+    public class ExerciseRepository : IExerciseRepository
     {
         private readonly AppDbContext _context;
 
-        public ExcerciseRepository(AppDbContext context)
+        public ExerciseRepository(AppDbContext context)
         {
             _context = context;
         }
 
 
-        public bool Add(Excercise excercise)
+        public bool Add(Exercise Exercise)
         {
-            _context.Excercises.Add(excercise);
+            _context.Exercises.Add(Exercise);
             return Save();
         }
 
-        public bool Delete(Excercise excercise)
+        public bool Delete(Exercise Exercise)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Excercise>> GetAll()
+        public Task<IEnumerable<Exercise>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Excercise> GetById(int id)
+        public Task<Exercise> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Excercise> GetByName(string name)
+        public Task<Exercise> GetByName(string name)
         {
             throw new NotImplementedException();
         }
@@ -45,7 +45,7 @@ namespace GymLog.Repository
             throw new NotImplementedException();
         }
 
-        public bool Update(Excercise excercise)
+        public bool Update(Exercise Exercise)
         {
             throw new NotImplementedException();
         }

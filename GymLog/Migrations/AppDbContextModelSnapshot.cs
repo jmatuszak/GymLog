@@ -104,22 +104,22 @@ namespace GymLog.Migrations
                     b.ToTable("BodyParts");
                 });
 
-            modelBuilder.Entity("GymLog.Models.BodyPartExcercise", b =>
+            modelBuilder.Entity("GymLog.Models.BodyPartExercise", b =>
                 {
                     b.Property<int>("BodyPartId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExcerciseId")
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.HasKey("BodyPartId", "ExcerciseId");
+                    b.HasKey("BodyPartId", "ExerciseId");
 
-                    b.HasIndex("ExcerciseId");
+                    b.HasIndex("ExerciseId");
 
-                    b.ToTable("BodyPartExcercises");
+                    b.ToTable("BodyPartExercises");
                 });
 
-            modelBuilder.Entity("GymLog.Models.Excercise", b =>
+            modelBuilder.Entity("GymLog.Models.Exercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +133,7 @@ namespace GymLog.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Excercises");
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("GymLog.Models.Set", b =>
@@ -228,7 +228,7 @@ namespace GymLog.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExcerciseId")
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TemplateId")
@@ -242,7 +242,7 @@ namespace GymLog.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExcerciseId");
+                    b.HasIndex("ExerciseId");
 
                     b.HasIndex("TemplateId");
 
@@ -384,23 +384,23 @@ namespace GymLog.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GymLog.Models.BodyPartExcercise", b =>
+            modelBuilder.Entity("GymLog.Models.BodyPartExercise", b =>
                 {
                     b.HasOne("GymLog.Models.BodyPart", "BodyPart")
-                        .WithMany("BodyPartExcercises")
+                        .WithMany("BodyPartExercises")
                         .HasForeignKey("BodyPartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GymLog.Models.Excercise", "Excercise")
-                        .WithMany("BodyPartExcercises")
-                        .HasForeignKey("ExcerciseId")
+                    b.HasOne("GymLog.Models.Exercise", "Exercise")
+                        .WithMany("BodyPartExercises")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BodyPart");
 
-                    b.Navigation("Excercise");
+                    b.Navigation("Exercise");
                 });
 
             modelBuilder.Entity("GymLog.Models.Set", b =>
@@ -442,9 +442,9 @@ namespace GymLog.Migrations
 
             modelBuilder.Entity("GymLog.Models.WorkoutSegment", b =>
                 {
-                    b.HasOne("GymLog.Models.Excercise", "Excercise")
+                    b.HasOne("GymLog.Models.Exercise", "Exercise")
                         .WithMany()
-                        .HasForeignKey("ExcerciseId")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -456,7 +456,7 @@ namespace GymLog.Migrations
                         .WithMany("WorkoutSegments")
                         .HasForeignKey("WorkoutId");
 
-                    b.Navigation("Excercise");
+                    b.Navigation("Exercise");
 
                     b.Navigation("Template");
 
@@ -523,12 +523,12 @@ namespace GymLog.Migrations
 
             modelBuilder.Entity("GymLog.Models.BodyPart", b =>
                 {
-                    b.Navigation("BodyPartExcercises");
+                    b.Navigation("BodyPartExercises");
                 });
 
-            modelBuilder.Entity("GymLog.Models.Excercise", b =>
+            modelBuilder.Entity("GymLog.Models.Exercise", b =>
                 {
-                    b.Navigation("BodyPartExcercises");
+                    b.Navigation("BodyPartExercises");
                 });
 
             modelBuilder.Entity("GymLog.Models.Template", b =>

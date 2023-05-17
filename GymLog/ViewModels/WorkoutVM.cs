@@ -10,7 +10,7 @@ namespace GymLog.ViewModels
         public int TemplateId { get; set; }
         public Template? Template { get; set; }
         public List<WorkoutSegmentVM>? WorkoutSegmentsVM { get; set; }
-        public List<Excercise>? Excercises { get; set; }
+        public List<Exercise>? Exercises { get; set; }
         public string? ActionName { get; set; }
         
         [DataType(DataType.DateTime)]

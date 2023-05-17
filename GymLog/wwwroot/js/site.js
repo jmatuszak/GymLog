@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $("#myButton").click(function () {
-        var url = "/Excercise/FindExcerciseModal";
+        var url = "/Exercise/FindExerciseModal";
 
         $("#myModal").css("display", "block");
 
@@ -47,7 +47,7 @@ $(function () {
 $(function () {
     $('#exerciseSelectButton').click(function () {
         var selectedExerciseId = $('#exerciseList .exercise.selected').data('exercise-id');
-        $('#ExcerciseId').val(selectedExerciseId);
+        $('#ExerciseId').val(selectedExerciseId);
 
         $('#exerciseModal').modal('hide');
     });

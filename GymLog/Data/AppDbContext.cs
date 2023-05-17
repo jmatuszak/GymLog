@@ -14,9 +14,9 @@ namespace GymLog.Data
         {
 
         }
-        public DbSet<Excercise> Excercises { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
         public DbSet<BodyPart> BodyParts { get; set; }
-        public DbSet<BodyPartExcercise> BodyPartExcercises { get; set; }
+        public DbSet<BodyPartExercise> BodyPartExercises { get; set; }
         public DbSet<Set> Sets { get; set; }
         public DbSet<WorkoutSegment> WorkoutSegments { get; set; }
         public DbSet<Template> Templates { get; set; }
@@ -25,16 +25,16 @@ namespace GymLog.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BodyPart>()
-                .HasMany(b => b.Excercises)
+                .HasMany(b => b.Exercises)
                 .WithMany(b => b.BodyParts)
-                .UsingEntity<BodyPartExcercise>(
+                .UsingEntity<BodyPartExercise>(
                     j => j
-                        .HasOne(be => be.Excercise)
-                        .WithMany(e => e.BodyPartExcercises)
-                        .HasForeignKey(be => be.ExcerciseId),
+                        .HasOne(be => be.Exercise)
+                        .WithMany(e => e.BodyPartExercises)
+                        .HasForeignKey(be => be.ExerciseId),
                     j => j
                         .HasOne(be => be.BodyPart)
-                        .WithMany(p => p.BodyPartExcercises)
+                        .WithMany(p => p.BodyPartExercises)
                         .HasForeignKey(be => be.BodyPartId)
                     );
 

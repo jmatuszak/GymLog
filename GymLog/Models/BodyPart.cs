@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<Excercise>? Excercises { get; set; }
-        public List<BodyPartExcercise>? BodyPartExcercises { get; set; }
+        public List<Exercise>? Exercises { get; set; }
+        public List<BodyPartExercise>? BodyPartExercises { get; set; }
     }
 }

@@ -42,13 +42,13 @@
 <input asp-for="ActionName" type="hidden" class="form-control">
 
 <div class="form-group">
-    <label asp-for="ExcerciseId">Excercise</label>
-    <select asp-for="ExcerciseId"
-            asp-items="new SelectList(@Model.Excercises, nameof(Excercise.Id),
-                   nameof(Excercise.Name))">
-        <option>Select Excercise</option>
+    <label asp-for="ExerciseId">Exercise</label>
+    <select asp-for="ExerciseId"
+            asp-items="new SelectList(@Model.Exercises, nameof(Exercise.Id),
+                   nameof(Exercise.Name))">
+        <option>Select Exercise</option>
     </select>
-    <span asp-validation-for="Excercise" class="text-danger"></span>
+    <span asp-validation-for="Exercise" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label asp-for="WeightType">Weight Type</label>
@@ -70,12 +70,12 @@
 
 
 @{
-    if (Model.Excercises != null)
+    if (Model.Exercises != null)
     {
-        @for (int i = 0; i < Model.Excercises.Count; i++)
+        @for (int i = 0; i < Model.Exercises.Count; i++)
         {
-            <input asp-for="Excercises[i].Id" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Id">
-            <input asp-for="Excercises[i].Name" type="hidden" class="form-control" placeholder="ExcercisesConcatVM[i].Name">
+            <input asp-for="Exercises[i].Id" type="hidden" class="form-control" placeholder="ExercisesConcatVM[i].Id">
+            <input asp-for="Exercises[i].Name" type="hidden" class="form-control" placeholder="ExercisesConcatVM[i].Name">
 
         }
 

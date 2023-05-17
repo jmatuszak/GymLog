@@ -21,7 +21,7 @@ namespace GymLog.Controllers
         // TEMPLATE TO  TemplateVM
         protected TemplateVM TemplateToTemplateVM(Template template, TemplateVM templateVM)
         {
-            templateVM.Excercises = Context.Excercises.ToList();
+            templateVM.Exercises = Context.Exercises.ToList();
             templateVM.WorkoutSegmentsVM = templateVM.WorkoutSegmentsVM ?? new List<WorkoutSegmentVM>();
             templateVM.Id = template.Id;
             templateVM.Name = template.Name;
@@ -36,7 +36,7 @@ namespace GymLog.Controllers
                     var segmentVM = new WorkoutSegmentVM();
                     segmentVM.Id = template.WorkoutSegments[t].Id;
                     segmentVM.TemplateId = template.WorkoutSegments[t].TemplateId;
-                    segmentVM.ExcerciseId = template.WorkoutSegments[t].ExcerciseId;
+                    segmentVM.ExerciseId = template.WorkoutSegments[t].ExerciseId;
                     segmentVM.Description = template.WorkoutSegments[t].Description;
                     segmentVM.WeightType = template.WorkoutSegments[t].WeightType;
                     if (template.WorkoutSegments[t].Sets != null)
@@ -76,7 +76,7 @@ namespace GymLog.Controllers
 
         protected WorkoutVM WorkoutToWorkoutVM(Workout workout, WorkoutVM workoutVM)
         {
-            workoutVM.Excercises = Context.Excercises.ToList();
+            workoutVM.Exercises = Context.Exercises.ToList();
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             workoutVM.Id = workout.Id;
             workoutVM.Name = workout.Name;
@@ -93,7 +93,7 @@ namespace GymLog.Controllers
                     var segmentVM = new WorkoutSegmentVM();
                     segmentVM.Id = workout.WorkoutSegments[t].Id;
                     segmentVM.TemplateId = workout.WorkoutSegments[t].TemplateId;
-                    segmentVM.ExcerciseId = workout.WorkoutSegments[t].ExcerciseId;
+                    segmentVM.ExerciseId = workout.WorkoutSegments[t].ExerciseId;
                     segmentVM.Description = workout.WorkoutSegments[t].Description;
                     segmentVM.WeightType = workout.WorkoutSegments[t].WeightType;
                     if (workout.WorkoutSegments[t].Sets != null)
@@ -118,12 +118,12 @@ namespace GymLog.Controllers
             }
             return workoutVM;
         }
-        protected ExcerciseVM ExcerciseToExcerciseVM(Excercise excercise, ExcerciseVM excerciseVM)
+        protected ExerciseVM ExerciseToExerciseVM(Exercise exercise, ExerciseVM exerciseVM)
         {
             var bodyPartsVM = new List<BodyPartVM>();
-            if (excercise.BodyParts != null)
+            if (exercise.BodyParts != null)
             {
-                foreach (var item in excercise.BodyParts)
+                foreach (var item in exercise.BodyParts)
                 {
                     bodyPartsVM.Add(new()
                     {
@@ -132,13 +132,13 @@ namespace GymLog.Controllers
                     });
                 }
             }
-            excerciseVM = new ExcerciseVM()
+            exerciseVM = new ExerciseVM()
             {
-                Id = excercise.Id,
-                Name = excercise.Name,
+                Id = exercise.Id,
+                Name = exercise.Name,
                 BodyPartsVM = bodyPartsVM,
             };
-            return excerciseVM;
+            return exerciseVM;
         }
 
     }

@@ -53,7 +53,7 @@ namespace GymLog.Controllers
                         WeightType = segment.WeightType,
                         Description = segment.Description,
                         SetsVM = setsVM,
-                        ExcerciseId = segment.ExcerciseId,
+                        ExerciseId = segment.ExerciseId,
                     });
                 }
                 var templateVM = new TemplateVM()
@@ -94,7 +94,7 @@ namespace GymLog.Controllers
 
 
 
-        //<-----------------------   Excercise   ---------------------> 
+        //<-----------------------   Exercise   ---------------------> 
 
         public IActionResult AddWorkoutSegment(TemplateVM templateVM)
         {
@@ -121,7 +121,7 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 			templateVM ??= new TemplateVM();
-			templateVM.Excercises = _context.Excercises.ToList();
+			templateVM.Exercises = _context.Exercises.ToList();
             templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>()
                 {
                     new WorkoutSegmentVM()
@@ -166,7 +166,7 @@ namespace GymLog.Controllers
                         Description = segment.Description,
                         //Order = segment.Order,
                         Sets = sets,
-                        ExcerciseId = segment.ExcerciseId,
+                        ExerciseId = segment.ExerciseId,
                     });
                 }
             _context.Add(template);
@@ -254,7 +254,7 @@ namespace GymLog.Controllers
                     segment = await _context.WorkoutSegments.FirstOrDefaultAsync(i => i.Id == segmentVM.Id);
                     if (segment != null)
                     {
-                        segment.ExcerciseId = segmentVM.ExcerciseId;
+                        segment.ExerciseId = segmentVM.ExerciseId;
                         segment.Description = segmentVM.Description;
                         segment.WeightType = segmentVM.WeightType;
                         segment.TemplateId = templateVM.Id;
@@ -265,7 +265,7 @@ namespace GymLog.Controllers
                 else
                 {
                     segment = new WorkoutSegment();
-                    segment.ExcerciseId = segmentVM.ExcerciseId;
+                    segment.ExerciseId = segmentVM.ExerciseId;
                     segment.Description = segmentVM.Description;
                     segment.WeightType = segmentVM.WeightType;
                     segment.TemplateId = templateVM.Id;

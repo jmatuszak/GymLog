@@ -3,7 +3,7 @@ using GymLog.Models;
 
 namespace GymLog.ViewModels
 {
-    public class ExcerciseVM
+    public class ExerciseVM
     {
         public int Id { get; set; }
         public string Name { get; set; }

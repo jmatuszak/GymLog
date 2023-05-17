@@ -67,22 +67,22 @@ namespace GymLog.Data
 
 
 
-                //Excercises
-                if (!context.Excercises.Any())
+                //Exercises
+                if (!context.Exercises.Any())
                 {
-                    context.Excercises.AddRange(new List<Excercise>()
+                    context.Exercises.AddRange(new List<Exercise>()
                     {
-                        new Excercise()
+                        new Exercise()
                         {
                             
                             Name = "Bench Press",
                         },
-                        new Excercise()
+                        new Exercise()
                         {
                             
                             Name = "Incline Bench Press",
                         },
-                        new Excercise()
+                        new Exercise()
                         {
                             
                             Name = "Decline Bench Press",
@@ -93,24 +93,24 @@ namespace GymLog.Data
 
 
 
-                if (!context.BodyPartExcercises.Any())
+                if (!context.BodyPartExercises.Any())
                 {
-                    context.BodyPartExcercises.AddRange(new List<BodyPartExcercise>()
+                    context.BodyPartExercises.AddRange(new List<BodyPartExercise>()
                     {
-                        new BodyPartExcercise()
+                        new BodyPartExercise()
                         {
                             BodyPartId = 1,
-                            ExcerciseId = 1,
+                            ExerciseId = 1,
                         },
-                        new BodyPartExcercise()
+                        new BodyPartExercise()
                         {
                             BodyPartId = 1,
-                            ExcerciseId = 2,
+                            ExerciseId = 2,
                         },
-                        new BodyPartExcercise
+                        new BodyPartExercise
                         {
                             BodyPartId = 1,
-                            ExcerciseId = 3,
+                            ExerciseId = 3,
                         },
                     });
                     context.SaveChanges();
@@ -141,7 +141,7 @@ namespace GymLog.Data
                             //Order = 1,
                             Description = "3 x 1-4",
                             TemplateId = 1,
-                            ExcerciseId= 1,
+                            ExerciseId= 1,
 
                         },
                         new WorkoutSegment()
@@ -150,7 +150,7 @@ namespace GymLog.Data
                             //Order = 2,
                             Description = "3 x 1-4",
                             TemplateId = 1,
-							ExcerciseId= 2,
+							ExerciseId= 2,
 
 						},
                         new WorkoutSegment()
@@ -159,7 +159,7 @@ namespace GymLog.Data
                             //Order = 3,
                             Description = "3 x 1-4",
                             TemplateId = 1,
-							ExcerciseId= 3,
+							ExerciseId= 3,
 
 						},
 

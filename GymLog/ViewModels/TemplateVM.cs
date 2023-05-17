@@ -7,7 +7,7 @@ namespace GymLog.ViewModels
 		public int Id { get; set; }
 		public string? Name { get; set; }
 		public List<WorkoutSegmentVM>? WorkoutSegmentsVM { get; set; }
-        public List<Excercise>? Excercises { get; set; }
+        public List<Exercise>? Exercises { get; set; }
         public string? ActionName { get; set; }
         public string? AppUserId { get; set; }
 		
