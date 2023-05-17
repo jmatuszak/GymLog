@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace GymLog.Controllers
 {
-    public class ExcerciseController : Controller
+    public class ExcerciseController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -143,6 +144,58 @@ namespace GymLog.Controllers
             }
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+
+        public async Task<IActionResult> FindExcercise(FindExcerciseVM? findExcerciseVM)
+        {
+            findExcerciseVM ??= new FindExcerciseVM();
+            findExcerciseVM.ExcercisesVM ??= new List<ExcerciseVM>();
+            findExcerciseVM.SearchedExcercisesVM ??= new List<ExcerciseVM>();
+
+
+			var excercises = _context.Excercises.ToList();
+
+			foreach (var excercise in excercises)
+            {
+                var excerciseVM = ExcerciseToExcerciseVM(excercise, new ExcerciseVM());
+				findExcerciseVM.ExcercisesVM.Add(excerciseVM);
+			}
+            if (findExcerciseVM.SearchString == null) return View(findExcerciseVM);
+			var searchedExcercises = await _context.Excercises.Where(x => x.Name.Contains(findExcerciseVM.SearchString)).ToListAsync();
+			foreach (var excercise in searchedExcercises)
+			{
+				var excerciseVM = ExcerciseToExcerciseVM(excercise, new ExcerciseVM());
+				findExcerciseVM.SearchedExcercisesVM.Add(excerciseVM);
+			}
+
+			return View(findExcerciseVM);
+		}
+
+        
+        public async Task<IActionResult> FindExcerciseModal(FindExcerciseVM? findExcerciseVM)
+        {
+            findExcerciseVM ??= new FindExcerciseVM();
+            findExcerciseVM.ExcercisesVM ??= new List<ExcerciseVM>();
+            findExcerciseVM.SearchedExcercisesVM ??= new List<ExcerciseVM>();
+
+
+            var excercises = _context.Excercises.ToList();
+
+            foreach (var excercise in excercises)
+            {
+                var excerciseVM = ExcerciseToExcerciseVM(excercise, new ExcerciseVM());
+                findExcerciseVM.ExcercisesVM.Add(excerciseVM);
+            }
+            if (findExcerciseVM.SearchString == null) return View(findExcerciseVM);
+            var searchedExcercises = await _context.Excercises.Where(x => x.Name.Contains(findExcerciseVM.SearchString)).ToListAsync();
+            foreach (var excercise in searchedExcercises)
+            {
+                var excerciseVM = ExcerciseToExcerciseVM(excercise, new ExcerciseVM());
+                findExcerciseVM.SearchedExcercisesVM.Add(excerciseVM);
+            }
+
+            return PartialView(findExcerciseVM);
         }
 
     }

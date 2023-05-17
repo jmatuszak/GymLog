@@ -45,10 +45,20 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             WorkoutSegmentVM ??= new WorkoutSegmentVM();
-            WorkoutSegmentVM.SetsVM??= new List<SetVM>();
+            WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
             WorkoutSegmentVM.SetsVM.Add(new SetVM());
             WorkoutSegmentVM.ActionName = "Create";
-            WorkoutSegmentVM.Excercises =  _context.Excercises.ToList();
+            WorkoutSegmentVM.Excercises = _context.Excercises.ToList();
+            return View(WorkoutSegmentVM);
+        }
+        public IActionResult Create2(WorkoutSegmentVM? WorkoutSegmentVM)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            WorkoutSegmentVM ??= new WorkoutSegmentVM();
+            WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
+            WorkoutSegmentVM.SetsVM.Add(new SetVM());
+            WorkoutSegmentVM.ActionName = "Create";
+            WorkoutSegmentVM.Excercises = _context.Excercises.ToList();
             return View(WorkoutSegmentVM);
         }
 
@@ -171,6 +181,16 @@ namespace GymLog.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+
+        //Nowe
+
+        public IActionResult ExcerciseList()
+        {
+           
+
+            return PartialView();
         }
 
     }

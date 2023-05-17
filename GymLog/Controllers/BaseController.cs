@@ -118,5 +118,30 @@ namespace GymLog.Controllers
             }
             return workoutVM;
         }
+        protected ExcerciseVM ExcerciseToExcerciseVM(Excercise excercise, ExcerciseVM excerciseVM)
+        {
+            var bodyPartsVM = new List<BodyPartVM>();
+            if (excercise.BodyParts != null)
+            {
+                foreach (var item in excercise.BodyParts)
+                {
+                    bodyPartsVM.Add(new()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                    });
+                }
+            }
+            excerciseVM = new ExcerciseVM()
+            {
+                Id = excercise.Id,
+                Name = excercise.Name,
+                BodyPartsVM = bodyPartsVM,
+            };
+            return excerciseVM;
+        }
+
     }
+
+
 }
