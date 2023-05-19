@@ -149,9 +149,6 @@ namespace GymLog.Controllers
 
         public async Task<IActionResult> FindExercise(FindExerciseVM? findExerciseVM)
         {
-            findExerciseVM ??= new FindExerciseVM();
-            findExerciseVM.ExercisesVM ??= new List<ExerciseVM>();
-            findExerciseVM.SearchedExercisesVM ??= new List<ExerciseVM>();
 
 
 			var Exercises = _context.Exercises.ToList();
