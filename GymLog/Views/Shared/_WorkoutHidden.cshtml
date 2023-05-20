@@ -1,0 +1,45 @@
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
+@model WorkoutVM
+
+
+<input asp-for="Id" type="hidden" class="form-control">
+<input asp-for="ActionName" type="hidden" class="form-control">
+<input asp-for="Name" type="hidden" class="form-control">
+
+
+
+@if(Model.WorkoutSegmentsVM != null)
+{
+    @for (int i = 0; i < Model.Exercises.Count; i++)
+    {
+        <input asp-for="@Model.Exercises[i].Id" type="hidden" class="form-control">
+        <input asp-for="@Model.Exercises[i].Name" type="hidden" class="form-control">
+
+    }
+
+@for (int i = 0; i < Model.WorkoutSegmentsVM.Count; i++)
+{
+    <input asp-for="@Model.WorkoutSegmentsVM[i].ExerciseId" type="hidden" class="form-control">
+    <input asp-for="@Model.WorkoutSegmentsVM[i].Description" type="hidden" class="form-control">
+    <input asp-for="@Model.WorkoutSegmentsVM[i].WeightType" type="hidden" class="form-control">
+    <input asp-for="@Model.WorkoutSegmentsVM[i].Id" type="hidden" class="form-control">
+    <input asp-for="@Model.WorkoutSegmentsVM[i].WorkoutId" type="hidden" class="form-control">
+          
+    @for (int j = 0; j < Model.WorkoutSegmentsVM.Count; j++)
+    {
+        <input asp-for="@Model.WorkoutSegmentsVM[j].Id" type="hidden" class="form-control" placeholder="WorkoutSegmentsVM[j].Id">
+    }
+    @if (Model.WorkoutSegmentsVM[i].SetsVM != null)
+    {
+        @for (int j = 0; j < Model.WorkoutSegmentsVM[i].SetsVM.Count; j++)
+        {
+            <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Id" type="hidden" class="form-control">
+            <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].WorkoutSegmentId" type="hidden" class="form-control">
+            <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Weight" type="hidden" class="form-control">
+            <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps" type="hidden" class="form-control">
+            <input asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].isDone" type="hidden" class="form-control">
+        }
+    }
+}
+}

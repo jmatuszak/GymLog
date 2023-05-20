@@ -12,6 +12,7 @@ namespace GymLog.ViewModels
         [Required(ErrorMessage = "You must choose an exercise")]
         public int ExerciseId { get; set; }
 		public int? TemplateId { get; set; }
+		public int? WorkoutId { get; set; }
 		public List<SetVM>? SetsVM { get; set; }
 		public string? ActionName { get; set; }
         public WeightType? WeightType { get; set; }

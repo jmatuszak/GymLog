@@ -141,6 +141,17 @@ namespace GymLog.Controllers
             return exerciseVM;
         }
 
+        protected BodyPartVM BodyPartToBodyPartVM(BodyPart bodyPart, BodyPartVM bodyPartVM)
+        {
+
+            bodyPartVM = new BodyPartVM()
+            {
+                Id = bodyPart.Id,
+                Name = bodyPart.Name
+            };
+            return bodyPartVM;
+        }
+
     }
 
 

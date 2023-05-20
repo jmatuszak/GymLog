@@ -1,0 +1,96 @@
+﻿@using GymLog.ViewModels
+@model TemplateVM
+
+
+
+<div>
+    <h2 style="text-align:center">Choose exercise for your template</h2>
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+
+        <div class="container1">
+            <div class="box1">
+                @*@await Component.InvokeAsync("ExerciseList")*@
+                @await Component.InvokeAsync("SortedExerciseList")
+            </div>
+
+            
+            <div class="box2">
+                <label for="filterInput">Find</label></br>
+                <input type="text" id="filterInput" autocomplete="off" />
+
+                <table  id="exerciseTable" style="display: none;">
+                    <tbody>
+                        @foreach (var exercise in Model.Exercises)
+                        {
+                            <tr class="noneBorder" style="margin:0px;">
+                                <td style="display:none;">@exercise.Id</td>
+                                <td style="display:none;">@exercise.Name</td>
+                                <td style="padding:0px;">
+                                    <button type="submit" formaction="/Template/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
+                                        @exercise.Name
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    <partial name="_TemplateHidden" />
+    @for (int i = 0; i < Model.Exercises.Count; i++)
+    {
+            <input asp-for="@Model.Exercises[i].Id" type="hidden" class="form-control">
+            <input asp-for="@Model.Exercises[i].Name" type="hidden" class="form-control">
+
+    }
+
+</form>
+</div>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  var $table = $('#exerciseTable');
+  var $rows = $table.find('tbody tr');
+
+  $('#filterInput').on('input', function() {
+    var filterValue = $(this).val().toLowerCase();
+
+    $rows.each(function() {
+      var name = $(this).find('td:nth-child(2)').text().toLowerCase();
+      var shouldShow = filterValue === "" || name.includes(filterValue);
+
+      $(this).toggle(shouldShow);
+    });
+
+    $table.css('display', 'block');
+  });
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+  // Pobranie referencji do przycisku i okna modalnego
+  var openModalBtn = document.getElementById("openModalBtn");
+  var modal = document.getElementById("myModal");
+
+  // Obsługa kliknięcia przycisku - otwarcie okna modalnego
+  openModalBtn.addEventListener("click", function() {
+    modal.style.display = "block";
+  });
+
+  // Obsługa kliknięcia przycisku zamykającego - zamknięcie okna modalnego
+  var closeBtn = document.getElementsByClassName("close")[0];
+  closeBtn.addEventListener("click", function() {
+    modal.style.display = "none";
+  });
+});
+</script>

@@ -1,0 +1,28 @@
+﻿@using GymLog.ViewModels
+@model WorkoutSegmentVM
+
+
+
+<input id="txt" type="text" />
+<button onclick="loadComponents()">Search</button>
+
+<div id="viewcomponent"></div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadComponents() {
+            var id = $("#txt").val();
+
+            $.ajax({
+                url: '/Home/Filter',
+                data: {
+                    id: id
+                }
+            })
+                .done(function (result) {
+                    $("#viewcomponent").html(result);
+                });
+        }
+    </script>
+}

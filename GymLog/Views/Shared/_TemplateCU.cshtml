@@ -2,6 +2,7 @@
 @using GymLog.ViewModels
 @model TemplateVM
 
+
     <input asp-for="Id" type="hidden" class="form-control">
     <input asp-for="ActionName" type="hidden" class="form-control">
 
@@ -11,17 +12,21 @@
         <input asp-for="Name" class="form-control" placeholder="Name">
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
+@if (Model.Exercises != null)
+{
+    @for (int i = 0; i < Model.Exercises.Count; i++)
+    {
+        <input asp-for="Exercises[i].Id" type="hidden" class="form-control">
+        <input asp-for="Exercises[i].Name" type="hidden" class="form-control">
+
+    }
+}
 
     <div class="form-group">
     @{
         if(Model.WorkoutSegmentsVM != null)
         {
-            @for (int i = 0; i < Model.Exercises.Count; i++)
-            {
-                <input asp-for="Exercises[i].Id" type="hidden" class="form-control">
-                <input asp-for="Exercises[i].Name" type="hidden" class="form-control">
 
-            }
 
             for (int i = 0; i < Model.WorkoutSegmentsVM.Count; i++)
             {
@@ -31,20 +36,23 @@
                     <button id="removeButton" type="submit" formaction="/Template/RemoveWorkoutSegment?segment=@i" class="btn btn-outline-danger">Remove exercise</button>
 
                     <div class="form-group">
-                        <label asp-for="@Model.WorkoutSegmentsVM[i].ExerciseId">Exercise</label>
-                        <select asp-for="@Model.WorkoutSegmentsVM[i].ExerciseId"
-                    asp-items="new SelectList(@Model.Exercises, nameof(Exercise.Id),
-                    nameof(Exercise.Name))">
-                            <option>Select Exercise</option>
-                        </select>
-                        <span asp-validation-for="@Model.WorkoutSegmentsVM[i].Exercise" class="text-danger"></span>
+                        @{
+
+                            if (Model.WorkoutSegmentsVM[i].ExerciseId != 0 && Model.WorkoutSegmentsVM[i].ExerciseId != null)
+                            {
+                                <input asp-for="@Model.WorkoutSegmentsVM[i].ExerciseId" type="hidden" class="form-control">
+
+                                <h3>@Model.Exercises.FirstOrDefault(x=>x.Id==@Model.WorkoutSegmentsVM[i].ExerciseId).Name</h3>
+                            }
+                        }
+                        
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.WorkoutSegmentsVM[i].WeightType">Weight Type</label>
                         <select asp-for="@Model.WorkoutSegmentsVM[i].WeightType" asp-items="@Html.GetEnumSelectList<WeightType>()">
-                            <option>Select WeightType</option>
+                            
                         </select>
-                        <span asp-validation-for="@Model.WorkoutSegmentsVM[i]WeightType" class="text-danger"></span>
+                        <span asp-validation-for="@Model.WorkoutSegmentsVM[i].WeightType" class="text-danger"></span>
                     </div>
                     <input asp-for="WorkoutSegmentsVM[i].Id" type="hidden" class="form-control">
 
@@ -107,5 +115,5 @@
     </br>
 
 
-    <button type="submit" formaction="/Template/AddWorkoutSegment" class="btn btn-outline-primary">Add Exercise</button>
+    <button type="submit" formaction="/Template/ChooseExercise" class="btn btn-outline-primary">Add Exercise</button>
     
