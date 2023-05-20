@@ -13,49 +13,49 @@ namespace GymLog.Controllers
     public class TemplateController : BaseController
     {
         private readonly AppDbContext _context;
-        //private readonly HttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<AppUser> _userManager;
+		//private readonly HttpContextAccessor _httpContextAccessor;
+		private readonly UserManager<AppUser> _userManager;
 
-        public TemplateController(AppDbContext context, UserManager<AppUser> userManager)
+		public TemplateController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
-            //_httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
-        }
+			//_httpContextAccessor = httpContextAccessor;
+			_userManager = userManager;
+		}
         public async Task<IActionResult> Index()
         {
-            var templates = _context.Templates.Include(s => s.WorkoutSegments).ToList();
-            List<TemplateVM> templatesVM = new List<TemplateVM>();
+            var templates = _context.Templates.Include(s=>s.WorkoutSegments).ToList();
+            List<TemplateVM> templatesVM = new List<TemplateVM>(); 
             foreach (var template in templates)
             {
                 var segmentsVM = new List<WorkoutSegmentVM>();
-                if (template.WorkoutSegments != null)
-                    foreach (var segment in template.WorkoutSegments)
+                if(template.WorkoutSegments!=null)
+                foreach(var segment in template.WorkoutSegments)
+                {
+                    var segmentWithSets = await _context.WorkoutSegments.Include(s => s.Sets)
+                        .FirstOrDefaultAsync(s => s.Id == segment.Id);
+                    var setsVM = new List<SetVM>();
+                    if (segmentWithSets!=null && segmentWithSets.Sets != null)
                     {
-                        var segmentWithSets = await _context.WorkoutSegments.Include(s => s.Sets)
-                            .FirstOrDefaultAsync(s => s.Id == segment.Id);
-                        var setsVM = new List<SetVM>();
-                        if (segmentWithSets != null && segmentWithSets.Sets != null)
+                        foreach (var set in segmentWithSets.Sets)
                         {
-                            foreach (var set in segmentWithSets.Sets)
+                            setsVM.Add(new SetVM()
                             {
-                                setsVM.Add(new SetVM()
-                                {
-                                    Weight = set.Weight,
-                                    Reps = set.Reps,
-                                    WorkoutSegmentId = set.WorkoutSegmentId,
-                                });
-                            }
+                                Weight = set.Weight,
+                                Reps = set.Reps,
+                                WorkoutSegmentId = set.WorkoutSegmentId,
+                            });
                         }
-
-                        segmentsVM.Add(new WorkoutSegmentVM
-                        {
-                            WeightType = segment.WeightType,
-                            Description = segment.Description,
-                            SetsVM = setsVM,
-                            ExerciseId = segment.ExerciseId,
-                        });
                     }
+
+                    segmentsVM.Add(new WorkoutSegmentVM
+                    {
+                        WeightType = segment.WeightType,
+                        Description = segment.Description,
+                        SetsVM = setsVM,
+                        ExerciseId = segment.ExerciseId,
+                    });
+                }
                 var templateVM = new TemplateVM()
                 {
                     Id = template.Id,
@@ -96,12 +96,11 @@ namespace GymLog.Controllers
 
         //<-----------------------   Exercise   ---------------------> 
 
-        public IActionResult AddWorkoutSegment(TemplateVM templateVM, [FromQuery(Name = "exerciseID")] int exerciseId)
+        public IActionResult AddWorkoutSegment(TemplateVM templateVM)
         {
             templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             var segment = new WorkoutSegmentVM()
             {
-                ExerciseId = exerciseId,
                 SetsVM = new List<SetVM>() { new SetVM() }
             };
             templateVM.WorkoutSegmentsVM.Add(segment);
@@ -121,9 +120,15 @@ namespace GymLog.Controllers
         public async Task<IActionResult> Create(TemplateVM? templateVM)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            templateVM ??= new TemplateVM();
-            templateVM.Exercises = _context.Exercises.ToList();
-            templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
+			templateVM ??= new TemplateVM();
+			templateVM.Exercises = _context.Exercises.ToList();
+            templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>()
+                {
+                    new WorkoutSegmentVM()
+                    {
+                        SetsVM = new List<SetVM>{ new SetVM()}
+                    }
+                };
             templateVM.ActionName = "create";
             return View(templateVM);
 
@@ -225,7 +230,7 @@ namespace GymLog.Controllers
             //Removing segments & sets
             foreach (var id in segmentsIdToRemove)
             {
-                var segmentToRemove = await _context.WorkoutSegments.Include(s => s.Sets).FirstOrDefaultAsync(i => i.Id == id);
+                var segmentToRemove = await _context.WorkoutSegments.Include(s=>s.Sets).FirstOrDefaultAsync(i => i.Id == id);
                 //Removing sets
                 if (segmentToRemove != null)
                 {
@@ -272,22 +277,22 @@ namespace GymLog.Controllers
                 var setsVMIds = new List<int>();
                 var setsIdToRemove = new List<int>();
                 //Creating list with sets IDs from VM
-                if (segmentVM.SetsVM != null)
-                    foreach (var setVM in segmentVM.SetsVM)
-                    {
-                        setsVMIds.Add(setVM.Id);
-                    }
+                if (segmentVM.SetsVM!=null)
+                foreach (var setVM in segmentVM.SetsVM)
+                {
+                    setsVMIds.Add(setVM.Id);
+                }
                 ////Creating list with sets ID to remove
                 var tempSegment = await _context.WorkoutSegments.Include(s => s.Sets)
                                     .FirstOrDefaultAsync(i => i.Id == segmentVM.Id);
-                if (tempSegment != null && tempSegment.Sets != null)
-                    foreach (var set in tempSegment.Sets)
-                    {
-                        if (!setsVMIds.Contains(set.Id))
-                            setsIdToRemove.Add(set.Id);
-                    }
-                foreach (var id in setsIdToRemove)
+                if(tempSegment!=null && tempSegment.Sets!=null)
+                foreach(var set in tempSegment.Sets)
                 {
+                    if (!setsVMIds.Contains(set.Id))
+                        setsIdToRemove.Add(set.Id);
+                }
+                foreach(var id in setsIdToRemove)
+                { 
                     var setToRemove = _context.Sets.FirstOrDefault(i => i.Id == id);
                     if (setToRemove != null)
                     {
@@ -336,7 +341,7 @@ namespace GymLog.Controllers
             template.Name = templateVM.Name;
             template.WorkoutSegments = segments;
             _context.Update(template);
-            await _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
 
             /*
             _context.Sets.Where(s => s.WorkoutSegmentId == null);*/
@@ -360,11 +365,6 @@ namespace GymLog.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> ChooseExercise(TemplateVM? templateVM)
-        {
-            return View(templateVM);
         }
     }
 }

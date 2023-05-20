@@ -32,7 +32,6 @@ table {
     margin-top: 10px;
     width: fit-content
 }
-
 th {
     border: 1px solid black; 
     padding: 10px;
@@ -73,12 +72,6 @@ tr.noBorder th {
     border-top: 0;
     border-left: 0;
     border-right: 0;
-}
-tr.noneBorder td {
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
 }
 
 #marginedButton {
@@ -124,106 +117,35 @@ tr.noneBorder td {
 .container1 {
     display: flex;
     flex-wrap: wrap;
-    width: 100vw;
+    width: 100%;
 }
 
+.box {
+    box-sizing: border-box;
+    padding: 20px;
+    font-size: 24px;
+    color: black;
+}
 
 .box1 {
-    flex-basis: 60%;
-    flex-grow: 0;
+    flex-basis: 40%;
 }
 
 .box2 {
-    flex-basis: 40%;
-    flex-grow: 0;
+    flex-basis: 30%;
 }
 
-@media (max-width: 600px) {
-    .box1,
-    .box2 {
+.box3 {
+    flex-basis: 60%;
+}
+
+@media screen and (max-width: 600px) {
+    .box1, .box2, .box3 {
         flex-basis: 100%;
     }
 }
 
 
-.box {
-    box-sizing: border-box;
-    padding: 20px;
-    color: black;
-}
-
-.box40 {
-    flex-basis: 40%;
-    margin-left:50px;
-}
-
-.box30 {
-    flex-basis: 40%;
-}
-
-.box60 {
-    flex-basis: 30%;
-    margin-roght:50px;
-}
-.container80{
-    width: 80vw;
-}
-
-
-/*.container2 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding:40px;
-}
-
-.column {
-    margin: 10%;
-}*/
-
-
-.container3 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.column {
-    flex-basis: 30%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid black;
-    margin-bottom: 20px;
-}
-
-@media screen and (max-width: 768px) {
-    .container3 {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .column {
-        flex-basis: 80%;
-    }
-}
-.container {
-    display: flex;
-    width: 100%
-}
-
-.side-nav {
-    width: 100%; /* Szerokoœæ bocznego menu nawigacyjnego */
-    background-color: lightgray;
-    height: 100%;
-}
-
-.content {
-    width: 100%;
-    flex: 1;
-    padding: 20px;
-}
-
-/*Modal Window*/
 .modal {
     display: none;
     position: fixed;
@@ -233,40 +155,33 @@ tr.noneBorder td {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: lightgray;
-    margin: 0 auto;
-    margin-top: 15%;
+    background-color: #fefefe;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .close {
+    color: #aaa;
     float: right;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    cursor: pointer;
 }
 
-    .close:hover {
-        color: #000;
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
     }
-
-/*End of Modal Window*/
-
-.container {
-    display: flex;
-    justify-content: center;
-}
-
-.center-div {
-    margin: 0 auto;
-    /* Stylizacja zawartoœci diva */
-}

@@ -147,30 +147,29 @@ namespace GymLog.Controllers
         }
 
 
-        
-/*        public async Task<IActionResult> FindExercise(FindExerciseVM? findExerciseVM)
+        public async Task<IActionResult> FindExercise(FindExerciseVM? findExerciseVM)
         {
 
 
-            var Exercises = _context.Exercises.ToList();
+			var Exercises = _context.Exercises.ToList();
 
-            foreach (var Exercise in Exercises)
+			foreach (var Exercise in Exercises)
             {
                 var ExerciseVM = ExerciseToExerciseVM(Exercise, new ExerciseVM());
-                findExerciseVM.ExercisesVM.Add(ExerciseVM);
-            }
+				findExerciseVM.ExercisesVM.Add(ExerciseVM);
+			}
             if (findExerciseVM.SearchString == null) return View(findExerciseVM);
-            var searchedExercises = await _context.Exercises.Where(x => x.Name.Contains(findExerciseVM.SearchString)).ToListAsync();
-            foreach (var Exercise in searchedExercises)
-            {
-                var ExerciseVM = ExerciseToExerciseVM(Exercise, new ExerciseVM());
-                findExerciseVM.SearchedExercisesVM.Add(ExerciseVM);
-            }
+			var searchedExercises = await _context.Exercises.Where(x => x.Name.Contains(findExerciseVM.SearchString)).ToListAsync();
+			foreach (var Exercise in searchedExercises)
+			{
+				var ExerciseVM = ExerciseToExerciseVM(Exercise, new ExerciseVM());
+				findExerciseVM.SearchedExercisesVM.Add(ExerciseVM);
+			}
 
-            return View(findExerciseVM);
-        }
+			return View(findExerciseVM);
+		}
 
-
+        
         public async Task<IActionResult> FindExerciseModal(FindExerciseVM? findExerciseVM)
         {
             findExerciseVM ??= new FindExerciseVM();
@@ -178,7 +177,7 @@ namespace GymLog.Controllers
             findExerciseVM.SearchedExercisesVM ??= new List<ExerciseVM>();
 
 
-            var exercises = _context.Exercises.Include(b => b.BodyParts).ToList();
+            var exercises = _context.Exercises.Include(b=>b.BodyParts).ToList();
 
             foreach (var exercise in exercises)
             {
@@ -194,8 +193,7 @@ namespace GymLog.Controllers
             }
 
             return PartialView(findExerciseVM);
-        }*/
+        }
 
     }
 }
-
