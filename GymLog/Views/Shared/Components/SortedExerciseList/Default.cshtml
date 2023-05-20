@@ -1,0 +1,27 @@
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
+@model IEnumerable<SortedExerciseVM>
+
+<div style="display: flex; flex-wrap:wrap;">
+    @foreach (var bodyPart in Model)
+    {
+        <div style="width:100px; margin-left:10%; margin-right:10%;">
+        @if (bodyPart.ExercisesVM != null && bodyPart.ExercisesVM.Any())
+        {
+            <h1>@bodyPart.Name</h1>
+                <ul style="list-style: none;">
+            
+            @foreach (var exercise in bodyPart.ExercisesVM)
+            {
+                <li>
+                            <button style="white-space: nowrap" type="submit" formaction="/Template/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
+                        @exercise.Name
+                    </button>
+                </li>
+            }
+            </ul>
+        }
+        </div>
+
+    }
+</div>

@@ -1,10 +1,48 @@
 ﻿@using GymLog.ViewModels
 @model TemplateVM
-<h2>Create Workout Template</h2>
+<div class="container1">
+<div class="center-div">
+    <div>
+            <button style="position: fixed; top:7%; margin: 0; " id="openModalBtn" class="btn btn-primary">Add Exercise</button></br>
+        <h2>Create Workout Template</h2></br>
+    </div>
+
 <form method="post" asp-action="Create" enctype="multipart/form-data">
-    <partial name="_TemplateCU"/>
+
+    
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="filterInput">Add Exercise</label></br>
+            <input type="text" id="filterInput" autocomplete="off" />
+
+            <table id="exerciseTable" style="margin: auto">
+                <tbody>
+                    @foreach (var exercise in Model.Exercises)
+                    {
+                        <tr class="noneBorder" style="margin: 0px;">
+                            <td style="display:none;">@exercise.Id</td>
+                            <td style="display:none;">@exercise.Name</td>
+                            <td style="padding:0px;">
+                                <button type="submit" formaction="/Template/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
+                                    @exercise.Name
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <partial name="_TemplateCU" />
+
+
     <button type="submit" formaction="/Template/CreatePost" class="btn btn-primary">Submit</button>
 </form>
+</div>
+</div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { 
@@ -17,3 +55,37 @@
         };
 
     </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var $table = $('#exerciseTable');
+        var $rows = $table.find('tbody tr');
+
+        $('#filterInput').on('input', function () {
+            var filterValue = $(this).val().toLowerCase();
+
+            $rows.each(function () {
+                var name = $(this).find('td:nth-child(2)').text().toLowerCase();
+                var shouldShow = filterValue === "" || name.includes(filterValue);
+
+                $(this).toggle(shouldShow);
+            });
+
+            $table.css('display', 'block');
+        });
+    });
+</script>
+<script>
+    var openModalBtn = document.getElementById("openModalBtn");
+    var modal = document.getElementById("myModal");
+    var closeBtn = document.getElementsByClassName("close")[0];
+
+    openModalBtn.addEventListener("click", function() {
+      modal.style.display = "block";
+    });
+
+    closeBtn.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+</script>
