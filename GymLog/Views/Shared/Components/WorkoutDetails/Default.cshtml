@@ -1,0 +1,84 @@
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
+@model WorkoutVM
+
+
+<div class="form-group">
+    <a asp-controller="Workout" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-info">Edit</a>
+
+    <h3>@Model.Name</h3>
+
+</div>
+@{
+    var duration = Model.EndDate - Model.StartDate;
+    string durationTxt;
+    if (duration.TotalHours >= 1)
+    {
+        durationTxt = $"{(int)duration.TotalHours}h {duration.Minutes}min {duration.Seconds}sec";
+    }
+    else if (duration.TotalMinutes >= 1)
+    {
+        durationTxt = $"{duration.Minutes}min {duration.Seconds}sec";
+    }
+    else
+    {
+        durationTxt = $"{duration.Seconds}sec";
+    }
+}
+<p>Duration: @durationTxt</p>
+<div class="form-group">
+    @{
+        if (Model.WorkoutSegmentsVM != null)
+        {
+            for (int i = 0; i < Model.WorkoutSegmentsVM.Count; i++)
+            {
+                <div id="segment">
+                    <div class="form-group">
+                        @{
+                            if (Model.WorkoutSegmentsVM[i].ExerciseId != 0 && Model.WorkoutSegmentsVM[i].ExerciseId != null)
+                            {
+                                <h4>@Model.Exercises.FirstOrDefault(x=>x.Id==@Model.WorkoutSegmentsVM[i].ExerciseId).Name</h4>
+                            }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <p>@Model.WorkoutSegmentsVM[i].WeightType</p>
+                    </div>
+                    <div class="form-group">
+                        <p>@Model.WorkoutSegmentsVM[i].Description</p>
+                    </div>
+                    @if (@Model.WorkoutSegmentsVM[i].SetsVM != null)
+                    {
+                        <table>
+                            <tr class="noBorder">
+                                <th width="7%">Set</th>
+                                <th>Weight</th>
+                                <th>Reps</th>
+                                <th></th>
+                            </tr>
+                            @for (int j = 0; j < @Model.WorkoutSegmentsVM[i].SetsVM.Count; j++)
+                            {
+                                <tr class="noBorder">
+                                    <td>@(j + 1)</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <p>@Model.WorkoutSegmentsVM[i].SetsVM[j].Weight</p>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="form-group">
+                                            <p>@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            }
+
+        }
+    }
+
+</div>

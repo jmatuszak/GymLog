@@ -108,7 +108,10 @@ namespace GymLog.Controllers
                             setVM.Weight = workout.WorkoutSegments[t].Sets[s].Weight;
                             setVM.Reps = workout.WorkoutSegments[t].Sets[s].Reps;
                             setVM.WorkoutSegmentId = workout.WorkoutSegments[t].Sets[s].WorkoutSegmentId;
-                            if(workoutVM.ActionName.Equals("Edit")) setVM.isDone= true;
+                            if(workoutVM.ActionName!=null)
+                            {
+                                if (workoutVM.ActionName.Equals("Edit")) setVM.isDone = true;
+                            }
                             setsVM.Add(setVM);
                         }
                     }

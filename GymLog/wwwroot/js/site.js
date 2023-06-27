@@ -1,59 +1,54 @@
-﻿$(document).ready(function () {
-    $("#myButton").click(function () {
-        var url = "/Exercise/FindExerciseModal";
+﻿
+//Find exercise
+$(document).ready(function () {
+    var $table = $('#exerciseTable');
+    var $rows = $table.find('tbody tr');
 
-        $("#myModal").css("display", "block");
+    $('#filterInput').on('input', function () {
+        var filterValue = $(this).val().toLowerCase();
+
+        $rows.each(function () {
+            var name = $(this).find('td:nth-child(2)').text().toLowerCase();
+            var shouldShow = filterValue === "" || name.includes(filterValue);
+
+            $(this).toggle(shouldShow);
+        });
+
+        $table.css('display', 'block');
+    });
+});
+//Modal add exercise
+document.addEventListener("DOMContentLoaded", function () {
+    var openModalBtn = document.getElementById("openModalBtn");
+    var modal = document.getElementById("myModal");
+    var closeBtn = document.getElementsByClassName("close")[0];
+
+    openModalBtn.addEventListener("click", function (event) {
+        modal.style.display = "block";
+    });
+
+    closeBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+});
+
+
+//Partial render best 
+
+$(document).ready(function () {
+    $('#maxWeightButton').click(function () {
+        var id = $(this).data('id');
 
         $.ajax({
-            type: "GET",
-            url: url,
-            success: function (data) {
-                $(".modal-content").html(data);
-
-                $(".close").click(function () {
-                    $("#myModal").css("display", "none");
-                });
+            url: '@Url.Action("PartialStatistic", "Workout")',
+            type: 'GET',
+            data: { id: id },
+            success: function (result) {
+                $('#partialViewContainer').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
             }
         });
-    });
-});
-
-var modal = document.getElementById("myModal");
-var closeBtn = document.getElementsByClassName("close")[0];
-
-closeBtn.onclick = function () {
-    modal.style.display = "none";
-}
-
-//nowe
-
-$(function () {
-    $('#searchExercise').on('input', function () {
-        var search = $(this).val().toLowerCase();
-        var $exercises = $('#exerciseList .exercise');
-
-        $exercises.each(function () {
-            var exerciseName = $(this).text().toLowerCase();
-
-            if (exerciseName.includes(search)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    });
-});
-
-$(function () {
-    $('#exerciseSelectButton').click(function () {
-        var selectedExerciseId = $('#exerciseList .exercise.selected').data('exercise-id');
-        $('#ExerciseId').val(selectedExerciseId);
-
-        $('#exerciseModal').modal('hide');
-    });
-
-    $('#exerciseList').on('click', '.exercise', function () {
-        $('#exerciseList .exercise').removeClass('selected');
-        $(this).addClass('selected');
     });
 });

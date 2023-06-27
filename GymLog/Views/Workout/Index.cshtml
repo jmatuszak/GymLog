@@ -1,111 +1,55 @@
 ﻿@using GymLog.ViewModels
-@model WorkoutsAndTemplatesVM
+@model IEnumerable<WorkoutVM>
 
 
-<div class="container1">
-	<div class="box box40">
-		<div class="box box2">
-		<h2>Your Templates:</h2>
-		@if (Model.UserTemplatesVM != null)
-		{
-			<table>
-				@foreach (var Item in Model.UserTemplatesVM)
-				{
+<h1>Workouts</h1>
+<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">Create new</a>
 
-					@if (Item != null)
-					{
-						<tr class="noBorder">
-							<td>
-								@Item.Id - @Item.Name
-							</td>
-							<td>
-								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
-							</td>
-						</tr>
-					}
-				}
-			</table>
-		}
-		</div>
-		<div class="box box30">
-			<h2>Sample Templates:</h2>
-		@if (Model.SampleTemplatesVM != null)
-		{
-			<table>
-				@foreach (var Item in Model.SampleTemplatesVM)
-				{
+<table>
+    <tr>
+        <th width="5%">Id</th>
+        <th>Name</th>
+        <th>Segments</th>
+        <th>Template ID</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>User ID</th>
 
-					@if (Item != null)
-					{
-						<tr class="noBorder">
-							<td>
-								@Item.Id - @Item.Name
-							</td>
-							<td>
-								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
-							</td>
-						</tr>
-					}
-				}
-			</table>
-		}
-		</div>
-	</div>
-		<div class="box box60">
-			<div id="calendar"></div>
-		</div>
-	</div>
+    </tr>
+    @foreach (var Item in @Model)
+    {
+        <tr>
+            <td>
+                @Item.Id
+            </td>
+            <td>
+                @Item.Name
+            </td>
+            <td>
+                @if (Item.WorkoutSegmentsVM != null)
+                {
+                    @Item.WorkoutSegmentsVM.Count
+                }
+            </td>
+            <td>
+                @Item.TemplateId
+            </td>
+            <td>
+                @Item.StartDate
+            </td>
+            <td>
+                @Item.EndDate
+            </td>
+            <td>
+                @Item.AppUserId
+            </td>
 
-
-
-
-
-
-
-@section scripts {
-	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' />
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
-
-	<script>
-		$(document).ready(function () {
-			$('#calendar').fullCalendar( {
-				events: [
-		@foreach (var workout in Model.UserWorkoutsVM)
-		{
-			<text>
-						{
-							title: '@workout.Name',
-							start: '@workout.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")',
-							end: '@workout.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")',
-							id: '@workout.Id'
-						},
-			</text>
-		}
-						],
-				eventClick: function (calEvent, jsEvent, view) {
-					window.location.href = 'Workout/Edit/' + calEvent.id;
-				},
-				eventMouseover: function (calEvent, jsEvent, view) {
-					$(this).css('background-color', '#006699 ');
-				},
-				eventMouseout: function (calEvent, jsEvent, view) {
-					$(this).css('background-color', '');
-				},
-				firstDay: 1,
-				height: 'auto',
-				initialView: 'dayGridMonth',
-				displayEventTime: false,
-			});
-		});
-	</script>
-}
-
-
-
-
-
-
-
-	<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>
-</div>
+            <td id="tableButtons">
+                <a asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+            </td>
+            <td id="tableButtons">
+                <a asp-controller="Template" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,68 @@
+﻿@using GymLog.ViewModels
+@model WorkoutsAndTemplatesVM
+
+
+
+
+<div class="container1">
+	<div class="box box60">
+		<div id="calendar"></div>
+	</div>
+	<div class="box box40">
+		<div id="viewComponentContainer"></div>
+	</div>
+</div>
+
+
+
+
+@section scripts {
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' />
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+	<script>
+		$(document).ready(function () {
+			$('#calendar').fullCalendar( {
+				events: [
+		@foreach (var workout in Model.UserWorkoutsVM)
+		{
+			<text>
+						{
+							title: '@workout.Name',
+							start: '@workout.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							end: '@workout.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							id: '@workout.Id'
+						},
+			</text>
+		}
+						],
+				eventClick: function (calEvent, jsEvent, view) {
+					var eventId = calEvent.id;
+
+					$.ajax({
+						url: '/Home/WorkoutDetails',
+						type: 'GET',
+						data: { id: eventId },
+						success: function (result) {
+							
+							$('#viewComponentContainer').html(result);
+						},
+						error: function (error) {
+							console.log(error);
+						}
+					});
+				},
+				eventMouseover: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '#006699 ');
+				},
+				eventMouseout: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '');
+				},
+				firstDay: 1,
+				height: 'auto',
+				initialView: 'dayGridMonth',
+				displayEventTime: false,
+			});
+		});
+	</script>
+}

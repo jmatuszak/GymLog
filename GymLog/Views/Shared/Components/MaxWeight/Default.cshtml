@@ -1,0 +1,30 @@
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
+@model IEnumerable<ExerciseVM>
+
+
+
+<a id="openModalBtn" class="btn btn-sm btn-outline-info">Check your max</a>
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <input type="text" id="filterInput" autocomplete="off" />
+
+        <table id="exerciseTable" style="margin: auto">
+            <tbody>
+                @foreach (var exercise in Model)
+                {
+                    <tr class="noneBorder" style="margin: 0px;">
+                        <td style="display:none;">@exercise.Id</td>
+                        <td style="display:none;">@exercise.Name</td>
+                        <td style="padding:0px;">
+                            <button type="submit" class="maxWeightButton btn btn-dark" data-id="@exercise.Id">@exercise.Name</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

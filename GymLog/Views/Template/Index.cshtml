@@ -9,8 +9,8 @@
         <tr>
             <th width="5%">Id</th>
             <th>Name</th>
-            <th>User</th>
             <th>Segments</th>
+            <th>User ID</th>
 
       </tr>
     @foreach (var Item in @Model)
@@ -23,13 +23,13 @@
                     @Item.Name
                 </td>
                 <td>
-                    @Item.AppUserId
-                </td>
-                <td>
                 @if (Item.WorkoutSegmentsVM != null)
                 {
                     @Item.WorkoutSegmentsVM.Count
                 }
+                </td>
+                <td>
+                    @Item.AppUserId
                 </td>
 
                 <td id="tableButtons">

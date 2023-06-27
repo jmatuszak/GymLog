@@ -153,17 +153,17 @@ tr.noneBorder td {
 }
 
 .box40 {
-    flex-basis: 40%;
+    flex-basis: 30%;
     margin-left:50px;
 }
 
 .box30 {
-    flex-basis: 40%;
+    flex-basis: 30%;
 }
 
 .box60 {
-    flex-basis: 30%;
-    margin-roght:50px;
+    flex-basis: 60%;
+    margin-right:50px;
 }
 .container80{
     width: 80vw;
@@ -240,12 +240,14 @@ tr.noneBorder td {
 .modal-content {
     background-color: lightgray;
     margin: 0 auto;
-    margin-top: 15%;
+    margin-top: 7%;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    height: 80%;
     max-width: 500px;
     text-align: center;
+    overflow: auto;
 }
 
 .close {
@@ -256,7 +258,7 @@ tr.noneBorder td {
 }
 
     .close:hover {
-        color: #000;
+        color: #808080;
     }
 
 /*End of Modal Window*/

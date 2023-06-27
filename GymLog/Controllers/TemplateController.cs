@@ -174,8 +174,8 @@ namespace GymLog.Controllers
             }
             _context.Update(template);
             _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
 
 
@@ -338,10 +338,10 @@ namespace GymLog.Controllers
             _context.Update(template);
             await _context.SaveChangesAsync();
 
-            /*
+			/*
             _context.Sets.Where(s => s.WorkoutSegmentId == null);*/
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
 
         public async Task<IActionResult> Delete(int id)
@@ -359,8 +359,8 @@ namespace GymLog.Controllers
                 }
                 _context.SaveChanges();
             }
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
         public async Task<IActionResult> ChooseExercise(TemplateVM? templateVM)
         {

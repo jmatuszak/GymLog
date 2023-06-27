@@ -32,34 +32,19 @@ namespace GymLog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+/*            var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
             var userWorkouts = _context.Workouts.Include(t => t.Template).Where(x => x.AppUserId.Equals(user.Id)).ToList();
             var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals(null)).ToList();
-            var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();
-
-            var workoutsAndTemplatesVM = new WorkoutsAndTemplatesVM()
+            var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();*/
+            var workouts = _context.Workouts.Include(a=>a.WorkoutSegments).ToList();
+            var workoutsVM = new List<WorkoutVM>();
+            foreach (var workout in workouts)
             {
-                UserTemplatesVM = new List<TemplateVM>(),
-                UserWorkoutsVM = new List<WorkoutVM>(),
-                SampleTemplatesVM = new List<TemplateVM>(),
-            };
-            foreach (var item in sampleTemplates)
-            {
-                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
-                workoutsAndTemplatesVM.SampleTemplatesVM.Add(itemVM);
+                var workoutVM = WorkoutToWorkoutVM(workout, new WorkoutVM());
+                workoutsVM.Add(workoutVM);
             }
-            foreach (var item in userTemplates)
-            {
-                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
-                workoutsAndTemplatesVM.UserTemplatesVM.Add(itemVM);
-            }
-            foreach (var item in userWorkouts)
-            {
-                var itemVM = WorkoutToWorkoutVM(item, new WorkoutVM());
-                workoutsAndTemplatesVM.UserWorkoutsVM.Add(itemVM);
-            }
-            return View(workoutsAndTemplatesVM);
+            return View(workoutsVM);
         }
 
         //<-----------------------   Set   ---------------------> 
@@ -87,11 +72,12 @@ namespace GymLog.Controllers
 
         //<-----------------------   Exercise   ---------------------> 
 
-        public IActionResult AddWorkoutSegment(WorkoutVM workoutVM)
+        public IActionResult AddWorkoutSegment(WorkoutVM workoutVM, [FromQuery(Name = "exerciseID")] int exerciseId)
         {
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             var segment = new WorkoutSegmentVM()
             {
+                ExerciseId = exerciseId,
                 SetsVM = new List<SetVM>() { new SetVM() }
             };
             workoutVM.WorkoutSegmentsVM.Add(segment);
@@ -137,13 +123,7 @@ namespace GymLog.Controllers
             };
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workoutVM.Exercises = _context.Exercises.ToList();
-            workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>()
-                {
-                    new WorkoutSegmentVM()
-                    {
-                        SetsVM = new List<SetVM>{ new SetVM() { isDone = false } }
-                    }
-                };
+            workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             workoutVM.ActionName = "create";
             return View(workoutVM);
         }
@@ -172,17 +152,20 @@ namespace GymLog.Controllers
                     List<Set> sets = new List<Set>();
                     if (segment.SetsVM != null)
                         foreach (var set in segment.SetsVM)
-                            sets.Add(new Set()
+                            if (set.isDone)
                             {
-                                Weight = set.Weight,
-                                Reps = set.Reps,
-                                //WorkoutSegmentId = template.Id
-                            });
+                                sets.Add(new Set()
+                                {
+                                    Weight = set.Weight,
+                                    Reps = set.Reps,
+                                    //WorkoutSegmentId = template.Id
+                                });
+                            }
+                            
                     workout.WorkoutSegments.Add(new WorkoutSegment
                     {
                         WeightType = segment.WeightType,
                         Description = segment.Description,
-                        //Order = segment.Order,
                         Sets = sets,
                         ExerciseId = segment.ExerciseId,
                     });
@@ -197,8 +180,8 @@ namespace GymLog.Controllers
             }
             _context.Update(workout);
             _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
 
 
@@ -362,12 +345,9 @@ namespace GymLog.Controllers
             _context.Update(workout);
             await _context.SaveChangesAsync();
 
-            /*
+			/*
             _context.Sets.Where(s => s.WorkoutSegmentId == null);*/
-            return RedirectToAction("Index");
-        }
-
-
-
+			return RedirectToAction("Index", "Home");
+		}
     }
 }

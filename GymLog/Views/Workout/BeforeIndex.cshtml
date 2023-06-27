@@ -1,0 +1,127 @@
+﻿@using GymLog.ViewModels
+@model WorkoutsAndTemplatesVM
+
+
+
+
+<div class="container1">
+	<div class="box box40">
+		<div class="box box2">
+		<h2>Your Templates:</h2>
+		@if (Model.UserTemplatesVM != null)
+		{
+			<table>
+				@foreach (var Item in Model.UserTemplatesVM)
+				{
+
+					@if (Item != null)
+					{
+						<tr class="noBorder">
+							<td>
+								@Item.Id - @Item.Name
+							</td>
+							<td>
+								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+							</td>
+						</tr>
+					}
+				}
+			</table>
+				<a id="marginedButton" asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info ">New Template</a>
+
+		}
+		</div>
+		<div class="box box30">
+			<h2>Sample Templates:</h2>
+		@if (Model.SampleTemplatesVM != null)
+		{
+			<table>
+				@foreach (var Item in Model.SampleTemplatesVM)
+				{
+
+					@if (Item != null)
+					{
+						<tr class="noBorder">
+							<td>
+								@Item.Id - @Item.Name
+							</td>
+							<td>
+								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+							</td>
+						</tr>
+					}
+				}
+			</table>
+		}
+			<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>
+
+		</div>
+	</div>
+		<div class="box box60">
+			<div id="calendar"></div>
+		</div>
+	</div>
+
+
+@await Component.InvokeAsync("Statistics")
+@await Component.InvokeAsync("MaxWeight")
+<div id="partialViewContainer"></div>
+
+
+
+
+@section scripts {
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' />
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+	<script>
+		$(document).ready(function () {
+			$('#calendar').fullCalendar( {
+				events: [
+		@foreach (var workout in Model.UserWorkoutsVM)
+		{
+			<text>
+						{
+							title: '@workout.Name',
+							start: '@workout.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							end: '@workout.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")',
+							id: '@workout.Id'
+						},
+			</text>
+		}
+						],
+				eventClick: function (calEvent, jsEvent, view) {
+					window.location.href = 'Workout/Edit/' + calEvent.id;
+				},
+				eventMouseover: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '#006699 ');
+				},
+				eventMouseout: function (calEvent, jsEvent, view) {
+					$(this).css('background-color', '');
+				},
+				firstDay: 1,
+				height: 'auto',
+				initialView: 'dayGridMonth',
+				displayEventTime: false,
+			});
+		});
+	</script>
+	<script>
+    $(document).ready(function () {
+        $('.maxWeightButton').click(function () {
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("PartialStatistic", "Workout")',
+                type: 'GET',
+                data: { id: id },
+                success: function (result) {
+                    $('#partialViewContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });</script>
+}

@@ -115,5 +115,32 @@
     </br>
 
 
-    <button type="submit" formaction="/Template/ChooseExercise" class="btn btn-outline-primary">Add Exercise</button>
-    
+<button type="button" id="openModalBtn" class="btn btn-primary">Add Exercise</button>
+
+
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <label for="filterInput">Add Exercise</label></br>
+        <input type="text" id="filterInput" autocomplete="off" />
+
+        <table id="exerciseTable" style="margin: auto">
+            <tbody>
+                @foreach (var exercise in Model.Exercises)
+                {
+                    <tr class="noneBorder" style="margin: 0px;">
+                        <td style="display:none;">@exercise.Id</td>
+                        <td style="display:none;">@exercise.Name</td>
+                        <td style="padding:0px;">
+                            <button type="submit" formaction="/Template/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
+                                @exercise.Name
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

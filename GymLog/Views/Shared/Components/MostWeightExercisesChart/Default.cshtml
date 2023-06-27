@@ -1,0 +1,48 @@
+﻿@using GymLog.Data.Enum
+@using GymLog.ViewModels
+@model ChartDataFloatVM
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+    <canvas id="mostWeight"></canvas>
+</body>
+
+<script>
+    var viewModelData = @Html.Raw(Json.Serialize(Model));
+    var ctx = document.getElementById('mostWeight').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: viewModelData.labels,
+            datasets: [{
+                label: 'Most Weight Thrown',
+                data: viewModelData.values,
+
+                backgroundColor: [
+                  'rgba(155, 99, 132, 0.2)',
+                  'rgba(205, 159, 64, 0.2)',
+                  'rgba(255, 105, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(201, 203, 107, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(155, 99, 132)',
+                  'rgb(205, 159, 64)',
+                  'rgb(255, 105, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(201, 103, 207)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

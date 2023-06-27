@@ -92,7 +92,7 @@ namespace GymLog.Controllers
             };
             _context.WorkoutSegments.Add(WorkoutSegment);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
 		}
 
 
@@ -165,8 +165,8 @@ namespace GymLog.Controllers
                 _context.Update(WorkoutSegment);
                 _context.SaveChanges();
             }
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
         //<-----------------------  DELETE   ---------------------> 
 
@@ -180,18 +180,8 @@ namespace GymLog.Controllers
                 if (sets.Any()) _context.RemoveRange(sets);
                 _context.SaveChanges();
             }
-            return RedirectToAction("Index");
-        }
-
-
-        //Nowe
-
-        public IActionResult ExerciseList()
-        {
-           
-
-            return PartialView();
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
     }
 }
