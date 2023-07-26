@@ -280,7 +280,7 @@ namespace GymLog.Data
                         EmailConfirmed = true,
 
                     };
-                    await userManager.CreateAsync(newAdminUser, "Abdullah.2015");
+                    await userManager.CreateAsync(newAdminUser, "Test.123123");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
                 }
 
@@ -295,7 +295,7 @@ namespace GymLog.Data
                         Email = appUserEmail,
                         EmailConfirmed = true,
                     };
-                    await userManager.CreateAsync(newAppUser, "Abdullah.2015");
+                    await userManager.CreateAsync(newAppUser, "Test.123123");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
                 }
             }

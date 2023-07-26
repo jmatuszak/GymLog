@@ -4,6 +4,6 @@
     {
         Barbell,
         Dumbell,
-        Bodyeight
+        Bodyweight
     }
 }

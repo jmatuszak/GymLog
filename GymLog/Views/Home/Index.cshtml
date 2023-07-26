@@ -116,7 +116,7 @@
             var id = $(this).data('id');
 
             $.ajax({
-                url: '@Url.Action("PartialStatistic", "Workout")',
+                url: '@Url.Action("PartialStatistic", "Home")',
                 type: 'GET',
                 data: { id: id },
                 success: function (result) {
