@@ -87,227 +87,271 @@ namespace GymLog.Data
 				{
 					Id = 1,
 					Name = "Bench Press",
+					ImageSrc = "/images/1.webp"
 				},
 				new Exercise()
 				{
 					Id = 2,
 					Name = "Incline Bench Press",
+					ImageSrc = "/images/2.webp"
 				},
 				new Exercise()
 				{
 					Id = 3,
 					Name = "T-Bar Row",
+					ImageSrc = "/images/3.webp"
 				},
 				new Exercise()
 				{
 
 					Id = 4,
 					Name = "Push Ups",
+					ImageSrc = "/images/4.webp"
 				},
 				new Exercise()
 				{
 					Id = 5,
 					Name = "Wide Push Ups",
+					ImageSrc = "/images/5.webp"
 				},
 				new Exercise()
 				{
 					Id = 6,
 					Name = "Diamond Push Ups",
+					ImageSrc = "/images/6.webp"
 				},
 				new Exercise()
 				{
 					Id = 7,
 					Name = "Archer Push Ups",
+					ImageSrc = "/images/7.webp"
 				},
 				new Exercise()
 				{
 					Id = 8,
 					Name = "Decline PushUps",
+					ImageSrc = "/images/8.webp"
 				},
 				new Exercise()
 				{
 					Id = 9,
 					Name = "Dips",
+					ImageSrc = "/images/9.webp"
 				},
 				new Exercise()
 				{
 					Id = 10,
 					Name = "Ring Dips",
+					ImageSrc = "/images/10.webp"
 				},
 				new Exercise()
 				{
 					Id = 11,
 					Name = "Straight Bar Dips",
+					ImageSrc = "/images/11.webp"
 				},
 				new Exercise()
 				{
 					Id = 12,
 					Name = "Dumbell Pullover",
+					ImageSrc = "/images/12.webp"
 				},
 				//Back
 				new Exercise()
 				{
 					Id = 13,
 					Name = "Single Arm Row",
+					ImageSrc = "/images/13.webp"
 				},
 				new Exercise()
 				{
 					Id = 14,
 					Name = "Bent Over Row",
+					ImageSrc = "/images/14.webp"
 				},
 				new Exercise()
 				{
 					Id = 15,
 					Name = "Single Leg Deadlift",
+					ImageSrc = "/images/15.webp"
 				},
 				new Exercise()
 				{
 					Id = 16,
 					Name = "Pulldowns Behind Head",
+					ImageSrc = "/images/16.webp"
 				},
 				new Exercise()
 				{
 					Id = 17,
 					Name = "Pull Row",
+					ImageSrc = "/images/17.webp"
 				},
 				new Exercise()
 				{
 					Id = 18,
 					Name = "Pull Ups",
+					ImageSrc = "/images/18.webp"
 				},
 				//Legs
 				new Exercise()
 				{
 					Id = 19,
 					Name = "Calf Raises",
+					ImageSrc = "/images/19.webp"
 				},
 				new Exercise()
 				{
 					Id = 20,
 					Name = "Lunges",
+					ImageSrc = "/images/20.webp"
 				},
 				new Exercise()
 				{
 					Id = 21,
 					Name = "One Leg Claf Raises",
+					ImageSrc = "/images/21.webp"
 				},
 				new Exercise()
 				{
 					Id = 22,
 					Name = "Pistol Squat",
+					ImageSrc = "/images/22.webp"
 				},
 				new Exercise()
 				{
 					Id = 23,
 					Name = "Squat",
+					ImageSrc = "/images/23.webp"
 				},
 				new Exercise()
 				{
 					Id = 24,
 					Name = "Box Jumps",
+					ImageSrc = "/images/24.webp"
 				},
 				new Exercise()
 				{
 					Id = 25,
 					Name = "Deadlift",
+					ImageSrc = "/images/25.webp"
 				},
 				//Core
 				new Exercise()
 				{
 					Id = 26,
 					Name = "Bridge",
+					ImageSrc = "/images/26.webp"
 				},
 				new Exercise()
 				{
 					Id = 27,
 					Name = "Hanging Knee Raises",
+					ImageSrc = "/images/27.webp"
 				},
 				new Exercise()
 				{
 					Id = 28,
 					Name = "Leg Raises",
+					ImageSrc = "/images/28.webp"
 				},
 				new Exercise()
 				{
 					Id = 29,
 					Name = "L-Sit Pull Ups",
+					ImageSrc = "/images/29.webp"
 				},
 				new Exercise()
 				{
 					Id = 30,
 					Name = "Russian Twist",
+					ImageSrc = "/images/30.webp"
 				},
 				new Exercise()
 				{
 					Id = 31,
 					Name = "Sit Ups",
+					ImageSrc = "/images/31.webp"
 				},
 				new Exercise()
 				{
 					Id = 32,
 					Name = "Toes To Bar",
+					ImageSrc = "/images/32.webp"
 				},
 				new Exercise()
 				{
 					Id = 33,
 					Name = "V-Ups",
+					ImageSrc = "/images/33.webp"
 				},
 				new Exercise()
 				{
 					Id = 34,
 					Name = "Knee Elbow Push Ups",
+					ImageSrc = "/images/34.webp"
 				},
 				//Shoulders
 				new Exercise()
 				{
 					Id = 35,
 					Name = "Front Raises",
+					ImageSrc = "/images/35.webp"
 				},
 				new Exercise()
 				{
 					Id = 36,
 					Name = "Lateral Raises",
+					ImageSrc = "/images/36.webp"
 				},
 				new Exercise()
 				{
 					Id = 37,
 					Name = "Upright Row",
+					ImageSrc = "/images/37.webp"
 				},
 				new Exercise()
 				{
 					Id = 38,
 					Name = "Bent Over Reverse Fly",
+					ImageSrc = "/images/38.webp"
 				},
 				new Exercise()
 				{
 					Id = 39,
 					Name = "Military Press - OHP",
+					ImageSrc = "/images/39.webp"
 				},
 				//Arms
 				new Exercise()
 				{
 					Id = 40,
 					Name = "Bicep Curl",
+					ImageSrc = "/images/40.webp"
 				},
 				new Exercise()
 				{
 					Id = 41,
 					Name = "French Press",
+					ImageSrc = "/images/41.webp"
 				},
 				new Exercise()
 				{
 					Id = 42,
 					Name = "Hummer Curls",
+					ImageSrc = "/images/42.webp"
 				},
 				new Exercise()
 				{
 					Id = 43,
 					Name = "Preacher Bicep Curl",
+					ImageSrc = "/images/43.webp"
 				},
 				new Exercise()
 				{
 					Id = 44,
 					Name = "Chin Ups",
+					ImageSrc = "/images/44.webp"
 				}
 				);
 

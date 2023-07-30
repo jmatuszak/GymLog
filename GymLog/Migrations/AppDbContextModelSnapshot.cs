@@ -531,6 +531,9 @@ namespace GymLog.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ImageSrc")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -543,221 +546,265 @@ namespace GymLog.Migrations
                         new
                         {
                             Id = 1,
+                            ImageSrc = "/images/1.webp",
                             Name = "Bench Press"
                         },
                         new
                         {
                             Id = 2,
+                            ImageSrc = "/images/2.webp",
                             Name = "Incline Bench Press"
                         },
                         new
                         {
                             Id = 3,
+                            ImageSrc = "/images/3.webp",
                             Name = "T-Bar Row"
                         },
                         new
                         {
                             Id = 4,
+                            ImageSrc = "/images/4.webp",
                             Name = "Push Ups"
                         },
                         new
                         {
                             Id = 5,
+                            ImageSrc = "/images/5.webp",
                             Name = "Wide Push Ups"
                         },
                         new
                         {
                             Id = 6,
+                            ImageSrc = "/images/6.webp",
                             Name = "Diamond Push Ups"
                         },
                         new
                         {
                             Id = 7,
+                            ImageSrc = "/images/7.webp",
                             Name = "Archer Push Ups"
                         },
                         new
                         {
                             Id = 8,
+                            ImageSrc = "/images/8.webp",
                             Name = "Decline PushUps"
                         },
                         new
                         {
                             Id = 9,
+                            ImageSrc = "/images/9.webp",
                             Name = "Dips"
                         },
                         new
                         {
                             Id = 10,
+                            ImageSrc = "/images/10.webp",
                             Name = "Ring Dips"
                         },
                         new
                         {
                             Id = 11,
+                            ImageSrc = "/images/11.webp",
                             Name = "Straight Bar Dips"
                         },
                         new
                         {
                             Id = 12,
+                            ImageSrc = "/images/12.webp",
                             Name = "Dumbell Pullover"
                         },
                         new
                         {
                             Id = 13,
+                            ImageSrc = "/images/13.webp",
                             Name = "Single Arm Row"
                         },
                         new
                         {
                             Id = 14,
+                            ImageSrc = "/images/14.webp",
                             Name = "Bent Over Row"
                         },
                         new
                         {
                             Id = 15,
+                            ImageSrc = "/images/15.webp",
                             Name = "Single Leg Deadlift"
                         },
                         new
                         {
                             Id = 16,
+                            ImageSrc = "/images/16.webp",
                             Name = "Pulldowns Behind Head"
                         },
                         new
                         {
                             Id = 17,
+                            ImageSrc = "/images/17.webp",
                             Name = "Pull Row"
                         },
                         new
                         {
                             Id = 18,
+                            ImageSrc = "/images/18.webp",
                             Name = "Pull Ups"
                         },
                         new
                         {
                             Id = 19,
+                            ImageSrc = "/images/19.webp",
                             Name = "Calf Raises"
                         },
                         new
                         {
                             Id = 20,
+                            ImageSrc = "/images/20.webp",
                             Name = "Lunges"
                         },
                         new
                         {
                             Id = 21,
+                            ImageSrc = "/images/21.webp",
                             Name = "One Leg Claf Raises"
                         },
                         new
                         {
                             Id = 22,
+                            ImageSrc = "/images/22.webp",
                             Name = "Pistol Squat"
                         },
                         new
                         {
                             Id = 23,
+                            ImageSrc = "/images/23.webp",
                             Name = "Squat"
                         },
                         new
                         {
                             Id = 24,
+                            ImageSrc = "/images/24.webp",
                             Name = "Box Jumps"
                         },
                         new
                         {
                             Id = 25,
+                            ImageSrc = "/images/25.webp",
                             Name = "Deadlift"
                         },
                         new
                         {
                             Id = 26,
+                            ImageSrc = "/images/26.webp",
                             Name = "Bridge"
                         },
                         new
                         {
                             Id = 27,
+                            ImageSrc = "/images/27.webp",
                             Name = "Hanging Knee Raises"
                         },
                         new
                         {
                             Id = 28,
+                            ImageSrc = "/images/28.webp",
                             Name = "Leg Raises"
                         },
                         new
                         {
                             Id = 29,
+                            ImageSrc = "/images/29.webp",
                             Name = "L-Sit Pull Ups"
                         },
                         new
                         {
                             Id = 30,
+                            ImageSrc = "/images/30.webp",
                             Name = "Russian Twist"
                         },
                         new
                         {
                             Id = 31,
+                            ImageSrc = "/images/31.webp",
                             Name = "Sit Ups"
                         },
                         new
                         {
                             Id = 32,
+                            ImageSrc = "/images/32.webp",
                             Name = "Toes To Bar"
                         },
                         new
                         {
                             Id = 33,
+                            ImageSrc = "/images/33.webp",
                             Name = "V-Ups"
                         },
                         new
                         {
                             Id = 34,
+                            ImageSrc = "/images/34.webp",
                             Name = "Knee Elbow Push Ups"
                         },
                         new
                         {
                             Id = 35,
+                            ImageSrc = "/images/35.webp",
                             Name = "Front Raises"
                         },
                         new
                         {
                             Id = 36,
+                            ImageSrc = "/images/36.webp",
                             Name = "Lateral Raises"
                         },
                         new
                         {
                             Id = 37,
+                            ImageSrc = "/images/37.webp",
                             Name = "Upright Row"
                         },
                         new
                         {
                             Id = 38,
+                            ImageSrc = "/images/38.webp",
                             Name = "Bent Over Reverse Fly"
                         },
                         new
                         {
                             Id = 39,
+                            ImageSrc = "/images/39.webp",
                             Name = "Military Press - OHP"
                         },
                         new
                         {
                             Id = 40,
+                            ImageSrc = "/images/40.webp",
                             Name = "Bicep Curl"
                         },
                         new
                         {
                             Id = 41,
+                            ImageSrc = "/images/41.webp",
                             Name = "French Press"
                         },
                         new
                         {
                             Id = 42,
+                            ImageSrc = "/images/42.webp",
                             Name = "Hummer Curls"
                         },
                         new
                         {
                             Id = 43,
+                            ImageSrc = "/images/43.webp",
                             Name = "Preacher Bicep Curl"
                         },
                         new
                         {
                             Id = 44,
+                            ImageSrc = "/images/44.webp",
                             Name = "Chin Ups"
                         });
                 });

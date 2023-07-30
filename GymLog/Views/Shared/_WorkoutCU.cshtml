@@ -21,6 +21,7 @@
             {
                 <input asp-for="Exercises[i].Id" type="hidden" class="form-control">
                 <input asp-for="Exercises[i].Name" type="hidden" class="form-control">
+                <input asp-for="Exercises[i].ImageSrc" type="hidden" class="form-control">
 
             }
 
@@ -123,7 +124,7 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <label for="filterInput">Add Exercise</label></br>
+        <label for="filterInput" style="color:white">Find Exercise</label></br>
         <input type="text" id="filterInput" autocomplete="off" />
 
         <table id="exerciseTable" style="margin: auto">
@@ -135,7 +136,7 @@
                             <td style="display:none;">@exercise.Name</td>
                             <td style="padding:0px;">
                                 <button type="submit" formaction="/Workout/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
-                                @exercise.Name
+                                    <img src="@exercise.ImageSrc" alt="@exercise.Name" width="350">
                                 </button>
                             </td>
                         </tr>

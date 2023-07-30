@@ -5,6 +5,7 @@
 
 
 <div class="container1">
+
 	<div class="box box40">
 		<div class="box box2">
 		<h2>Your Templates:</h2>
@@ -18,7 +19,7 @@
 					{
 						<tr class="noBorder">
 							<td>
-								@Item.Id - @Item.Name
+								@Item.Name
 							</td>
 							<td>
 								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
@@ -43,7 +44,7 @@
 					{
 						<tr class="noBorder">
 							<td>
-								@Item.Id - @Item.Name
+								@Item.Name
 							</td>
 							<td>
 								<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
@@ -58,6 +59,9 @@
 		</div>
 	</div>
 		<div class="box box60">
+		@await Component.InvokeAsync("Statistics")
+
+
 		@await Component.InvokeAsync("FavouriteExercisesChart")
 		@await Component.InvokeAsync("MostWeightExercisesChart")
 
@@ -65,7 +69,6 @@
 	</div>
 
 
-@await Component.InvokeAsync("Statistics")
 @await Component.InvokeAsync("MaxWeight")
 <div id="partialViewContainer"></div>
 

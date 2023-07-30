@@ -17,7 +17,7 @@ $(document).ready(function () {
         $table.css('display', 'block');
     });
 });
-//Modal add exercise
+//Modal add exercise / List of exercises
 document.addEventListener("DOMContentLoaded", function () {
     var openModalBtn = document.getElementById("openModalBtn");
     var modal = document.getElementById("myModal");

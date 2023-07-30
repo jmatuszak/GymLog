@@ -3,21 +3,44 @@
 @model StatisticsVM
 
 
-<h3>Statistics:</h3>
-<ul>
-    <li>
-        Workouts: @Model.Workouts
-    </li>
-    <li>
-        Sets: @Model.Sets
-    </li>
-    <li>
-        Reps: @Model.Reps
-    </li>
-    <li>
-        Weight: @Model.Weight kg
-    </li>
-    <li>
-        Duration: @Model.Duration
-    </li>
-</ul>
+<div class="topStats">
+    <div class="boxStats">
+        <span>Workouts:</span>
+        <span>@Model.Workouts</span>
+        <div class="icon">
+            <img src="images/icons/dumbbell-50.png" alt="stopwatch">
+        </div>
+    </div>
+
+    <div class="boxStats">
+        <span>Sets:</span>
+        <span>@Model.Sets</span>
+        <div class="icon">
+            <img src="images/icons/grip-lines-48.png" alt="stopwatch">
+        </div>
+    </div>
+
+    <div class="boxStats">
+        <span>Reps:</span>
+        <span>@Model.Reps</span>
+        <div class="icon">
+            <img src="images/icons/circular-arrows-50.png" alt="stopwatch">
+        </div>
+    </div>
+
+    <div class="boxStats">
+        <span>Weight:</span>
+        <span>@Model.Weight</span>
+        <div class="icon">
+            <img src="images/icons/weight-50.png" alt="stopwatch">
+        </div>
+    </div>
+
+    <div class="boxStats">
+        <span>Duration:</span>
+        <span>@Model.Duration</span>
+        <div class="icon">
+            <img src="images/icons/stopwatch-50.png" alt="stopwatch">
+        </div>
+    </div>
+</div>  

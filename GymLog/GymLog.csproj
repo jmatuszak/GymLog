@@ -1,10 +1,58 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\images\1.webp" />
+    <Content Remove="wwwroot\images\10.webp" />
+    <Content Remove="wwwroot\images\11.webp" />
+    <Content Remove="wwwroot\images\12.webp" />
+    <Content Remove="wwwroot\images\13.webp" />
+    <Content Remove="wwwroot\images\14.webp" />
+    <Content Remove="wwwroot\images\15.webp" />
+    <Content Remove="wwwroot\images\16.webp" />
+    <Content Remove="wwwroot\images\17.webp" />
+    <Content Remove="wwwroot\images\18.webp" />
+    <Content Remove="wwwroot\images\19.webp" />
+    <Content Remove="wwwroot\images\2.webp" />
+    <Content Remove="wwwroot\images\20.webp" />
+    <Content Remove="wwwroot\images\21.webp" />
+    <Content Remove="wwwroot\images\22.webp" />
+    <Content Remove="wwwroot\images\23.webp" />
+    <Content Remove="wwwroot\images\24.webp" />
+    <Content Remove="wwwroot\images\25.webp" />
+    <Content Remove="wwwroot\images\26.webp" />
+    <Content Remove="wwwroot\images\27.webp" />
+    <Content Remove="wwwroot\images\28.webp" />
+    <Content Remove="wwwroot\images\29.webp" />
+    <Content Remove="wwwroot\images\3.webp" />
+    <Content Remove="wwwroot\images\30.webp" />
+    <Content Remove="wwwroot\images\31.webp" />
+    <Content Remove="wwwroot\images\32.webp" />
+    <Content Remove="wwwroot\images\33.webp" />
+    <Content Remove="wwwroot\images\34.webp" />
+    <Content Remove="wwwroot\images\35.webp" />
+    <Content Remove="wwwroot\images\36.webp" />
+    <Content Remove="wwwroot\images\37.webp" />
+    <Content Remove="wwwroot\images\38.webp" />
+    <Content Remove="wwwroot\images\39.webp" />
+    <Content Remove="wwwroot\images\4.webp" />
+    <Content Remove="wwwroot\images\40.webp" />
+    <Content Remove="wwwroot\images\41.webp" />
+    <Content Remove="wwwroot\images\42.webp" />
+    <Content Remove="wwwroot\images\43.webp" />
+    <Content Remove="wwwroot\images\44.webp" />
+    <Content Remove="wwwroot\images\5.webp" />
+    <Content Remove="wwwroot\images\6.webp" />
+    <Content Remove="wwwroot\images\7.webp" />
+    <Content Remove="wwwroot\images\8.webp" />
+    <Content Remove="wwwroot\images\9.webp" />
+    <Content Remove="wwwroot\images\x_25reversetflyes.webp" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FuzzySharp" Version="2.0.2" />
@@ -21,7 +69,56 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Images\" />
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\1.webp" />
+    <None Include="wwwroot\images\10.webp" />
+    <None Include="wwwroot\images\11.webp" />
+    <None Include="wwwroot\images\12.webp" />
+    <None Include="wwwroot\images\13.webp" />
+    <None Include="wwwroot\images\14.webp" />
+    <None Include="wwwroot\images\15.webp" />
+    <None Include="wwwroot\images\16.webp" />
+    <None Include="wwwroot\images\17.webp" />
+    <None Include="wwwroot\images\18.webp" />
+    <None Include="wwwroot\images\19.webp" />
+    <None Include="wwwroot\images\2.webp" />
+    <None Include="wwwroot\images\20.webp" />
+    <None Include="wwwroot\images\21.webp" />
+    <None Include="wwwroot\images\22.webp" />
+    <None Include="wwwroot\images\23.webp" />
+    <None Include="wwwroot\images\24.webp" />
+    <None Include="wwwroot\images\25.webp" />
+    <None Include="wwwroot\images\26.webp" />
+    <None Include="wwwroot\images\27.webp" />
+    <None Include="wwwroot\images\28.webp" />
+    <None Include="wwwroot\images\29.webp" />
+    <None Include="wwwroot\images\3.webp" />
+    <None Include="wwwroot\images\30.webp" />
+    <None Include="wwwroot\images\31.webp" />
+    <None Include="wwwroot\images\32.webp" />
+    <None Include="wwwroot\images\33.webp" />
+    <None Include="wwwroot\images\34.webp" />
+    <None Include="wwwroot\images\35.webp" />
+    <None Include="wwwroot\images\36.webp" />
+    <None Include="wwwroot\images\37.webp" />
+    <None Include="wwwroot\images\38.webp" />
+    <None Include="wwwroot\images\39.webp" />
+    <None Include="wwwroot\images\4.webp" />
+    <None Include="wwwroot\images\40.webp" />
+    <None Include="wwwroot\images\41.webp" />
+    <None Include="wwwroot\images\42.webp" />
+    <None Include="wwwroot\images\43.webp" />
+    <None Include="wwwroot\images\44.webp" />
+    <None Include="wwwroot\images\5.webp" />
+    <None Include="wwwroot\images\6.webp" />
+    <None Include="wwwroot\images\7.webp" />
+    <None Include="wwwroot\images\8.webp" />
+    <None Include="wwwroot\images\9.webp" />
+    <None Include="wwwroot\images\x_25reversetflyes.webp" />
   </ItemGroup>
 
 </Project>
