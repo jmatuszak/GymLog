@@ -151,6 +151,7 @@ namespace GymLog.Controllers
                 {
                     List<Set> sets = new List<Set>();
                     if (segment.SetsVM != null)
+                    {
                         foreach (var set in segment.SetsVM)
                             if (set.isDone)
                             {
@@ -161,14 +162,15 @@ namespace GymLog.Controllers
                                     //WorkoutSegmentId = template.Id
                                 });
                             }
-                            
-                    workout.WorkoutSegments.Add(new WorkoutSegment
-                    {
-                        WeightType = segment.WeightType,
-                        Description = segment.Description,
-                        Sets = sets,
-                        ExerciseId = segment.ExerciseId,
-                    });
+                        if (sets.Count > 0)
+                            workout.WorkoutSegments.Add(new WorkoutSegment
+                            {
+                                WeightType = segment.WeightType,
+                                Description = segment.Description,
+                                Sets = sets,
+                                ExerciseId = segment.ExerciseId,
+                            });
+                    }
                 }
             _context.Add(workout);
             _context.SaveChanges();

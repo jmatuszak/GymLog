@@ -51,7 +51,6 @@
     <Content Remove="wwwroot\images\7.webp" />
     <Content Remove="wwwroot\images\8.webp" />
     <Content Remove="wwwroot\images\9.webp" />
-    <Content Remove="wwwroot\images\x_25reversetflyes.webp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +68,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Images\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
@@ -118,7 +116,6 @@
     <None Include="wwwroot\images\7.webp" />
     <None Include="wwwroot\images\8.webp" />
     <None Include="wwwroot\images\9.webp" />
-    <None Include="wwwroot\images\x_25reversetflyes.webp" />
   </ItemGroup>
 
 </Project>
