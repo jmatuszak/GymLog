@@ -94,7 +94,7 @@ namespace GymLog.Controllers
         }
 
 
-        public async Task<ActionResult> PartialStatistic(int id)
+        public async Task<ActionResult> MaxWeight(int id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var workouts = await _context.Workouts.Include(x => x.WorkoutSegments)

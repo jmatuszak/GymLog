@@ -28,3 +28,26 @@
         </table>
     </div>
 </div>
+
+<div id="maxWeightViewContainer"></div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.maxWeightButton').click(function () {
+            var id = $(this).data('id');
+
+            $.ajax({
+					url: '@Url.Action("MaxWeight", "Home")',
+                type: 'GET',
+                data: { id: id },
+                success: function (result) {
+						$('#maxWeightViewContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>

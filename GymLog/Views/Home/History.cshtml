@@ -6,7 +6,7 @@
 
 <div class="container1">
 	<div class="box box40">
-		<div id="viewComponentContainer"></div>
+		<div id="workoutDetails"></div>
 	</div>
 	<div class="box box60">
 		<div id="calendar"></div>
@@ -44,8 +44,8 @@
 						type: 'GET',
 						data: { id: eventId },
 						success: function (result) {
-							
-							$('#viewComponentContainer').html(result);
+
+							$('#workoutDetails').html(result);
 						},
 						error: function (error) {
 							console.log(error);

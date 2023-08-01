@@ -33,18 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-//Partial render best 
+//Partial render MaxWeight of exercise
 
 $(document).ready(function () {
     $('#maxWeightButton').click(function () {
         var id = $(this).data('id');
 
         $.ajax({
-            url: '@Url.Action("PartialStatistic", "Workout")',
+            url: '@Url.Action("MaxWeight", "Workout")',
             type: 'GET',
             data: { id: id },
             success: function (result) {
-                $('#partialViewContainer').html(result);
+                $('#maxWeightViewContainer').html(result);
             },
             error: function (xhr, status, error) {
                 console.log(error);
