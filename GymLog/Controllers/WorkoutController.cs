@@ -21,30 +21,55 @@ namespace GymLog.Controllers
             _userManager = userManager;
         }
         //Calendar
-        public IActionResult Calendar()
+        public async Task<IActionResult> Calendar()
         {
-            var workouts = _context.Workouts.ToList();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
 
-            return View(workouts);
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                if (role == "user")
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else if (role == "admin")
+                {
+                    var workouts = _context.Workouts.ToList();
+                    return View(workouts);
+                }
+            }
+            return RedirectToAction("Login", "Account");
         }
 
 
 
         public async Task<IActionResult> Index()
         {
-/*            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
-            var userWorkouts = _context.Workouts.Include(t => t.Template).Where(x => x.AppUserId.Equals(user.Id)).ToList();
-            var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals(null)).ToList();
-            var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();*/
-            var workouts = _context.Workouts.Include(a=>a.WorkoutSegments).ToList();
-            var workoutsVM = new List<WorkoutVM>();
-            foreach (var workout in workouts)
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
             {
-                var workoutVM = WorkoutToWorkoutVM(workout, new WorkoutVM());
-                workoutsVM.Add(workoutVM);
+                if (role == "user")
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else if (role == "admin")
+                {
+                    var workouts = _context.Workouts.Include(a => a.WorkoutSegments).ToList();
+                    var workoutsVM = new List<WorkoutVM>();
+                    foreach (var workout in workouts)
+                    {
+                        var workoutVM = WorkoutToWorkoutVM(workout, new WorkoutVM());
+                        workoutsVM.Add(workoutVM);
+                    }
+                    return View(workoutsVM);
+                }
             }
-            return View(workoutsVM);
+            return RedirectToAction("Login", "Account");
+
         }
 
         //<-----------------------   Set   ---------------------> 

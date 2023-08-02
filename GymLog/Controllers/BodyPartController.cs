@@ -2,22 +2,43 @@
 using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {
     public class BodyPartController : Controller
     {
         private readonly IBodyPartRepository _bodyPartRepository;
+        private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BodyPartController(IBodyPartRepository bodyPartRepository)
+        public BodyPartController(AppDbContext context, UserManager<AppUser> userManager)
         {
-            _bodyPartRepository = bodyPartRepository;
+            _context = context;
+            _userManager = userManager;
         }
+
         public async Task<IActionResult> Index()
         {
-            var bodyParts = await _bodyPartRepository.GetAll();
-            return View(bodyParts);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                if (role == "user")
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else if (role == "admin")
+                {
+                    var bodyParts = _context.BodyParts.ToList();
+                    return View(bodyParts);
+                }
+            }
+            return RedirectToAction("Login", "Account");
         }
 
 

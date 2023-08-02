@@ -1,6 +1,7 @@
 ﻿using GymLog.Data;
 using GymLog.Models;
 using GymLog.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,36 @@ namespace GymLog.Controllers
     public class ExerciseController : BaseController
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ExerciseController(AppDbContext context)
+        public ExerciseController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            var Exercises = new List<Exercise>();
-            Exercises = _context.Exercises.Include(b=>b.BodyParts).ToList();
-            return View(Exercises);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
+            
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                if (role == "user")
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else if (role == "admin")
+                {
+                    var Exercises = new List<Exercise>();
+                    Exercises = _context.Exercises.Include(b => b.BodyParts).ToList();
+                    return View(Exercises);
+                }
+            }
+            return RedirectToAction("Login", "Account");
         }
+
         public IActionResult Create()
         {
 

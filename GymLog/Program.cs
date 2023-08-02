@@ -27,8 +27,6 @@ var app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
     //dotnet run seeddata
-
-    //Seed.SeedData(app);
     await Seed.SeedUsersAndRolesAsync(app);
 }
 

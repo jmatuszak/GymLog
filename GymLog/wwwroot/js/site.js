@@ -19,11 +19,11 @@ $(document).ready(function () {
 });
 //Modal add exercise / List of exercises
 document.addEventListener("DOMContentLoaded", function () {
-    var openModalBtn = document.getElementById("openModalBtn");
-    var modal = document.getElementById("myModal");
+    var openExercisesModalBtn = document.getElementById("openExercisesModalBtn");
+    var modal = document.getElementById("exercisesModal");
     var closeBtn = document.getElementsByClassName("close")[0];
 
-    openModalBtn.addEventListener("click", function (event) {
+    openExercisesModalBtn.addEventListener("click", function (event) {
         modal.style.display = "block";
     });
 

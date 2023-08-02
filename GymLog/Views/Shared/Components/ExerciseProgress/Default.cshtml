@@ -3,8 +3,10 @@
 @model IEnumerable<ExerciseVM>
 
 
+<div style="text-align:center">
+    <a id="openExercisesModalBtn" class="btn btn-sm btn-outline-info">Check progress of exercise</a>
 
-<a id="openExercisesModalBtn" class="btn btn-sm btn-outline-info">Check your max</a>
+</div>
 
 
 <div id="exercisesModal" class="modal">
@@ -20,7 +22,9 @@
                         <td style="display:none;">@exercise.Id</td>
                         <td style="display:none;">@exercise.Name</td>
                         <td style="padding:0px;">
-                            <button type="submit" class="maxWeightExerciseButton btn btn-dark" data-id="@exercise.Id">@exercise.Name</button>
+                                <button type="submit" class="exerciseProgressButton btn btn-dark" data-id="@exercise.Id">
+                                    <img src="@exercise.ImageSrc" alt="@exercise.Name" width="350">
+                                </button>
                         </td>
                     </tr>
                 }
@@ -29,20 +33,20 @@
     </div>
 </div>
 
-<div id="maxWeightViewContainer"></div>
+<div id="exerciseProgressViewContainer"></div>
 
 
 <script>
     $(document).ready(function () {
-        $('.maxWeightExerciseButton').click(function () {
+        $('.exerciseProgressButton').click(function () {
             var id = $(this).data('id');
 
             $.ajax({
-					url: '@Url.Action("MaxWeight", "Home")',
+                url: '@Url.Action("ExerciseProgress", "Home")',
                 type: 'GET',
                 data: { id: id },
                 success: function (result) {
-						$('#maxWeightViewContainer').html(result);
+                    $('#exerciseProgressViewContainer').html(result);
                 },
                 error: function (xhr, status, error) {
                     console.log(error);

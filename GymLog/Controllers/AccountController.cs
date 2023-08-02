@@ -38,7 +38,7 @@ namespace GymLog.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Template");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 TempData["Error"] = "Wrong credentials. Please try again.";

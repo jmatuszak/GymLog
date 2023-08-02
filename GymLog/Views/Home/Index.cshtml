@@ -59,18 +59,20 @@
 		</div>
 	</div>
 		<div class="box box60">
+
 		@await Component.InvokeAsync("Statistics")
 
 
+		@await Component.InvokeAsync("ExerciseProgress")
 		@await Component.InvokeAsync("FavouriteExercisesChart")
 		@await Component.InvokeAsync("MostWeightExercisesChart")
 
 		</div>
 	</div>
-
-
+@*
 @await Component.InvokeAsync("MaxWeight")
-
-@*@await Component.InvokeAsync("ExerciseProgressChart")
-<div id="maxWeightViewContainer"></div>
 *@
+
+
+
+

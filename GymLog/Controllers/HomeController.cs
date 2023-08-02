@@ -4,6 +4,9 @@ using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
+using NuGet.Protocol;
+using System.Globalization;
 using System.Security.Claims;
 using System.Xml.Linq;
 
@@ -124,6 +127,45 @@ namespace GymLog.Controllers
 		{
 			return ViewComponent("WorkoutDetails", id);
 		}
+
+        public async Task<ActionResult> ExerciseProgress(int id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var workouts = await _context.Workouts.Include(x => x.WorkoutSegments)
+                .ThenInclude(segment => segment.Sets)
+                .Where(x => x.AppUserId == user.Id).ToListAsync();
+
+            var labels = new List<DateTime>();
+            var values = new List<float>();
+
+            foreach (var workout in workouts)
+            {
+                if (workout.WorkoutSegments != null)
+                    foreach (var segment in workout.WorkoutSegments)
+                    {
+                        float maxValue = 0;
+                        if (segment.ExerciseId == id && segment.Sets != null)
+                        {
+                            foreach(var set in segment.Sets)
+                            {
+                                if (maxValue < set.Weight) maxValue = (float)set.Weight;
+                            }
+                            if (maxValue > 0)
+                            {
+                                labels.Add(workout.EndDate);
+                                values.Add(maxValue);
+                            }
+
+                        }
+                    }
+            }
+            var chartDataProgressVM = new ChartDataProgressVM();
+
+            chartDataProgressVM.Values = values.ToArray();
+            chartDataProgressVM.Labels = labels.ToArray();
+
+            return PartialView("_ExerciseProgressChart", chartDataProgressVM);
+        }
 
 	}
 }

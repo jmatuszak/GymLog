@@ -13,60 +13,74 @@ namespace GymLog.Controllers
     public class TemplateController : BaseController
     {
         private readonly AppDbContext _context;
-        //private readonly HttpContextAccessor _httpContextAccessor;
         private readonly UserManager<AppUser> _userManager;
 
         public TemplateController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
-            //_httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
         }
+
         public async Task<IActionResult> Index()
         {
-            var templates = _context.Templates.Include(s => s.WorkoutSegments).ToList();
-            List<TemplateVM> templatesVM = new List<TemplateVM>();
-            foreach (var template in templates)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
             {
-                var segmentsVM = new List<WorkoutSegmentVM>();
-                if (template.WorkoutSegments != null)
-                    foreach (var segment in template.WorkoutSegments)
+                if (role == "user")
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else if (role == "admin")
+                {
+                    var templates = _context.Templates.Include(s => s.WorkoutSegments).ToList();
+                    List<TemplateVM> templatesVM = new List<TemplateVM>();
+                    foreach (var template in templates)
                     {
-                        var segmentWithSets = await _context.WorkoutSegments.Include(s => s.Sets)
-                            .FirstOrDefaultAsync(s => s.Id == segment.Id);
-                        var setsVM = new List<SetVM>();
-                        if (segmentWithSets != null && segmentWithSets.Sets != null)
-                        {
-                            foreach (var set in segmentWithSets.Sets)
+                        var segmentsVM = new List<WorkoutSegmentVM>();
+                        if (template.WorkoutSegments != null)
+                            foreach (var segment in template.WorkoutSegments)
                             {
-                                setsVM.Add(new SetVM()
+                                var segmentWithSets = await _context.WorkoutSegments.Include(s => s.Sets)
+                                    .FirstOrDefaultAsync(s => s.Id == segment.Id);
+                                var setsVM = new List<SetVM>();
+                                if (segmentWithSets != null && segmentWithSets.Sets != null)
                                 {
-                                    Weight = set.Weight,
-                                    Reps = set.Reps,
-                                    WorkoutSegmentId = set.WorkoutSegmentId,
+                                    foreach (var set in segmentWithSets.Sets)
+                                    {
+                                        setsVM.Add(new SetVM()
+                                        {
+                                            Weight = set.Weight,
+                                            Reps = set.Reps,
+                                            WorkoutSegmentId = set.WorkoutSegmentId,
+                                        });
+                                    }
+                                }
+
+                                segmentsVM.Add(new WorkoutSegmentVM
+                                {
+                                    WeightType = segment.WeightType,
+                                    Description = segment.Description,
+                                    SetsVM = setsVM,
+                                    ExerciseId = segment.ExerciseId,
                                 });
                             }
-                        }
-
-                        segmentsVM.Add(new WorkoutSegmentVM
+                        var templateVM = new TemplateVM()
                         {
-                            WeightType = segment.WeightType,
-                            Description = segment.Description,
-                            SetsVM = setsVM,
-                            ExerciseId = segment.ExerciseId,
-                        });
+                            Id = template.Id,
+                            Name = template.Name,
+                            WorkoutSegmentsVM = segmentsVM,
+                            AppUserId = template.AppUserId,
+                        };
+                        templatesVM.Add(templateVM);
                     }
-                var templateVM = new TemplateVM()
-                {
-                    Id = template.Id,
-                    Name = template.Name,
-                    WorkoutSegmentsVM = segmentsVM,
-                    AppUserId = template.AppUserId,
-                };
-                templatesVM.Add(templateVM);
-            }
 
-            return View(templatesVM);
+                    return View(templatesVM);
+                }
+            }
+            return RedirectToAction("Login", "Account");
         }
 
 

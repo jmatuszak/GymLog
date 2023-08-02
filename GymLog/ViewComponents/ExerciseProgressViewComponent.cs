@@ -4,16 +4,17 @@ using GymLog.Models;
 using GymLog.Data;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.Xml.Linq;
 
 namespace GymLog.ViewComponents;
 
 
-public class MaxWeightViewComponent : ViewComponent
+public class ExerciseProgressViewComponent : ViewComponent
 {
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
 
-    public MaxWeightViewComponent(AppDbContext context, UserManager<AppUser> userManager)
+    public ExerciseProgressViewComponent(AppDbContext context, UserManager<AppUser> userManager)
     {
         _context = context;
         _userManager = userManager;
@@ -28,28 +29,28 @@ public class MaxWeightViewComponent : ViewComponent
         var allExercises = await _context.Exercises.Include(x => x.BodyParts).ToListAsync();
         var exercisesIds = new List<int>();
         //Adding to the list Ids of exercises that where exercised by user
-        foreach(var workout in workouts)
+        foreach (var workout in workouts)
         {
-            if(workout.WorkoutSegments!=null)
-            foreach(var segment in workout.WorkoutSegments)
-            {
+            if (workout.WorkoutSegments != null)
+                foreach (var segment in workout.WorkoutSegments)
+                {
                     if (segment.Sets != null)
                     {
-                        if(!exercisesIds.Contains(segment.ExerciseId))
+                        if (!exercisesIds.Contains(segment.ExerciseId))
                             exercisesIds.Add(segment.ExerciseId);
                     }
-            }
+                }
         }
         var userExercises = new List<Exercise>();
-        foreach(var id in exercisesIds)
+        foreach (var id in exercisesIds)
         {
-            var exercise = allExercises.FirstOrDefault(a=>a.Id == id);
-            if(exercise != null)
+            var exercise = allExercises.FirstOrDefault(a => a.Id == id);
+            if (exercise != null)
                 userExercises.Add(exercise);
         }
 
         var exercisesVM = ExercisesToExercisesVM(userExercises);
-        
+
         return View(exercisesVM);
     }
     private List<ExerciseVM> ExercisesToExercisesVM(List<Exercise> exercises)
@@ -74,6 +75,7 @@ public class MaxWeightViewComponent : ViewComponent
                 Id = exercise.Id,
                 Name = exercise.Name,
                 BodyPartsVM = bodyPartsVM,
+                ImageSrc = exercise.ImageSrc,
             });
         }
         return exercisesVM;
