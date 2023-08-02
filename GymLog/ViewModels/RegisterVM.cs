@@ -4,6 +4,9 @@ namespace GymLog.ViewModels
 {
     public class RegisterVM
     {
+        [Display(Name = "Username")]
+        [Required(ErrorMessage = "Username is required")]
+        public string Username { get; set; }
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "Email address is required")]
         public string EmailAddress { get; set; }

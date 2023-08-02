@@ -1,7 +1,45 @@
 ﻿@using GymLog.ViewModels
-@model LoginVM
+@model List<AccountVM>
 
-@{
-    ViewData["Title"] = "Index";
+<h1>Accounts</h1>
+<a asp-controller="Account" asp-action="CreateAdmin" class="btn btn-sm btn-outline-info ">Create new admin</a>
+
+    <table>
+    <tr>
+        <th width="5%">Id</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+
+    </tr>
+@foreach (var Item in @Model)
+{
+            <tr>
+                <td>
+                    @Item.Id
+                </td>
+                <td>
+                    @Item.Username
+                </td>
+                <td>
+                    @Item.Email
+                </td>
+                <td>
+                    @foreach (var role in Item.Roles)
+                    {
+                        <span>@role</span>
+                        if (role != Item.Roles.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </td>
+@*                <td id="tableButtons">
+                    <a asp-controller="Account" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                </td>*@
+                <td id="tableButtons">
+                <a asp-controller="Account" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                </td>
+            </tr>
 }
-<h1>Index</h1>
+</table>
