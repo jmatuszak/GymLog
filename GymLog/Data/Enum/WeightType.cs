@@ -4,6 +4,7 @@
     {
         Barbell,
         Dumbell,
-        Bodyweight
+        Bodyweight,
+        None
     }
 }

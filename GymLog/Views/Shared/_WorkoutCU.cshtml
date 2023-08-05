@@ -28,9 +28,11 @@
             for (int i = 0; i < Model.WorkoutSegmentsVM.Count; i++)
             {
 
-
                 <div id="segment">
                     <button id="removeButton" type="submit" formaction="/Workout/RemoveWorkoutSegment?segment=@i" class="btn btn-outline-danger">Remove exercise</button>
+                    <button type="button" class="openAnimationModalButton btn btn-sm btn-outline-secondary" style="float:right; margin: 10px;" data-id="@Model.WorkoutSegmentsVM[i].ExerciseId">
+                        <img src="/images/icons/eye-50.png"/ style="width:27px">
+                    </button>
                     <div class="form-group">
                         @{
 
@@ -119,15 +121,13 @@
 <button type="button" id="openExercisesModalBtn" class="btn btn-primary">Add Exercise</button>
 
 
-
-
 <div id="exercisesModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <label for="filterInput" style="color:white">Find Exercise</label></br>
         <input type="text" id="filterInput" autocomplete="off" />
 
-        <table id="exerciseTable" style="margin: auto">
+        <table id="exerciseTable"style="margin: auto">
             <tbody>
                 @foreach (var exercise in Model.Exercises)
                 {
@@ -145,3 +145,12 @@
         </table>
     </div>
 </div>
+
+<div id="animationModal" class="modal">
+    <div class="modal-animation">
+        <div>
+            <img id="modalImage"  alt="Zdjęcie">
+        </div>
+    </div>
+</div>
+

@@ -35,7 +35,9 @@
 
                 <div id="segment">
                     <button id="removeButton" type="submit" formaction="/Template/RemoveWorkoutSegment?segment=@i" class="btn btn-outline-danger">Remove exercise</button>
-
+                    <button type="button" class="openAnimationModalButton btn btn-sm btn-outline-secondary" style="float:right; margin: 10px;" data-id="@Model.WorkoutSegmentsVM[i].ExerciseId">
+                        <img src="/images/icons/eye-50.png" / style="width:27px">
+                    </button>
                     <div class="form-group">
                         @{
 
@@ -145,3 +147,12 @@
         </table>
     </div>
 </div>
+
+<div id="animationModal" class="modal">
+    <div class="modal-animation">
+        <div>
+            <img id="modalImage" alt="Zdjęcie">
+        </div>
+    </div>
+</div>
+

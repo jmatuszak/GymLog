@@ -27,11 +27,46 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "block";
     });
 
-    closeBtn.addEventListener("click", function () {
-        modal.style.display = "none";
+    const closeModal = document.querySelector('.close');
+    closeModal.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 });
 
+//Modal animation view
+document.addEventListener('DOMContentLoaded', function () {
+    const openModalButtons = document.querySelectorAll('.openAnimationModalButton');
+    const modal = document.getElementById('animationModal');
+    const modalImage = document.getElementById('modalImage');
+
+    openModalButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const itemId = button.getAttribute('data-id');
+
+            const imagePath = '/images/' + itemId + '.webp';
+            modalImage.src = imagePath; // Ustawienie src obrazu
+
+            modal.style.display = 'block';
+        });
+    });
+
+    const closeModal = document.querySelector('.close');
+    closeModal.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
 
 //Partial render MaxWeight of exercise
 
@@ -52,3 +87,6 @@ $(document).ready(function () {
         });
     });
 });
+
+
+

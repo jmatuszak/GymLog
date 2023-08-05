@@ -53,6 +53,8 @@ td {
     position: absolute;
     right: 1%;
 }
+
+
 #removeButton {
     float: right;
 }
@@ -237,6 +239,7 @@ tr.noneBorder td {
     text-align: center;
 }
 
+
 .modal-content {
     background-color: rgba(0, 0, 0, 0.87);
     margin: 0 auto;
@@ -248,6 +251,20 @@ tr.noneBorder td {
     max-width: 420px;
     text-align: center;
     overflow: auto;
+}
+.modal-animation {
+    background-color: rgba(0, 0, 0, 0.87);
+    margin: 0 auto;
+    margin-top: 3%;
+    padding: 20px;
+    border: 1px solid #888;
+    
+    width: 400px;
+    text-align: center;
+    overflow: auto;
+}
+#modalImage{
+    width:350px;
 }
 
 .close {
@@ -292,3 +309,4 @@ tr.noneBorder td {
     flex-direction: column;
     justify-content: space-between;
 }
+
