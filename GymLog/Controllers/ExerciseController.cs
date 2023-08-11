@@ -87,7 +87,7 @@ namespace GymLog.Controllers
                     
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
 
 
@@ -165,57 +165,6 @@ namespace GymLog.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
-        
-/*        public async Task<IActionResult> FindExercise(FindExerciseVM? findExerciseVM)
-        {
-
-
-            var Exercises = _context.Exercises.ToList();
-
-            foreach (var Exercise in Exercises)
-            {
-                var ExerciseVM = ExerciseToExerciseVM(Exercise, new ExerciseVM());
-                findExerciseVM.ExercisesVM.Add(ExerciseVM);
-            }
-            if (findExerciseVM.SearchString == null) return View(findExerciseVM);
-            var searchedExercises = await _context.Exercises.Where(x => x.Name.Contains(findExerciseVM.SearchString)).ToListAsync();
-            foreach (var Exercise in searchedExercises)
-            {
-                var ExerciseVM = ExerciseToExerciseVM(Exercise, new ExerciseVM());
-                findExerciseVM.SearchedExercisesVM.Add(ExerciseVM);
-            }
-
-            return View(findExerciseVM);
-        }
-
-
-        public async Task<IActionResult> FindExerciseModal(FindExerciseVM? findExerciseVM)
-        {
-            findExerciseVM ??= new FindExerciseVM();
-            findExerciseVM.ExercisesVM ??= new List<ExerciseVM>();
-            findExerciseVM.SearchedExercisesVM ??= new List<ExerciseVM>();
-
-
-            var exercises = _context.Exercises.Include(b => b.BodyParts).ToList();
-
-            foreach (var exercise in exercises)
-            {
-                var exerciseVM = ExerciseToExerciseVM(exercise, new ExerciseVM());
-                findExerciseVM.ExercisesVM.Add(exerciseVM);
-            }
-            if (findExerciseVM.SearchString == null) return View(findExerciseVM);
-            var searchedExercises = await _context.Exercises.Where(x => x.Name.Contains(findExerciseVM.SearchString)).ToListAsync();
-            foreach (var exercise in searchedExercises)
-            {
-                var exerciseVM = ExerciseToExerciseVM(exercise, new ExerciseVM());
-                findExerciseVM.SearchedExercisesVM.Add(exerciseVM);
-            }
-
-            return PartialView(findExerciseVM);
-        }*/
-
     }
 }
 
