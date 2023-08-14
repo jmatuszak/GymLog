@@ -375,10 +375,5 @@ namespace GymLog.Controllers
             }
 			return RedirectToAction("Index", "Home");
 		}
-
-        public async Task<IActionResult> ChooseExercise(TemplateVM? templateVM)
-        {
-            return View(templateVM);
-        }
     }
 }

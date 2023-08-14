@@ -374,7 +374,24 @@ namespace GymLog.Controllers
 
 			/*
             _context.Sets.Where(s => s.WorkoutSegmentId == null);*/
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("History", "Home");
 		}
-    }
+		public async Task<IActionResult> Delete(int id)
+		{
+			var workout = await _context.Workouts.FirstOrDefaultAsync(s => s.Id == id);
+			if (workout != null)
+			{
+				_context.Workouts.Remove(workout);
+				var segments = _context.WorkoutSegments.Where(x => x.WorkoutId == id).ToList();
+				if (segments.Any()) _context.RemoveRange(segments);
+				foreach (var segment in segments)
+				{
+					var sets = _context.Sets.Where(x => x.WorkoutSegmentId == id).ToList();
+					if (sets.Any()) _context.RemoveRange(sets);
+				}
+				_context.SaveChanges();
+			}
+			return RedirectToAction("History", "Home");
+		}
+	}
 }

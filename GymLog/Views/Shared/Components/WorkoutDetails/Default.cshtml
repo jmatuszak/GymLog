@@ -3,12 +3,13 @@
 @model WorkoutVM
 
 
-<div class="form-group">
-    <a asp-controller="Workout" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-info">Edit</a>
+<div class="form-group" style="text-align:center">
+    <a asp-controller="Workout" asp-action="Edit" asp-route-id="@Model.Id" style="margin-top:5px" class="btn btn-sm btn-outline-info">Edit</a>
+    <a asp-controller="Workout" asp-action="Delete" asp-route-id="@Model.Id" style="margin-top:5px" class="btn btn-sm btn-outline-info">Delete</a>
 
     <h3>@Model.Name</h3>
 
-</div>
+
 @{
     var duration = Model.EndDate - Model.StartDate;
     string durationTxt;
@@ -26,7 +27,7 @@
     }
 }
 <p>Duration: @durationTxt</p>
-<div class="form-group">
+<div class="form-group" style="text-align:center; justify-content: center;">
     @{
         if (Model.WorkoutSegmentsVM != null)
         {
@@ -51,15 +52,20 @@
                     {
                         <table>
                             <tr class="noBorder">
-                                <th width="7%">Set</th>
+                                <th>Set</th>
                                 <th>Weight</th>
                                 <th>Reps</th>
-                                <th></th>
                             </tr>
                             @for (int j = 0; j < @Model.WorkoutSegmentsVM[i].SetsVM.Count; j++)
                             {
                                 <tr class="noBorder">
-                                    <td>@(j + 1)</td>
+
+
+                                    <td>
+                                        <div class="form-group">
+                                            <p>@(j + 1)</p>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="form-group">
                                             <p>@Model.WorkoutSegmentsVM[i].SetsVM[j].Weight</p>
@@ -80,5 +86,8 @@
 
         }
     }
+    
 
+
+</div>
 </div>

@@ -248,21 +248,23 @@ namespace GymLog.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
-                if (role == "user")
+				if (role == "user")
                 {
-                    RedirectToAction("Index", "Home");
+					RedirectToAction("History", "Home");
                 }
                 else if (role == "admin")
                 {
-                    var WorkoutSegment = await _context.WorkoutSegments.FirstOrDefaultAsync(x => x.Id == id);
-                    if (WorkoutSegment != null)
+				    var WorkoutSegment = await _context.WorkoutSegments.FirstOrDefaultAsync(x => x.Id == id);
+					if (WorkoutSegment != null)
                     {
                         _context.WorkoutSegments.Remove(WorkoutSegment);
                         var sets = _context.Sets.Where(x => x.WorkoutSegmentId == id).ToList();
                         if (sets.Any()) _context.RemoveRange(sets);
                         _context.SaveChanges();
-                    }
-                }
+						RedirectToAction("History", "Home");
+
+					}
+				}
             }
             return RedirectToAction("Login", "Account");
 		}

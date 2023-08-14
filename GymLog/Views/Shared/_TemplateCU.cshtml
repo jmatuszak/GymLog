@@ -126,10 +126,10 @@
 <div id="exercisesModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <button type="submit" formaction="/Exercise/Create class="btn btn-outline-dark">Add new exercise</button>
 
         <label for="filterInput" style="color:white">Find Exercise</label></br>
         <input type="text" id="filterInput" autocomplete="off" />
+        <a class="btn btn-dark" style="margin-top:10px" asp-area="" asp-controller="Exercise" asp-action="Create">Add new exercise</a>
 
         <table id="exerciseTable" style="margin: auto">
             <tbody>
@@ -140,7 +140,7 @@
                         <td style="display:none;">@exercise.Name</td>
                         <td style="padding:0px;">
                             <button type="submit" formaction="/Template/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
-                                <img src="@exercise.ImageSrc" alt="@exercise.Name" width="350">
+                                <img src="@exercise.ImageSrc" alt="@exercise.Name" width="300">
                             </button>
                         </td>
                     </tr>

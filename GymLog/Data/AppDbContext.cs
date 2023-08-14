@@ -1351,6 +1351,8 @@ namespace GymLog.Data
 				}
 			);
 
+
+
 			base.OnModelCreating(modelBuilder);
 		}
 
