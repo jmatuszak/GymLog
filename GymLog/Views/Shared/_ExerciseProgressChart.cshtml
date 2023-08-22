@@ -4,14 +4,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-filler"></script>
 
 <body>
     <canvas id="exerciseProgressChart"></canvas>
 </body>
 <script>
-    
     var viewModelData = @Html.Raw(Json.Serialize(Model));
-    
+
     var ctx = document.getElementById('exerciseProgressChart').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'line',
@@ -21,17 +21,17 @@
                 label: 'Exercise Progress',
                 data: viewModelData.values,
                 borderColor: 'blue',
-                fill: false
-            },
-            {
-                label: 'Another Dataset', // Nazwa drugiego zestawu danych
-                data: /* Twoje dane dla drugiego zestawu */,
-                borderColor: 'red', // Kolor ramki
-                fill: false
+                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Kolor wypełnienia (półprzezroczysty niebieski)
+                fill: 'origin', // Ta wartość aktywuje wypełnianie od osi X
             }]
         },
         options: {
             responsive: true,
+            plugins: {
+                filler: {
+                    propagate: true // Ta opcja sprawia, że kolorowanie będzie podążać za wykresem
+                }
+            },
             scales: {
                 x: {
                     type: 'time',

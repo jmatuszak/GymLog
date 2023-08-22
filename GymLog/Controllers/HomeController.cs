@@ -8,6 +8,7 @@ using NuGet.Packaging;
 using NuGet.Protocol;
 using System.Globalization;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 
 
@@ -159,12 +160,26 @@ namespace GymLog.Controllers
                         }
                     }
             }
-            var chartDataProgressVM = new ChartDataProgressVM();
+            var weightAndDateDic = new Dictionary<DateTime, float>();
+            for(int i=0; i<values.Count; i++)
+            {
+                weightAndDateDic.Add(labels[i], values[i]);
+            }
+			var sortedDictionary = weightAndDateDic.OrderBy(pair => pair.Key).
+                ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            chartDataProgressVM.Values = values.ToArray();
-            chartDataProgressVM.Labels = labels.ToArray();
+			var chartDataProgressVM = new ChartDataProgressVM();
 
-            return PartialView("_ExerciseProgressChart", chartDataProgressVM);
+			
+            chartDataProgressVM.Labels = new DateTime[values.Count];
+            chartDataProgressVM.Values = new float[values.Count];
+            for(int i=0;i<values.Count;i++)
+            {
+                chartDataProgressVM.Labels[i] = sortedDictionary.Keys.ElementAt(i);
+                chartDataProgressVM.Values[i] = sortedDictionary.Values.ElementAt(i);
+
+			}
+			return PartialView("_ExerciseProgressChart", chartDataProgressVM);
         }
 
 	}

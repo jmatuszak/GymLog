@@ -20,9 +20,12 @@
 
 	<div class="container-30">
 		<div>
+			<div style="margin-bottom:10px;">
+				<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn btn-outline-dark ">Start Workout</a>
+			</div>
 			@if (Model.UserTemplatesVM != null)
 			{
-				<h2>Your Templates:</h2>
+				<h2>Your Templates</h2>
 
 				<table>
 					@foreach (var Item in Model.UserTemplatesVM)
@@ -32,10 +35,17 @@
 						{
 							<tr class="noBorder">
 								<td>
-									@Item.Name
+									<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn btn-outline-dark" title="Execute template">@Item.Name</a>
 								</td>
 								<td>
-									<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+									<div>
+									<a asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info" title="Edit template">
+										<span class="material-icons">edit</span>
+									</a>
+									<a class="delete-button btn btn-sm btn-outline-danger" data-id="@Item.Id" title="Delete template">
+										<span class="material-icons">delete</span>
+									</a>
+									</div>
 								</td>
 							</tr>
 						}
@@ -46,7 +56,7 @@
 			}
 		</div>
 		<div>
-			<h2>Sample Templates:</h2>
+			<h2>Sample Templates</h2>
 			@if (Model.SampleTemplatesVM != null)
 			{
 				<table>
@@ -56,23 +66,39 @@
 						@if (Item != null)
 						{
 							<tr class="noBorder">
+
 								<td>
-									@Item.Name
-								</td>
-								<td>
-									<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Execute</a>
+									<a asp-controller="Workout" asp-action="Execute" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-dark" title="Execute template">@Item.Name</a>
 								</td>
 							</tr>
 						}
 					}
 				</table>
 			}
-			<a id="marginedButton" asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info ">New Workout</a>
 
 		</div>
 	</div>
 	</div>
-@*
-@await Component.InvokeAsync("MaxWeight")
-*@
+
+<script>
+	$(document).ready(function () {
+		$(".delete-button").click(function () {
+			var itemId = $(this).data("id");
+
+			if (confirm("Are you sure you want to delete this item?")) {
+				$.ajax({
+					type: "POST",
+					url: "@Url.Action("Delete", "Template")",
+					data: { id: itemId },
+					success: function (data) {
+						location.reload();
+					},
+					error: function () {
+						alert("Error");
+					}
+				});
+			}
+		});
+	});
+</script>
 

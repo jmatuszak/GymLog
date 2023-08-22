@@ -142,10 +142,9 @@ namespace GymLog.Controllers
         public async Task<IActionResult> Create(WorkoutVM? workoutVM)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            workoutVM ??= new WorkoutVM()
-            {
-                StartDate = DateTime.Now,
-            };
+            workoutVM ??= new WorkoutVM();
+
+            if (workoutVM.StartDate == DateTime.MinValue) workoutVM.StartDate = DateTime.Now;
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workoutVM.Exercises = _context.Exercises.ToList();
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
@@ -161,15 +160,14 @@ namespace GymLog.Controllers
                 return BadRequest(ModelState);
             }
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            Workout workout = new Workout()
-            {
-                Name = workoutVM.Name,
-                AppUserId = user.Id,
-                StartDate = workoutVM.StartDate,
-                EndDate = DateTime.Now,
-                TemplateId = workoutVM.TemplateId,
-                WorkoutSegments = new List<WorkoutSegment>(),
-            };
+            Workout workout = new Workout();
+            workout.Name = workoutVM.Name;
+			workout.AppUserId = user.Id;
+			workout.StartDate = workoutVM.StartDate;
+			workout.EndDate = DateTime.Now;
+			workout.WorkoutSegments = new List<WorkoutSegment>();
+            if (workoutVM.TemplateId != 0) _ = workout.TemplateId == workoutVM.TemplateId;
+            
 
             if (workoutVM.WorkoutSegmentsVM != null)
                 foreach (var segment in workoutVM.WorkoutSegmentsVM)

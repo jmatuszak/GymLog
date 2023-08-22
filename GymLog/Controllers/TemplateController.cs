@@ -363,6 +363,13 @@ namespace GymLog.Controllers
             var template = await _context.Templates.FirstOrDefaultAsync(s => s.Id == id);
             if (template != null)
             {
+                var workouts = await _context.Workouts.Where(a => a.TemplateId == template.Id).ToListAsync();
+                foreach(var workout in workouts)
+                {
+                    workout.TemplateId = null;
+                }
+                _context.UpdateRange(workouts);
+                _context.SaveChanges();
                 _context.Templates.Remove(template);
                 var segments = _context.WorkoutSegments.Where(x => x.TemplateId == id).ToList();
                 if (segments.Any()) _context.RemoveRange(segments);

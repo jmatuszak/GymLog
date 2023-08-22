@@ -209,3 +209,8 @@ tr.noneBorder td {
     }
 
 }
+
+.small-button {
+    font-size: 0.875rem;
+    margin-left: 3px;
+}

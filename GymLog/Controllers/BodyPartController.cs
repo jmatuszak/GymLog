@@ -1,5 +1,4 @@
 ﻿using GymLog.Data;
-using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +9,6 @@ namespace GymLog.Controllers
 {
     public class BodyPartController : Controller
     {
-        private readonly IBodyPartRepository _bodyPartRepository;
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
@@ -41,18 +39,6 @@ namespace GymLog.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-
-
-        public async Task<IActionResult> Detail(int id)
-        {
-            var bodyPart = await _bodyPartRepository.GetById(id);
-            if (bodyPart == null)
-            {
-                return NotFound();
-            }
-            return View(bodyPart);
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -66,13 +52,14 @@ namespace GymLog.Controllers
                 return View(bodyPart);
             }
             
-            _bodyPartRepository.Add(bodyPart);
+            _context.BodyParts.Add(bodyPart);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var bodyPart = await _bodyPartRepository.GetByIdAsNoTracking(id);
+            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
             if (bodyPart == null) return View("Error");
             var bodyPartVM = new BodyPartVM
             {
@@ -87,34 +74,34 @@ namespace GymLog.Controllers
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Failed to edit BodyPart");
-                return View("Edtit", bodyPartVM);
+                return View("Edit", bodyPartVM);
             }
-            var bodyPart = await _bodyPartRepository.GetByIdAsNoTracking(id);
+            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
 
             if (bodyPart != null)
             {
                 bodyPart.Id = id;
                 bodyPart.Name = bodyPartVM.Name;
-				_bodyPartRepository.Update(bodyPart);
+                _context.Update(bodyPart);
+                _context.SaveChanges();
 			}
-
-            
             return RedirectToAction("Index");
         }
 
         
         public async Task<IActionResult> Delete(int id)
         {
-            var bodyPart = await _bodyPartRepository.GetByIdAsNoTracking(id);
+            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
             if (bodyPart == null) return View("Error");
             return View(bodyPart);
         }
 		[HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteBodyPartPart(int id)
         {
-            var bodyPart = await _bodyPartRepository.GetByIdAsNoTracking(id);
+            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
             if (bodyPart == null) return View("Error");
-            _bodyPartRepository.Delete(bodyPart);
+            _context.Remove(bodyPart);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 

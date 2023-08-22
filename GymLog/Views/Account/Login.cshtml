@@ -5,18 +5,18 @@
     ViewData["Title"] = "Login";
 }
 <div class="row">
-    <div>
-        <p>
-            <h4>Log in to your account</h4>
-        </p>
+    <div style="text-align:center">
+        
+        
         @if(TempData["Error"] != null)
         {
             <div class="col-md-12 alert alert-danger">
                 <span><b>Sorry!</b> - @TempData["Error"]</span>
             </div>
         }
-        <div class="row">
-            <div class="col-md-8 offset-2">
+        <div class="row justify-content-center">
+            <h4>Log in to GymLog</h4>
+            <div class="col-md-8 ">
                 <form asp-action="Login">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -30,8 +30,9 @@
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-outline-success float right" type="submit" value="Log in" />
-                        @*<a class="btn btn-outline-secondary" asp-controller="Club" asp-action="Index">Cancel</a>*@
+                        <input class="btn btn-outline-success float right" type="submit" value="Log in" style="margin-top:10px; margin-bottom:10px" />
+                            <p>You don't have an account?</p>
+                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Register">Register instead</a>
                     </div>
                 </form>
             </div>
