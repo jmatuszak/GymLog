@@ -1,17 +1,43 @@
 ﻿@using GymLog.ViewModels
 @model TemplateVM
 
-<div class="container1">
-<div class="center-div">
-<div>
-       
+
+<div style="text-align:center">
     <h2>Create Workout Template</h2></br>
 </div>
 
-<form id="myForm" method="post" asp-action="Create" enctype="multipart/form-data">
+<form id="templateForm" method="post" asp-action="Create" enctype="multipart/form-data">
     <partial name="_TemplateCU" />
-    <button type="submit" formaction="/Template/CreatePost" class="btn btn-primary">Submit</button>
-
+    <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
 </form>
-</div>
-</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("submitButton").addEventListener("click", function (event) {
+            const form = document.getElementById("templateForm");
+
+            if (validateForm()) {
+                form.action = "/Template/CreatePost";
+                form.submit();
+            }
+        });
+
+        function validateForm() {
+            var valid = true;
+            var nameField = document.querySelector('input[name="name"]');
+
+            // Clear previous error messages
+            document.querySelectorAll(".text-danger").forEach(function (element) {
+                element.textContent = "";
+            });
+
+            // Validate Name field
+            if (nameField.value.trim() === "") {
+                document.getElementById("errorSpan").textContent = "Name is required.";
+                valid = false;
+            }
+            return valid;
+        }
+    });
+</script>

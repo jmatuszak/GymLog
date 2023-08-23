@@ -39,7 +39,7 @@ namespace GymLog.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
             var userWorkouts = _context.Workouts.Include(t => t.Template).Where(x => x.AppUserId.Equals(user.Id)).ToList();
-            var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals(null)).ToList();
+            var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals("f8f56c4a-1c16-4733-b4d3-e863b40f5c8b") || x.AppUserId.Equals(null)).ToList();
             var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();
 
             var workoutsAndTemplatesVM = new WorkoutsAndTemplatesVM()
@@ -70,59 +70,17 @@ namespace GymLog.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
             var userWorkouts = _context.Workouts.Include(t => t.Template).Where(x => x.AppUserId.Equals(user.Id)).ToList();
-            var sampleTemplates = _context.Templates.Where(x => x.AppUserId.Equals(null)).ToList();
-            var userTemplates = _context.Templates.Where(x => x.AppUserId.Equals(user.Id)).ToList();
-
-            var workoutsAndTemplatesVM = new WorkoutsAndTemplatesVM()
-            {
-                UserTemplatesVM = new List<TemplateVM>(),
-                UserWorkoutsVM = new List<WorkoutVM>(),
-                SampleTemplatesVM = new List<TemplateVM>(),
-            };
-            foreach (var item in sampleTemplates)
-            {
-                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
-                workoutsAndTemplatesVM.SampleTemplatesVM.Add(itemVM);
-            }
-            foreach (var item in userTemplates)
-            {
-                var itemVM = TemplateToTemplateVM(item, new TemplateVM());
-                workoutsAndTemplatesVM.UserTemplatesVM.Add(itemVM);
-            }
+            var userWorkoutsVM = new List<WorkoutVM>();
             foreach (var item in userWorkouts)
             {
                 var itemVM = WorkoutToWorkoutVM(item, new WorkoutVM());
-                workoutsAndTemplatesVM.UserWorkoutsVM.Add(itemVM);
+                userWorkoutsVM.Add(itemVM);
             }
-            return View(workoutsAndTemplatesVM);
+            return View(userWorkoutsVM);
         }
 
 
-        public async Task<ActionResult> MaxWeight(int id)
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var workouts = await _context.Workouts.Include(x => x.WorkoutSegments)
-                .ThenInclude(segment => segment.Sets)
-                .Where(x => x.AppUserId == user.Id).ToListAsync();
-            var exercise = await _context.Exercises.FirstOrDefaultAsync(x => x.Id == id);
-            var maxWeight = workouts
-                .Where(a => a.WorkoutSegments.Any(b => b.ExerciseId == id))
-                .SelectMany(a => a.WorkoutSegments.Where(b => b.ExerciseId == id))
-                .SelectMany(b => b.Sets)
-                .OrderByDescending(c => c.Weight)
-                .FirstOrDefault();
 
-
-            /*            var exercise = await _context.Exercises.FirstOrDefaultAsync(a=>a.Id== id);
-						if (exercise == null || maxWeight==null) return View("Error");
-			*/
-            var maxWeightVM = new MaxWeightVM()
-            {
-                Name = exercise.Name,
-                Weight = (float)maxWeight.Weight
-            };
-            return PartialView("_MaxWeight", maxWeightVM);
-        }
 
 		public IActionResult WorkoutDetails(int id)
 		{

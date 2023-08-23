@@ -2,23 +2,53 @@
 @model TemplateVM
 
 
-<h1>Edit Template</h1>
-
-<form method="post" asp-action="Edit" enctype="multipart/form-data">
+<div style="text-align:center">
+    <h2>Edit Workout Template</h2></br>
+</div>
+<form id="templateForm" method="post" asp-action="Edit" enctype="multipart/form-data">
 
     <partial name="_TemplateCU" />
-    </br>
-    <button type="submit" formaction="/Template/EditPost" class="btn btn-primary">Submit</button>
+    <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
 </form>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) { 
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo(0,scrollpos);
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("submitButton").addEventListener("click", function (event) {
+            const form = document.getElementById("templateForm");
+
+            if (validateForm()) {
+                form.action = "/Template/EditPost";
+                form.submit();
+            }
         });
 
-        window.onbeforeunload = function(e) {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
+        function validateForm() {
+            var valid = true;
+            var nameField = document.querySelector('input[name="name"]');
 
-    </script>
+            // Clear previous error messages
+            document.querySelectorAll(".text-danger").forEach(function (element) {
+                element.textContent = "";
+            });
+
+            // Validate Name field
+            if (nameField.value.trim() === "") {
+                document.getElementById("errorSpan").textContent = "Name is required.";
+                valid = false;
+            }
+            return valid;
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0,scrollpos);
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+
+</script>

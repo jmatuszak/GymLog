@@ -3,7 +3,7 @@
 
 
 <h2>Edit Workout</h2>
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+<form method="post" asp-action="Create" enctype="multipart/form-data" id="workoutForm">
     <partial name="_WorkoutCU" />
     <input asp-for="Id" type="hidden" class="form-control">
 
@@ -17,9 +17,84 @@
         <input asp-for="@Model.EndDate" class="form-control">
         <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
     </div>
-    <button type="submit" formaction="/Workout/EditPost" class="btn btn-primary">Submit</button>
+    <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
 </form>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("submitButton").addEventListener("click", function (event) {
+            const form = document.getElementById("workoutForm");
+            if (validateForm()) {
+                var allChecked = areAllChecked();
+                if (!allChecked) {
+                    var userConfirmed = confirm("Not all exercises are done. Do you want to continue?");
+                    if (userConfirmed) {
+                        form.action = "/Workout/EditPost";
+                        form.submit();
+                    }
+                }
+                else {
+                    form.action = "/Workout/EditPost";
+                    form.submit();
+                }
+            }
+        });
+
+        function validateForm() {
+            var valid = true;
+            var nameField = document.querySelector('input[name="name"]');
+            var setsWeightFields = document.querySelectorAll("input[name^='WorkoutSegmentsVM'][name$='Weight']");
+            var setsRepsFields = document.querySelectorAll("input[name^='WorkoutSegmentsVM'][name$='Reps']");
+
+            // Clear previous error messages
+            document.querySelectorAll(".text-danger").forEach(function (element) {
+                element.textContent = "";
+            });
+
+            // Validate Name field
+            if (nameField.value.trim() === "") {
+                document.getElementById("errorSpan").textContent = "Name is required.";
+                valid = false;
+            }
+
+            // Validate Sets Weight fields
+            setsWeightFields.forEach(function (element) {
+                if (!isFloat(element.value)) {
+                    var errorMessage = "Weight must be floating-point number.";
+                    element.nextElementSibling.textContent = errorMessage;
+                    valid = false;
+                }
+            });
+
+            // Validate Sets Reps fields
+            setsRepsFields.forEach(function (element) {
+                if (!isInt(element.value)) {
+                    var errorMessage = "Reps must be integer.";
+                    element.nextElementSibling.textContent = errorMessage;
+                    valid = false;
+                }
+            });
+
+            return valid;
+        }
+
+        function isFloat(value) {
+            return /^[+-]?\d+(\,\d+)?$/.test(value);
+        }
+
+        function isInt(value) {
+            return /^[+-]?\d+$/.test(value);
+        }
+
+        function areAllChecked() {
+            var isDoneCheckboxes = document.querySelectorAll(".my-checkbox-x2");
+            var uncheckedCheckboxes = Array.from(isDoneCheckboxes).filter(function (checkbox) {
+                return !checkbox.checked;
+            });
+            return uncheckedCheckboxes.length === 0;
+        }
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         var scrollpos = localStorage.getItem('scrollpos');

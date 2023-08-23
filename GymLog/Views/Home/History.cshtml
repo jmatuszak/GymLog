@@ -1,5 +1,5 @@
 ﻿@using GymLog.ViewModels
-@model WorkoutsAndTemplatesVM
+@model IEnumerable<WorkoutVM>
 
 
 
@@ -7,8 +7,8 @@
 	<div class="container-70">
 		<div id="calendar"></div>
 	</div>
-	<div class="container-30">
-		<div id="workoutDetails"></div>
+	<div class="container-30" >
+		<div id="workoutDetails" ></div>
 	</div>
 </div>
 
@@ -22,7 +22,7 @@
 		$(document).ready(function () {
 			$('#calendar').fullCalendar( {
 				events: [
-		@foreach (var workout in Model.UserWorkoutsVM)
+		@foreach (var workout in Model)
 		{
 			<text>
 						{

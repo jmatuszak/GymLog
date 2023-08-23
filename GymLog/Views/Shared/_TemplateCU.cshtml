@@ -9,8 +9,8 @@
 
     <div class="form-group">
         <label asp-for="Name">Name</label>
-        <input asp-for="Name" class="form-control" placeholder="Name">
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <input name="name" asp-for="Name" class="form-control" placeholder="Name">
+    <span id="errorSpan" class="text-danger"></span>
     </div>
 @if (Model.Exercises != null)
 {
