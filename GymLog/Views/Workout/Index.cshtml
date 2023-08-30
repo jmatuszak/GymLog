@@ -3,7 +3,7 @@
 
 
 <h1>Workouts</h1>
-<a asp-controller="Template" asp-action="Create" class="btn btn-sm btn-outline-info" style="margin-bottom:10px;">Create new</a>
+<a asp-controller="Workout" asp-action="Create" class="btn btn-sm btn-outline-info" style="margin-bottom:10px;">Create new</a>
 
 <table>
     <tr>
@@ -45,10 +45,10 @@
             </td>
 
             <td id="tableButtons">
-                <a asp-controller="Template" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
+                <a asp-controller="Workout" asp-action="Edit" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Edit</a>
             </td>
             <td id="tableButtons">
-                <a asp-controller="Template" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
+                <a asp-controller="Workout" asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-sm btn-outline-info">Delete</a>
             </td>
         </tr>
     }

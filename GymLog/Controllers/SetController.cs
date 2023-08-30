@@ -105,7 +105,6 @@ namespace GymLog.Controllers
 		{
 			if(!ModelState.IsValid) 
 			{
-				ModelState.AddModelError("", "Failed to edit Set");
 				return View(setVM);
 			}
             var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);

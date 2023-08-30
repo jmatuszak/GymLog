@@ -10,24 +10,24 @@
     <h3>@Model.Name</h3>
 
 
-@{
-    var duration = Model.EndDate - Model.StartDate;
-    string durationTxt;
-    if (duration.TotalHours >= 1)
-    {
-        durationTxt = $"{(int)duration.TotalHours}h {duration.Minutes}min {duration.Seconds}sec";
+    @{
+        var duration = Model.EndDate - Model.StartDate;
+        string durationTxt;
+        if (duration.TotalHours >= 1)
+        {
+            durationTxt = $"{(int)duration.TotalHours}h {duration.Minutes}min {duration.Seconds}sec";
+        }
+        else if (duration.TotalMinutes >= 1)
+        {
+            durationTxt = $"{duration.Minutes}min {duration.Seconds}sec";
+        }
+        else
+        {
+            durationTxt = $"{duration.Seconds}sec";
+        }
     }
-    else if (duration.TotalMinutes >= 1)
-    {
-        durationTxt = $"{duration.Minutes}min {duration.Seconds}sec";
-    }
-    else
-    {
-        durationTxt = $"{duration.Seconds}sec";
-    }
-}
-<p>Duration: @durationTxt</p>
-<div class="form-group" style="text-align:center; justify-content: center;">
+    <p>Duration: @durationTxt</p>
+    <div class="form-group" style="text-align:center; justify-content: center;">
     @{
         if (Model.WorkoutSegmentsVM != null)
         {
@@ -86,8 +86,5 @@
 
         }
     }
-    
-
-
-</div>
+    </div>
 </div>

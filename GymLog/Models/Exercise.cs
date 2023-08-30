@@ -1,4 +1,5 @@
 ﻿using GymLog.Data.Enum;
+using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymLog.Models
@@ -6,6 +7,7 @@ namespace GymLog.Models
     public class Exercise
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
 
         public List<BodyPart>? BodyParts { get; set; }

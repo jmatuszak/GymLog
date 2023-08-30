@@ -4,9 +4,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<body>
-    <canvas id="barChart"></canvas>
-</body>
+
+<canvas id="barChart"></canvas>
+
 
 <script>
     var viewModelData = @Html.Raw(Json.Serialize(Model));
@@ -20,18 +20,18 @@
                 data: viewModelData.values,
 
                 backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 205, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(201, 203, 207, 0.2)'
+                  'rgba(255, 99, 132, 0.3)',
+                  'rgba(255, 159, 64, 0.3)',
+                  'rgba(255, 205, 86, 0.3)',
+                  'rgba(75, 192, 192, 0.3)',
+                  'rgba(250, 120, 207, 0.3)'
                 ],
                 borderColor: [
                   'rgb(255, 99, 132)',
                   'rgb(255, 159, 64)',
                   'rgb(255, 205, 86)',
                   'rgb(75, 192, 192)',
-                  'rgb(201, 203, 207)'
+                  'rgb(250, 120, 250)'
                 ],
                 borderWidth: 1
             }]

@@ -88,7 +88,8 @@ namespace GymLog.Controllers
             if (workoutVM == null) throw new ArgumentNullException();
             if (workoutVM.WorkoutSegmentsVM == null) throw new ArgumentNullException();
             if (workoutVM.WorkoutSegmentsVM[segment].SetsVM == null) return View("Error");
-            workoutVM.WorkoutSegmentsVM[segment].SetsVM.RemoveAt(workoutVM.WorkoutSegmentsVM[segment].SetsVM.Count - 1);
+            if (workoutVM.WorkoutSegmentsVM[segment].SetsVM.Count>1)
+                workoutVM.WorkoutSegmentsVM[segment].SetsVM.RemoveAt(workoutVM.WorkoutSegmentsVM[segment].SetsVM.Count - 1);
             ModelState.Clear();
             return View(workoutVM.ActionName, workoutVM);
         }
@@ -141,7 +142,6 @@ namespace GymLog.Controllers
         //<-----------------------   Create   ---------------------> 
         public async Task<IActionResult> Create(WorkoutVM? workoutVM)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
             workoutVM ??= new WorkoutVM();
 
             if (workoutVM.StartDate == DateTime.MinValue) workoutVM.StartDate = DateTime.Now;
@@ -151,14 +151,11 @@ namespace GymLog.Controllers
             workoutVM.ActionName = "create";
             return View(workoutVM);
         }
-
         [HttpPost]
         public async Task<IActionResult> CreatePost(WorkoutVM workoutVM)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return View("Create", workoutVM);
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
             Workout workout = new Workout();
             workout.Name = workoutVM.Name;
@@ -229,8 +226,7 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit. ModelState Error.");
-                return View(workoutVM);
+                return View("Edit", workoutVM);
             }
             var workout = await _context.Workouts.Include(t => t.WorkoutSegments).FirstOrDefaultAsync(i => i.Id == workoutVM.Id);
             if (workout == null) return View("Error");

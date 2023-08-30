@@ -58,10 +58,7 @@ namespace GymLog.Controllers
         [HttpPost]
         public IActionResult CreatePost(ExerciseVM ExerciseVM)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(ExerciseVM);
-            }
+            if (!ModelState.IsValid) return View("Create", ExerciseVM);
             Exercise Exercise = new Exercise() 
             {
                 Id = ExerciseVM.Id,

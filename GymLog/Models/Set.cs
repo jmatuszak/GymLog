@@ -10,5 +10,5 @@ namespace GymLog.Models
         public string? Description { get; set; }
         public int WorkoutSegmentId { get; set; }
         public WorkoutSegment? WorkoutSegment { get; set; }
-}
+    }
 }

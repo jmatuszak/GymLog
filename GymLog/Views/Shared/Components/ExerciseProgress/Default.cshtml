@@ -13,17 +13,18 @@
         <span class="close">&times;</span>
         <input type="text" id="filterInput" autocomplete="off" />
 
-        <table id="exerciseTable" style="margin: auto">
+        <table id="exerciseTable" style="margin: auto; width:100%">
             <tbody>
                 @foreach (var exercise in Model)
                 {
+
                     <tr class="noneBorder" style="margin: 0px;">
                         <td style="display:none;">@exercise.Id</td>
                         <td style="display:none;">@exercise.Name</td>
                         <td style="padding:0px;">
-                                <button type="submit" class="exerciseProgressButton btn btn-dark" data-id="@exercise.Id">
-                                    <img src="@exercise.ImageSrc" alt="@exercise.Name" width="300">
-                                </button>
+                            <button type="submit" style="width:100%" class="exerciseProgressButton btn btn-dark" data-id="@exercise.Id">
+                                <img src="@exercise.ImageSrc" alt="@exercise.Name" width="230">
+                            </button>
                         </td>
                     </tr>
                 }

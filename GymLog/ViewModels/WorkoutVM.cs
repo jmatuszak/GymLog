@@ -6,6 +6,8 @@ namespace GymLog.ViewModels
     public class WorkoutVM
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [MaxLength(50)]
         public string? Name { get; set; }
         public int? TemplateId { get; set; }
         public Template? Template { get; set; }

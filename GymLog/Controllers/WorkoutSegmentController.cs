@@ -105,7 +105,6 @@ namespace GymLog.Controllers
                 }
                 else if (role == "admin")
                 {
-                    if (!ModelState.IsValid) return BadRequest(ModelState);
                     WorkoutSegmentVM ??= new WorkoutSegmentVM();
                     WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
                     WorkoutSegmentVM.SetsVM.Add(new SetVM());
@@ -120,11 +119,10 @@ namespace GymLog.Controllers
         [HttpPost]
 		public IActionResult CreatePost(WorkoutSegmentVM WorkoutSegmentVM)
 		{
-			if(!ModelState.IsValid)
-			{
-				return View("Error");
-			}
-
+            if (!ModelState.IsValid)
+            {
+                return View("Create", WorkoutSegmentVM);
+            }
             var sets = new List<Set>();
             if (WorkoutSegmentVM.SetsVM != null)
                 foreach (var item in WorkoutSegmentVM.SetsVM)
@@ -207,8 +205,7 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit Set. Model Error.");
-                return View(WorkoutSegmentVM);
+                return View("Edit", WorkoutSegmentVM);
             }
             var oldSets = _context.Sets.Where(x => x.WorkoutSegmentId == WorkoutSegmentVM.Id).ToList();
             _context.Sets.RemoveRange(oldSets);

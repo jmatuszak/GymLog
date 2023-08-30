@@ -11,7 +11,8 @@
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input name="name" asp-for="Name" class="form-control" placeholder="Name">
-        <span id="errorSpan" class="text-danger"></span>
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        <span id="nameError" class="text-danger"></span>
     </div>
     <div class="form-group">
     @{
@@ -55,7 +56,8 @@
 
                     <div class="form-group">
                         <label asp-for="@Model.WorkoutSegmentsVM[i].Description">Description</label>
-                        <input asp-for="@Model.WorkoutSegmentsVM[i].Description" class="form-control" placeholder="Description">
+                        <input name="description" asp-for="@Model.WorkoutSegmentsVM[i].Description" class="form-control" placeholder="Description">
+                        <span id="descriptionError" class="text-danger"></span>
                         <span asp-validation-for="@Model.WorkoutSegmentsVM[i].Description" class="text-danger"></span>
                     </div>
                     <input asp-for="@Model.WorkoutSegmentsVM[i].TemplateId" type="hidden" class="form-control">
@@ -92,7 +94,7 @@
 
                                     <td>
                                         <div class="form-group">
-                                            <input name="WorkoutSegmentsVM[@i].SetsVM[@j].Reps" asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps" class="form-control" placeholder="Reps">
+                                            <input type="text" name="WorkoutSegmentsVM[@i].SetsVM[@j].Reps" asp-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps" class="form-control" placeholder="Reps">
                                             <span class="text-danger"></span>
                                             <span asp-validation-for="@Model.WorkoutSegmentsVM[i].SetsVM[j].Reps" class="text-danger"></span>
                                         </div>
@@ -109,7 +111,10 @@
                         </table>
                     }
                     <button type="submit" formaction="/Workout/AddSet?segment=@i" class="btn btn-outline-primary">+</button>
-                    <button type="submit" formaction="/Workout/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
+                    @if (@Model.WorkoutSegmentsVM[i].SetsVM.Count>1)
+                    {
+                        <button type="submit" formaction="/Workout/RemoveSet?segment=@i" class="btn btn-outline-danger">-</button>
+                    }
 
                 </div>
             }
@@ -120,7 +125,7 @@
     </div>
     </br>
 
-<button type="button" id="openExercisesModalBtn" class="btn btn-primary">Add Exercise</button>
+<button type="button" id="openExercisesModalBtn" class="btn btn-outline-primary">Add Exercise</button>
 
 
 <div id="exercisesModal" class="modal">
@@ -138,8 +143,8 @@
                             <td style="display:none;">@exercise.Id</td>
                             <td style="display:none;">@exercise.Name</td>
                             <td style="padding:0px;">
-                                <button type="submit" formaction="/Workout/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
-                                <img src="@exercise.ImageSrc" alt="@exercise.Name" width="300">
+                            <button type="submit" style="width:100%" formaction="/Workout/AddWorkoutSegment?exerciseId=@exercise.Id" class="btn btn-dark">
+                                <img src="@exercise.ImageSrc" alt="@exercise.Name" width="230">
                                 </button>
                             </td>
                         </tr>
@@ -152,7 +157,7 @@
 <div id="animationModal" class="modal">
     <div class="modal-animation">
         <div>
-            <img id="modalImage"  alt="Zdjęcie">
+            <img id="modalImage" alt="Zdjęcie">
         </div>
     </div>
 </div>

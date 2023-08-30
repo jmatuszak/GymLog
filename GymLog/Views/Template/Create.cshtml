@@ -8,36 +8,5 @@
 
 <form id="templateForm" method="post" asp-action="Create" enctype="multipart/form-data">
     <partial name="_TemplateCU" />
-    <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
+    <button type="submit" formaction="/Template/CreatePost" class="btn btn-outline-success">Submit</button>
 </form>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("submitButton").addEventListener("click", function (event) {
-            const form = document.getElementById("templateForm");
-
-            if (validateForm()) {
-                form.action = "/Template/CreatePost";
-                form.submit();
-            }
-        });
-
-        function validateForm() {
-            var valid = true;
-            var nameField = document.querySelector('input[name="name"]');
-
-            // Clear previous error messages
-            document.querySelectorAll(".text-danger").forEach(function (element) {
-                element.textContent = "";
-            });
-
-            // Validate Name field
-            if (nameField.value.trim() === "") {
-                document.getElementById("errorSpan").textContent = "Name is required.";
-                valid = false;
-            }
-            return valid;
-        }
-    });
-</script>

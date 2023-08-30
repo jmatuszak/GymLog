@@ -101,7 +101,8 @@ namespace GymLog.Controllers
             if (templateVM == null) throw new ArgumentNullException();
             if (templateVM.WorkoutSegmentsVM == null) throw new ArgumentNullException();
             if (templateVM.WorkoutSegmentsVM[segment].SetsVM == null) return View("Error");
-            templateVM.WorkoutSegmentsVM[segment].SetsVM.RemoveAt(templateVM.WorkoutSegmentsVM[segment].SetsVM.Count - 1);
+            if (templateVM.WorkoutSegmentsVM[segment].SetsVM.Count>1)
+                templateVM.WorkoutSegmentsVM[segment].SetsVM.RemoveAt(templateVM.WorkoutSegmentsVM[segment].SetsVM.Count - 1);
             ModelState.Clear();
             return View(templateVM.ActionName, templateVM);
         }
@@ -134,7 +135,6 @@ namespace GymLog.Controllers
         //<-----------------------   Create   ---------------------> 
         public async Task<IActionResult> Create(TemplateVM? templateVM)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
             templateVM ??= new TemplateVM();
             templateVM.Exercises = _context.Exercises.ToList();
             templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
@@ -147,7 +147,7 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View("Create", templateVM);
             }
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var template = new Template()
@@ -213,8 +213,7 @@ namespace GymLog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit. ModelState Error.");
-                return View(templateVM);
+                return View("Edit", templateVM);
             }
             var template = await _context.Templates.Include(t => t.WorkoutSegments).FirstOrDefaultAsync(i => i.Id == templateVM.Id);
             if (template == null) return View("Error");

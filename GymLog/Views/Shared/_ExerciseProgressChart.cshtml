@@ -6,9 +6,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-filler"></script>
 
-<body>
+<div style="min-height:200px;">
     <canvas id="exerciseProgressChart"></canvas>
-</body>
+</div>
 <script>
     var viewModelData = @Html.Raw(Json.Serialize(Model));
 
@@ -21,15 +21,17 @@
                 label: 'Exercise Progress',
                 data: viewModelData.values,
                 borderColor: 'blue',
-                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Kolor wypełnienia (półprzezroczysty niebieski)
-                fill: 'origin', // Ta wartość aktywuje wypełnianie od osi X
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                fill: 'origin',
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 2,
             plugins: {
                 filler: {
-                    propagate: true // Ta opcja sprawia, że kolorowanie będzie podążać za wykresem
+                    propagate: true
                 }
             },
             scales: {
@@ -49,3 +51,4 @@
         }
     });
 </script>
+
