@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GymLog.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GymLog.ViewModels
 {
@@ -10,6 +11,8 @@ namespace GymLog.ViewModels
         public string Name { get; set; }
         public List<BodyPartVM>? BodyPartsVM { get; set; }
 		public string? ImageSrc { get; set; }
+        public string? AppUserId { get; set; }
+        virtual public AppUser? AppUser { get; set; }
 
-	}
+    }
 }

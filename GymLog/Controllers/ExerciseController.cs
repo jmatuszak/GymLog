@@ -56,14 +56,32 @@ namespace GymLog.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePost(ExerciseVM ExerciseVM)
+        public async Task<IActionResult> CreatePost(ExerciseVM ExerciseVM)
         {
             if (!ModelState.IsValid) return View("Create", ExerciseVM);
-            Exercise Exercise = new Exercise() 
+            //Check if user is admin
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var accountsVM = await _userManager.Users.Select(user => new AccountVM
             {
-                Id = ExerciseVM.Id,
-                Name= ExerciseVM.Name
-            };
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+            }).ToListAsync();
+            var users = await _userManager.Users.ToListAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+            string userRole = "user";
+            foreach (var role in roles)
+            {
+                if (role == "admin") userRole = "admin";
+            }
+            Exercise Exercise = new Exercise();
+            Exercise.Id = ExerciseVM.Id;
+            Exercise.Name = ExerciseVM.Name;
+            if (userRole.Equals("user"))
+            {
+                Exercise.AppUserId = user.Id;
+            }
+
             _context.Exercises.Add(Exercise);
             _context.SaveChanges();
             if (ExerciseVM.BodyPartsVM != null)

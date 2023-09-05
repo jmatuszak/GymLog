@@ -50,10 +50,14 @@ td {
     border-color: white;
 }
 
-#rightMenu {
-    position: absolute;
-    right: 1%;
+
+@media (min-width: 576px) {
+    #rightMenu {
+        position: absolute;
+        right: 1%;
+    }
 }
+
 
 
 #removeButton {

@@ -148,7 +148,10 @@ namespace GymLog.Controllers
         public async Task<IActionResult> Create(TemplateVM? templateVM)
         {
             templateVM ??= new TemplateVM();
-            templateVM.Exercises = _context.Exercises.ToList();
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            templateVM.Exercises = _context.Exercises.Where(a => a.AppUserId == user.Id || a.AppUserId == null).ToList();
+
             templateVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             templateVM.ActionName = "create";
             return View(templateVM);
@@ -217,6 +220,9 @@ namespace GymLog.Controllers
                 if (template == null) return View("Error");
                 templateVM = TemplateToTemplateVM(template, templateVM);
             }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            templateVM.Exercises = _context.Exercises.Where(a => a.AppUserId == user.Id || a.AppUserId == null).ToList();
+
             return View(templateVM);
         }
 

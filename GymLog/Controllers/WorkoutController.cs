@@ -135,7 +135,10 @@ namespace GymLog.Controllers
             workoutVM ??= new WorkoutVM();
 
             if (workoutVM.StartDate == DateTime.MinValue) workoutVM.StartDate = DateTime.Now;
-            workoutVM.Exercises = _context.Exercises.ToList();
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            workoutVM.Exercises = _context.Exercises.Where(a=>a.AppUserId == user.Id || a.AppUserId == null).ToList();
+
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             workoutVM.ActionName = "create";
             return View(workoutVM);
@@ -150,7 +153,8 @@ namespace GymLog.Controllers
             workout.Name = workoutVM.Name;
 			workout.AppUserId = user.Id;
 			workout.StartDate = workoutVM.StartDate;
-			workout.EndDate = DateTime.Now;
+			var now = DateTime.Now;
+			workout.EndDate = now.AddMilliseconds(-now.Millisecond);
 			workout.WorkoutSegments = new List<WorkoutSegment>();
             if (workoutVM.TemplateId != 0) _ = workout.TemplateId == workoutVM.TemplateId;
             
@@ -208,6 +212,8 @@ namespace GymLog.Controllers
                 if (workout == null) return View("Error");
                 workoutVM = WorkoutToWorkoutVM(workout, workoutVM);
             }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            workoutVM.Exercises = _context.Exercises.Where(a => a.AppUserId == user.Id || a.AppUserId == null).ToList();
             return View(workoutVM);
         }
         [HttpPost]
