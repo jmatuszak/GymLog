@@ -14,15 +14,12 @@ namespace GymLog.ViewModels
         public List<WorkoutSegmentVM>? WorkoutSegmentsVM { get; set; }
         public List<Exercise>? Exercises { get; set; }
         public string? ActionName { get; set; }
-        
         [DataType(DataType.DateTime)]
-        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-
         [DataType(DataType.DateTime)]
-        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
         public string? AppUserId { get; set; }
+        public string? AppUserEmail { get; set; }
     }
 }
 

@@ -13,5 +13,6 @@ namespace GymLog.ViewModels
         public List<Exercise>? Exercises { get; set; }
         public string? ActionName { get; set; }
         public string? AppUserId { get; set; }
+        public string? AppUserEmail { get; set; }
     }
 }

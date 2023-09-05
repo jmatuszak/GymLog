@@ -87,6 +87,7 @@ namespace GymLog.Controllers
 			return ViewComponent("WorkoutDetails", id);
 		}
 
+
         public async Task<ActionResult> ExerciseProgress(int id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -123,10 +124,10 @@ namespace GymLog.Controllers
             {
                 weightAndDateDic.Add(labels[i], values[i]);
             }
-			var sortedDictionary = weightAndDateDic.OrderBy(pair => pair.Key).
+	        var sortedDictionary = weightAndDateDic.OrderBy(pair => pair.Key).
                 ToDictionary(pair => pair.Key, pair => pair.Value);
 
-			var chartDataProgressVM = new ChartDataProgressVM();
+	        var chartDataProgressVM = new ChartDataProgressVM();
 
 			
             chartDataProgressVM.Labels = new DateTime[values.Count];
@@ -136,8 +137,8 @@ namespace GymLog.Controllers
                 chartDataProgressVM.Labels[i] = sortedDictionary.Keys.ElementAt(i);
                 chartDataProgressVM.Values[i] = sortedDictionary.Values.ElementAt(i);
 
-			}
-			return PartialView("_ExerciseProgressChart", chartDataProgressVM);
+	        }
+	        return PartialView("_ExerciseProgressChart", chartDataProgressVM);
         }
 
 	}

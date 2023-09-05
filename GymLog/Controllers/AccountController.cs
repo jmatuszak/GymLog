@@ -121,7 +121,7 @@ namespace GymLog.Controllers
             return View(response);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAdminPost(RegisterVM registerVM)
+        public async Task<IActionResult> CreateAdmin(RegisterVM registerVM)
         {
             if (!ModelState.IsValid) return View(registerVM);
 
@@ -151,6 +151,24 @@ namespace GymLog.Controllers
             if (user == null)
             {
                 return NotFound();
+            }
+            //Delete User Workouts
+            var workouts = await _context.Workouts.Include(x => x.WorkoutSegments)
+                .ThenInclude(segment => segment.Sets)
+                .Where(x => x.AppUserId == user.Id).ToListAsync();
+            if (workouts != null)
+            {
+                _context.Workouts.RemoveRange(workouts);
+                _context.SaveChanges();
+            }
+            //Delete User Templates
+            var templates = await _context.Workouts.Include(x => x.WorkoutSegments)
+                .ThenInclude(segment => segment.Sets)
+                .Where(x => x.AppUserId == user.Id).ToListAsync();
+            if (templates != null)
+            {
+                _context.Workouts.RemoveRange(templates);
+                _context.SaveChanges();
             }
 
             var result = await _userManager.DeleteAsync(user);

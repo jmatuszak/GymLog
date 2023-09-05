@@ -26,6 +26,13 @@ namespace GymLog.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
 
+            var accountsVM = await _userManager.Users.Select(user => new AccountVM
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+            }).ToListAsync();
+
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
@@ -76,7 +83,12 @@ namespace GymLog.Controllers
                         };
                         templatesVM.Add(templateVM);
                     }
-
+                    foreach (var templateVM in templatesVM)
+                    {
+                        var account = accountsVM.FirstOrDefault(a => a.Id == templateVM.AppUserId);
+                        if (account != null)
+                            templateVM.AppUserEmail = account.Email;
+                    }
                     return View(templatesVM);
                 }
             }

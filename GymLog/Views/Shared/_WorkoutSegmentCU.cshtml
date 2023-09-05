@@ -64,7 +64,7 @@
                         <td>
                             <div class="form-group">
                                 <input asp-for="SetsVM[i].Weight" class="form-control" placeholder="Weight">
-                                <span asp-validation-for="SetsVM[i].Weight" class="text-danger"></span>
+                                <span asp-validation-for="@Model.SetsVM[i].Weight" class="text-danger"></span>
                             </div>
                         </td>
 

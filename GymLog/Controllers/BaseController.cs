@@ -82,6 +82,8 @@ namespace GymLog.Controllers
             workoutVM.Name = workout.Name;
             workoutVM.StartDate = workout.StartDate;
             workoutVM.EndDate = workout.EndDate;
+            workoutVM.AppUserId = workout.AppUserId;
+            workoutVM.TemplateId = workout.TemplateId;
 
             var segmentsVM = new List<WorkoutSegmentVM>();
             if (workout.WorkoutSegments != null && workout.WorkoutSegments.Count > 0)

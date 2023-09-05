@@ -20,35 +20,18 @@ namespace GymLog.Controllers
             _context = context;
             _userManager = userManager;
         }
-        //Calendar
-        public async Task<IActionResult> Calendar()
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
-            {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var workouts = _context.Workouts.ToList();
-                    return View(workouts);
-                }
-            }
-            return RedirectToAction("Login", "Account");
-        }
-
-
 
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null) return RedirectToAction("Login", "Account");
-
+            var accountsVM = await _userManager.Users.Select(user => new AccountVM
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+            }).ToListAsync();
+            var users = await _userManager.Users.ToListAsync();
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
@@ -58,12 +41,19 @@ namespace GymLog.Controllers
                 }
                 else if (role == "admin")
                 {
-                    var workouts = _context.Workouts.Include(a => a.WorkoutSegments).ToList();
+                    var workouts = _context.Workouts.Include(b=>b.AppUser).ToList();
                     var workoutsVM = new List<WorkoutVM>();
+                    
                     foreach (var workout in workouts)
                     {
                         var workoutVM = WorkoutToWorkoutVM(workout, new WorkoutVM());
                         workoutsVM.Add(workoutVM);
+                    }
+                    foreach(var workoutVM in workoutsVM)
+                    {
+                        var account = accountsVM.FirstOrDefault(a => a.Id == workoutVM.AppUserId);
+                        if(account != null)
+                            workoutVM.AppUserEmail = account.Email;
                     }
                     return View(workoutsVM);
                 }
@@ -145,7 +135,6 @@ namespace GymLog.Controllers
             workoutVM ??= new WorkoutVM();
 
             if (workoutVM.StartDate == DateTime.MinValue) workoutVM.StartDate = DateTime.Now;
-            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workoutVM.Exercises = _context.Exercises.ToList();
             workoutVM.WorkoutSegmentsVM ??= new List<WorkoutSegmentVM>();
             workoutVM.ActionName = "create";

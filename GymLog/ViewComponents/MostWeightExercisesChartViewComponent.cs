@@ -26,6 +26,7 @@ namespace GymLog.ViewComponents;
         var workouts = await _context.Workouts.Include(x => x.WorkoutSegments)
             .ThenInclude(segment => segment.Sets)
             .Where(x => x.AppUserId == user.Id).ToListAsync();
+        //int - id of exercise; float - weight
         var weightSumOfExercises = new List<(int,float?)>();
         
         foreach(var workout in workouts)
@@ -43,7 +44,8 @@ namespace GymLog.ViewComponents;
                     }
                     else
                     {
-                        weightSumOfExercises.Add((segment.ExerciseId, 0));
+                        weightSumOfExercises.Add((segment.ExerciseId, set.Weight));
+
                     }
                 }
             }  
