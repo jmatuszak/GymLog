@@ -2,9 +2,7 @@
 using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {

@@ -1,15 +1,11 @@
 ﻿using GymLog.Interfaces;
 using GymLog.Data;
 using GymLog.Models;
-using GymLog.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GymLog.Repositories
 {
+
     public class ExerciseRepository : IExerciseRepository
     {
         private readonly AppDbContext _context;
@@ -20,10 +16,12 @@ namespace GymLog.Repositories
         }
 
 
+
         public void DeleteExercise(Exercise exercise)
         {
             _context.Remove(exercise);
             Save();
+
         }
 
         public async Task<Exercise> GetExerciseByIdAsync(int id)
@@ -40,9 +38,7 @@ namespace GymLog.Repositories
 
         public void InsertExercise(Exercise exercise)
         {
-            exercise.BodyParts = null;
             _context.Exercises.Add(exercise);
-            Save();
         }
 
         public void InsertBodyPartExercise(Exercise exercise)
@@ -58,7 +54,6 @@ namespace GymLog.Repositories
                     });
                 }
             _context.BodyPartExercises.AddRangeAsync(bodyPartExercises);
-            Save();
         }
 
         public void Save()
@@ -69,8 +64,6 @@ namespace GymLog.Repositories
         public void UpdateExercise(Exercise exercise)
         {
             _context.Update(exercise);
-            Save();
-
         }
 
         public void UpdateBodyPartExercise(Exercise exercise)
@@ -89,7 +82,6 @@ namespace GymLog.Repositories
                     _context.BodyPartExercises.Add(bodyPartExercise);
                 }
             }
-            Save();
         }
 
 

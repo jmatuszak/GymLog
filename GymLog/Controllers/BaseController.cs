@@ -1,9 +1,7 @@
 ﻿using GymLog.Data;
 using GymLog.Models;
 using GymLog.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {
@@ -28,23 +26,23 @@ namespace GymLog.Controllers
             return exercise;
         }
 
-        protected List<BodyPart> GetBodyParts(ExerciseVM exerciseVM)
+        protected List<BodyPart> GetCheckedBodyParts(ExerciseVM exerciseVM)
         {
             var bodyParts = new List<BodyPart>();
-            if(exerciseVM.BodyPartsVM != null)
-            foreach (var itemVM in exerciseVM.BodyPartsVM)
-            {
-                if (itemVM.IsChecked)
+            if (exerciseVM.BodyPartsVM != null)
+                foreach (var itemVM in exerciseVM.BodyPartsVM)
                 {
-                    var bodypart = new BodyPart() { Id = itemVM.Id, Name = itemVM.Name };
-                    bodyParts.Add(bodypart);
+                    if (itemVM.IsChecked)
+                    {
+                        var bodypart = new BodyPart() { Id = itemVM.Id, Name = itemVM.Name };
+                        bodyParts.Add(bodypart);
+                    }
                 }
-            }
             return bodyParts;
         }
 
-            // TEMPLATE TO  TemplateVM
-            protected TemplateVM TemplateToTemplateVM(Template template, TemplateVM templateVM)
+        // TEMPLATE TO  TemplateVM
+        protected TemplateVM TemplateToTemplateVM(Template template, TemplateVM templateVM)
         {
             templateVM.Exercises = Context.Exercises.ToList();
             templateVM.WorkoutSegmentsVM = templateVM.WorkoutSegmentsVM ?? new List<WorkoutSegmentVM>();
@@ -128,14 +126,14 @@ namespace GymLog.Controllers
                         for (var s = 0; s < workout.WorkoutSegments[t].Sets.Count; s++)
                         {
                             var setVM = new SetVM();
-                            
+
                             if (workout.WorkoutSegments[t].Sets[s].Id != null)
                                 setVM.Id = workout.WorkoutSegments[t].Sets[s].Id;
                             setVM.Description = workout.WorkoutSegments[t].Sets[s].Description;
                             setVM.Weight = workout.WorkoutSegments[t].Sets[s].Weight;
                             setVM.Reps = workout.WorkoutSegments[t].Sets[s].Reps;
                             setVM.WorkoutSegmentId = workout.WorkoutSegments[t].Sets[s].WorkoutSegmentId;
-                            if(workoutVM.ActionName!=null)
+                            if (workoutVM.ActionName != null)
                             {
                                 if (workoutVM.ActionName.Equals("Edit")) setVM.isDone = true;
                             }
@@ -170,7 +168,7 @@ namespace GymLog.Controllers
             };
             return exerciseVM;
         }
-        
+
         protected ExerciseVM PrepareExerciseVMToUpdate(Exercise exercise)
         {
             var bodyParts = Context.BodyParts.ToList();
