@@ -40,14 +40,9 @@ namespace GymLog.Repositories
 
         public void InsertExercise(Exercise exercise)
         {
-            var bodyParts = exercise.BodyParts;
-            //Add exercise
             exercise.BodyParts = null;
             _context.Exercises.Add(exercise);
             Save();
-            //Add body parts used in exercise (Aditional table many to many)
-            
-
         }
 
         public void InsertBodyPartExercise(Exercise exercise)

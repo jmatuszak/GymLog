@@ -1,12 +1,11 @@
 ﻿using GymLog.Models;
-using GymLog.ViewModels;
 
 namespace GymLog.Interfaces
 {
     public interface IExerciseRepository : IDisposable
     {
-        Task<IEnumerable<Exercise>> GetExerciseListAsync();
         Task<Exercise> GetExerciseByIdAsync(int id);
+        Task<IEnumerable<Exercise>> GetExerciseListAsync();
         void InsertExercise(Exercise exercise);
         void InsertBodyPartExercise(Exercise exercise);
         void DeleteExercise(Exercise exercise);

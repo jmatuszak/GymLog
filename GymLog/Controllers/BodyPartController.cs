@@ -1,4 +1,5 @@
 ﻿using GymLog.Data;
+using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -7,36 +8,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {
-    public class BodyPartController : Controller
+    public class BodyPartController : BaseController
     {
-        private readonly AppDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IBodyPartRepository _repo;
 
-        public BodyPartController(AppDbContext context, UserManager<AppUser> userManager)
+        public BodyPartController(IBodyPartRepository bodyPartRepository)
         {
-            _context = context;
-            _userManager = userManager;
+            _repo = bodyPartRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var bodyParts = _context.BodyParts.ToList();
-                    return View(bodyParts);
-                }
+                var bodyParts = await _repo.GetBodyPartListAsync();
+                return View(bodyParts);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
 
         public IActionResult Create()
@@ -47,62 +36,75 @@ namespace GymLog.Controllers
         [HttpPost]
         public IActionResult Create(BodyPart bodyPart)
         {
-            if(!ModelState.IsValid)
+            if(!ModelState.IsValid) return View(bodyPart);
+
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin"))
             {
-                return View(bodyPart);
+                _repo.InsertBodyPart(bodyPart);
+                _repo.Save();
+
+                return RedirectToAction("Index");
             }
-            
-            _context.BodyParts.Add(bodyPart);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            else return RedirectToAction("Login", "Account");
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
-            if (bodyPart == null) return View("Error");
-            var bodyPartVM = new BodyPartVM
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin"))
             {
-                Name = bodyPart.Name,
-            };
-            return View(bodyPartVM);
+                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+                if (bodyPart == null) return View("Error");
+
+                var bodyPartVM = BodyPartToBodyPartVM(bodyPart);
+                return View(bodyPartVM);
+            }
+            else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id,BodyPartVM bodyPartVM)
         {
-            if (!ModelState.IsValid)
+
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin"))
             {
-                ModelState.AddModelError("", "Failed to edit BodyPart");
-                return View("Edit", bodyPartVM);
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("", "Failed to edit BodyPart");
+                    return View("Edit", bodyPartVM);
+                }
+                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+
+                if (bodyPart != null)
+                {
+                    bodyPart.Id = id;
+                    bodyPart.Name = bodyPartVM.Name;
+                    _repo.UpdateBodyPart(bodyPart);
+                    _repo.Save();
+                }
+                return RedirectToAction("Index");
             }
-            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
-
-            if (bodyPart != null)
-            {
-                bodyPart.Id = id;
-                bodyPart.Name = bodyPartVM.Name;
-                _context.Update(bodyPart);
-                _context.SaveChanges();
-			}
-            return RedirectToAction("Index");
+            else return RedirectToAction("Login", "Account");
         }
 
-        
-        public async Task<IActionResult> Delete(int id)
-        {
-            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
-            if (bodyPart == null) return View("Error");
-            return View(bodyPart);
-        }
+
 		[HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteBodyPartPart(int id)
         {
-            var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(a=>a.Id == id);
-            if (bodyPart == null) return View("Error");
-            _context.Remove(bodyPart);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin"))
+            {
+                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+                if (bodyPart == null) return View("Error");
+
+                
+                _repo.DeleteBodyPart(bodyPart);
+                _repo.Save();
+                return RedirectToAction("Index", "BodyPart");
+            }
+            else return RedirectToAction("Login", "Account");
         }
 
 
