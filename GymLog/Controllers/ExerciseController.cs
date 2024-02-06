@@ -1,4 +1,5 @@
 ﻿using GymLog.Data;
+using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -13,171 +14,105 @@ namespace GymLog.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IExerciseRepository _exerciseRepository;
 
-        public ExerciseController(AppDbContext context, UserManager<AppUser> userManager)
+        public ExerciseController(AppDbContext context, UserManager<AppUser> userManager, IExerciseRepository exerciseRepository)
         {
             _context = context;
             _userManager = userManager;
+            _exerciseRepository = exerciseRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-            
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var Exercises = new List<Exercise>();
-                    Exercises = _context.Exercises.Include(b => b.BodyParts).ToList();
-                    return View(Exercises);
-                }
+                var exercises = await _exerciseRepository.GetExerciseListAsync();
+                return View(exercises);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
 
+
+        //CREATE
         public IActionResult Create()
         {
-
-            var bodyParts = _context.BodyParts.ToList();
-            var checkedBodyPartsVM = new List<BodyPartVM>();
-            foreach (var bodyPart in bodyParts)
+            if (User.IsInRole("user") || User.IsInRole("admin"))
             {
-                checkedBodyPartsVM.Add(new BodyPartVM() { Id= bodyPart.Id, Name=bodyPart.Name, IsChecked=false});
+                var bodyParts = _context.BodyParts.ToList();
+                var checkedBodyPartsVM = new List<BodyPartVM>();
+                foreach (var bodyPart in bodyParts)
+                {
+                    checkedBodyPartsVM.Add(new BodyPartVM() { Id = bodyPart.Id, Name = bodyPart.Name, IsChecked = false });
+                }
+                var createExerciseVM = new ExerciseVM() { BodyPartsVM = checkedBodyPartsVM };
+                return View(createExerciseVM);
             }
-            var createExerciseVM = new ExerciseVM() { BodyPartsVM = checkedBodyPartsVM};
-            return View(createExerciseVM);
+            else
+                return RedirectToAction("Login", "Account");
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost(ExerciseVM ExerciseVM)
+        public async Task<IActionResult> CreatePost(ExerciseVM exerciseVM)
         {
-            if (!ModelState.IsValid) return View("Create", ExerciseVM);
-            //Check if user is admin
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var accountsVM = await _userManager.Users.Select(user => new AccountVM
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                Email = user.Email,
-            }).ToListAsync();
-            var users = await _userManager.Users.ToListAsync();
-            var roles = await _userManager.GetRolesAsync(user);
-            string userRole = "user";
-            foreach (var role in roles)
-            {
-                if (role == "admin") userRole = "admin";
-            }
-            Exercise Exercise = new Exercise();
-            Exercise.Id = ExerciseVM.Id;
-            Exercise.Name = ExerciseVM.Name;
-            if (userRole.Equals("user"))
-            {
-                Exercise.AppUserId = user.Id;
-            }
+            if (!ModelState.IsValid) return View("Create", exerciseVM);
 
-            _context.Exercises.Add(Exercise);
-            _context.SaveChanges();
-            if (ExerciseVM.BodyPartsVM != null)
-            {
-                foreach (var bodyPart in ExerciseVM.BodyPartsVM)
-                {
-                    if (bodyPart.IsChecked == true)
-                    {
-                        BodyPartExercise bodyPartExercise = new BodyPartExercise()
-                        {
-                            BodyPartId = bodyPart.Id,
-                            ExerciseId = Exercise.Id
-                        };
-                        _context.BodyPartExercises.Add(bodyPartExercise);
-                        _context.SaveChanges();
-                    }
-                    
-                    
-                }
-            }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var exercise = ConvertVmToExercise(exerciseVM);
+            
+            if (User.IsInRole("user"))
+                exercise.AppUserId = user.Id;
+
+            _exerciseRepository.InsertExercise(exercise);
+
+            exercise.BodyParts = GetBodyParts(exerciseVM);
+            _exerciseRepository.InsertBodyPartExercise(exercise);
+
             return RedirectToAction("Index","Home");
         }
 
 
-
+        //DELETE
 		public async Task<IActionResult> Delete(int id)
         {
-            var Exercise = await _context.Exercises.FirstOrDefaultAsync(i => i.Id == id);
-            if (Exercise == null) return View("Error");
-            return View(Exercise);
+            var exercise = await _exerciseRepository.GetExerciseByIdAsync(id);
+            if (exercise == null) return View("Error");
+            return View(exercise);
         }
+
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteExercise(Exercise Exercise)
+        public IActionResult DeleteExercise(Exercise exercise)
         {
-            _context.Remove(Exercise);
-            _context.SaveChanges();
+            _exerciseRepository.DeleteExercise(exercise);
             return RedirectToAction("Index");
         }
 
+
+        //UPDATE
         public async Task<IActionResult> Edit(int id)
         {
-            var Exercise = await _context.Exercises.Include(b => b.BodyParts).FirstOrDefaultAsync(e => e.Id == id);
-            var bodyParts =  _context.BodyParts.ToList();
-            if (Exercise == null) return View("Error");
-            var bodyPartsVM = new List<BodyPartVM>();
-            if (bodyParts != null) 
-                foreach(var part in bodyParts)
-                {
-                    bodyPartsVM.Add(new BodyPartVM
-                    {
-                        Id = part.Id,
-                        Name = part.Name,
-                    });
-                }
-            if(Exercise.BodyParts != null)
-            foreach(var part in Exercise.BodyParts)
-            {
-                    bodyPartsVM.FirstOrDefault(i => i.Id == part.Id).IsChecked = true;
-            }
-            var ExerciseVM = new ExerciseVM()
-            {
-                Id = id,
-                Name = Exercise.Name,
-                BodyPartsVM = bodyPartsVM,
-			};
-			return View(ExerciseVM);
-    }
-    [HttpPost]
-    public async Task<IActionResult> Edit(ExerciseVM ExerciseVM)
+            var exercise = await _exerciseRepository.GetExerciseByIdAsync(id);
+
+            var exerciseVM = PrepareExerciseVMToUpdate(exercise);
+            
+			return View(exerciseVM);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ExerciseVM exerciseVM)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(ExerciseVM);
-            }
-            var Exercise = await _context.Exercises.FirstOrDefaultAsync(i=>i.Id == ExerciseVM.Id);
-            if(Exercise == null) return View("Error");
-            Exercise.Name = ExerciseVM.Name;
-            _context.Update(Exercise);
-             var bodyPartExercises = _context.BodyPartExercises.Where(i=>i.ExerciseId == ExerciseVM.Id).ToList();
-            _context.RemoveRange(bodyPartExercises);
-            if (ExerciseVM.BodyPartsVM != null)
-            {
-                foreach (var bodyPart in ExerciseVM.BodyPartsVM)
-                {
-                    if (bodyPart.IsChecked == true)
-                    {
-                        BodyPartExercise bodyPartExercise = new BodyPartExercise()
-                        {
-                            BodyPartId = bodyPart.Id,
-                            ExerciseId = Exercise.Id
-                        };
-                        _context.BodyPartExercises.Add(bodyPartExercise);
-                    }
-                }
-            }
-            _context.SaveChanges();
+            if (!ModelState.IsValid) return View(exerciseVM);
+
+            var exercise = ConvertVmToExercise(exerciseVM);
+
+            _exerciseRepository.UpdateExercise(exercise);
+
+            exercise.BodyParts = GetBodyParts(exerciseVM);
+            _exerciseRepository.UpdateBodyPartExercise(exercise);
+            
             return RedirectToAction("Index");
         }
     }

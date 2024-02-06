@@ -1,5 +1,7 @@
 using GymLog.Data;
+using GymLog.Interfaces;
 using GymLog.Models;
+using GymLog.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

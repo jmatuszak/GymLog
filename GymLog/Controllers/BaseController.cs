@@ -9,7 +9,6 @@ namespace GymLog.Controllers
 {
     public abstract class BaseController : Controller
     {
-        private Task<TemplateVM>? _templateToTemplateVM;
         protected AppDbContext Context { get; private set; }
         //private readonly UserManager<AppUser> _userManager;
 
@@ -18,8 +17,34 @@ namespace GymLog.Controllers
             Context = new AppDbContext();
         }
 
-        // TEMPLATE TO  TemplateVM
-        protected TemplateVM TemplateToTemplateVM(Template template, TemplateVM templateVM)
+        protected Exercise ConvertVmToExercise(ExerciseVM exerciseVM)
+        {
+            Exercise exercise = new Exercise
+            {
+                Id = exerciseVM.Id,
+                Name = exerciseVM.Name,
+                AppUserId = exerciseVM.AppUserId
+            };
+            return exercise;
+        }
+
+        protected List<BodyPart> GetBodyParts(ExerciseVM exerciseVM)
+        {
+            var bodyParts = new List<BodyPart>();
+            if(exerciseVM.BodyPartsVM != null)
+            foreach (var itemVM in exerciseVM.BodyPartsVM)
+            {
+                if (itemVM.IsChecked)
+                {
+                    var bodypart = new BodyPart() { Id = itemVM.Id, Name = itemVM.Name };
+                    bodyParts.Add(bodypart);
+                }
+            }
+            return bodyParts;
+        }
+
+            // TEMPLATE TO  TemplateVM
+            protected TemplateVM TemplateToTemplateVM(Template template, TemplateVM templateVM)
         {
             templateVM.Exercises = Context.Exercises.ToList();
             templateVM.WorkoutSegmentsVM = templateVM.WorkoutSegmentsVM ?? new List<WorkoutSegmentVM>();
@@ -138,6 +163,36 @@ namespace GymLog.Controllers
                 }
             }
             exerciseVM = new ExerciseVM()
+            {
+                Id = exercise.Id,
+                Name = exercise.Name,
+                BodyPartsVM = bodyPartsVM,
+            };
+            return exerciseVM;
+        }
+        
+        protected ExerciseVM PrepareExerciseVMToUpdate(Exercise exercise)
+        {
+            var bodyParts = Context.BodyParts.ToList();
+
+            if (exercise == null) return null;
+
+            var bodyPartsVM = new List<BodyPartVM>();
+            if (bodyParts != null)
+                foreach (var part in bodyParts)
+                {
+                    bodyPartsVM.Add(new BodyPartVM
+                    {
+                        Id = part.Id,
+                        Name = part.Name,
+                    });
+                }
+            if (exercise.BodyParts != null)
+                foreach (var part in exercise.BodyParts)
+                {
+                    bodyPartsVM.FirstOrDefault(i => i.Id == part.Id).IsChecked = true;
+                }
+            var exerciseVM = new ExerciseVM()
             {
                 Id = exercise.Id,
                 Name = exercise.Name,
