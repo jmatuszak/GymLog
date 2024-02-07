@@ -1,154 +1,123 @@
 ﻿using GymLog.Data;
+using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Controllers
 {
-	public class SetController : Controller
-	{
-        private readonly AppDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+    public class SetController : Controller
+    {
+        private readonly ISetRepository _setRepository;
 
-        public SetController(AppDbContext context, UserManager<AppUser> userManager)
+        public SetController(ISetRepository setRepository)
         {
-            _context = context;
-            _userManager = userManager;
+            _setRepository = setRepository;
         }
         public async Task<IActionResult> Index()
-		{
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+        {
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var sets = _context.Sets.ToList();
-                    return View(sets);
-                }
+                var sets = await _setRepository.GetSetListAsync();
+                return View(sets);
             }
-            return RedirectToAction("Login", "Account");
-		}
+            else return RedirectToAction("Login", "Account");
+        }
 
-		public async Task<IActionResult> Create()
-		{
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+        public async Task<IActionResult> Create()
+        {
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    return View();
-                }
+                var sets = await _setRepository.GetSetListAsync();
+                return View();
             }
-            return RedirectToAction("Login", "Account");
-		}
+            else return RedirectToAction("Login", "Account");
+        }
 
-		[HttpPost]
-		public IActionResult Create(Set set)
-		{
-			if(!ModelState.IsValid)
-			{
-				return View(set);
-			}
-			_context.Sets.Add(set);
-			_context.SaveChanges();
-			return RedirectToAction("Index");
-		}
+        [HttpPost]
+        public IActionResult Create(Set set)
+        {
+            if (!ModelState.IsValid) return View(set);
 
-		public async Task<IActionResult> Edit(int id)
-		{
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == id);
-                    if (set == null) return View("Error");
-                    var setVM = new SetVM()
-                    {
-                        Id = id,
-                        Weight = set.Weight,
-                        Reps = set.Reps,
-                        Description = set.Description,
-                        WorkoutSegmentId = set.WorkoutSegmentId,
-                    };
-                    return View(setVM);
-                }
+                _setRepository.InsertSet(set);
+                _setRepository.Save();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
+        }
 
-		}
-		[HttpPost]
-		public async Task<IActionResult> EditPost(SetVM setVM)
-		{
-			if(!ModelState.IsValid) 
-			{
-				return View(setVM);
-			}
-            var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == setVM.Id);
-
-            if (set != null)
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                set.Weight = setVM.Weight;
-                set.Reps = setVM.Reps;
-                set.Description = setVM.Description;
-                set.WorkoutSegmentId = setVM.WorkoutSegmentId;
-                _context.Update(set);
-                _context.SaveChanges();
+                var set = await _setRepository.GetSetByIdAsync(id);
+
+                var setVM = new SetVM()
+                {
+                    Id = id,
+                    Weight = set.Weight,
+                    Reps = set.Reps,
+                    Description = set.Description,
+                    WorkoutSegmentId = set.WorkoutSegmentId,
+                };
+                return View(setVM);
             }
+            else return RedirectToAction("Login", "Account");
+        }
 
-            return RedirectToAction("Index");
-		}
+        [HttpPost]
+        public async Task<IActionResult> EditPost(SetVM setVM)
+        {
+            if (!ModelState.IsValid) return View(setVM);
 
-		public async Task<IActionResult> Delete(int id)
-		{
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == id);
-                    if (set == null) return View("Error");
-                    return View(set);
-                }
-            }
-            return RedirectToAction("Login", "Account");
+                var set = await _setRepository.GetSetByIdAsync(setVM.Id);
 
-		}
-		[HttpPost, ActionName("Delete")]
-		public IActionResult DeleteSet(Set Set)
-		{
-			_context.Remove(Set);
-			_context.SaveChanges();
-			return RedirectToAction("Index");		}
-	}
+                if (set != null)
+                {
+                    set.Weight = setVM.Weight;
+                    set.Reps = setVM.Reps;
+                    set.Description = setVM.Description;
+                    set.WorkoutSegmentId = setVM.WorkoutSegmentId;
+                    _setRepository.UpdateSet(set);
+                    _setRepository.Save();
+                }
+                return RedirectToAction("Index");
+            }
+            else return RedirectToAction("Login", "Account");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
+            {
+                var set = await _setRepository.GetSetByIdAsync(id);
+                if (set == null) return View("Error");
+                return View(set);
+            }
+            else return RedirectToAction("Login", "Account");
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteSet(Set set)
+        {
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
+            {
+                _setRepository.DeleteSet(set);
+                _setRepository.Save();
+                return RedirectToAction("Index");
+            }
+            else return RedirectToAction("Login", "Account");
+        }
+    }
 }
