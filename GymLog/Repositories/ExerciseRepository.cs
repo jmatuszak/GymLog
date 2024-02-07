@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymLog.Repositories
 {
-
     public class ExerciseRepository : IExerciseRepository
     {
         private readonly AppDbContext _context;
@@ -15,13 +14,9 @@ namespace GymLog.Repositories
             _context = context;
         }
 
-
-
         public void DeleteExercise(Exercise exercise)
         {
             _context.Remove(exercise);
-            Save();
-
         }
 
         public async Task<Exercise> GetExerciseByIdAsync(int id)
@@ -83,8 +78,6 @@ namespace GymLog.Repositories
                 }
             }
         }
-
-
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -105,4 +98,5 @@ namespace GymLog.Repositories
             GC.SuppressFinalize(this);
         }
     }
+
 }

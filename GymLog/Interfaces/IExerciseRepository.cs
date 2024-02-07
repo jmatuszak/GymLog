@@ -1,5 +1,6 @@
 ﻿using GymLog.Models;
 
+
 namespace GymLog.Interfaces
 {
     public interface IExerciseRepository : IDisposable
@@ -12,6 +13,5 @@ namespace GymLog.Interfaces
         void UpdateExercise(Exercise exercise);
         void Save();
         void UpdateBodyPartExercise(Exercise exercise);
-
     }
 }
