@@ -24,7 +24,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var exercises = await _exerciseRepository.GetExerciseListAsync();
+                var exercises = await _exerciseRepository.GetListAsync();
                 return View(exercises);
             }
             else return RedirectToAction("Login", "Account");
@@ -36,7 +36,7 @@ namespace GymLog.Controllers
         {
             if (User.IsInRole("user") || User.IsInRole("admin"))
             {
-                var bodyParts = await _bodyPartRepository.GetBodyPartListAsync();
+                var bodyParts = await _bodyPartRepository.GetListAsync();
                 var checkedBodyPartsVM = new List<BodyPartVM>();
                 foreach (var bodyPart in bodyParts)
                 {
@@ -62,7 +62,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user"))
                 exercise.AppUserId = user.Id;
 
-            _exerciseRepository.InsertExercise(exercise);
+            _exerciseRepository.Insert(exercise);
             _exerciseRepository.Save();
 
             exercise.BodyParts = GetCheckedBodyParts(exerciseVM);
@@ -77,7 +77,7 @@ namespace GymLog.Controllers
         //DELETE
         public async Task<IActionResult> Delete(int id)
         {
-            var exercise = await _exerciseRepository.GetExerciseByIdAsync(id);
+            var exercise = await _exerciseRepository.GetByIdAsync(id);
             if (exercise == null) return View("Error");
             return View(exercise);
         }
@@ -85,7 +85,7 @@ namespace GymLog.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteExercise(Exercise exercise)
         {
-            _exerciseRepository.DeleteExercise(exercise);
+            _exerciseRepository.Delete(exercise);
             _exerciseRepository.Save();
             return RedirectToAction("Index");
         }
@@ -94,7 +94,7 @@ namespace GymLog.Controllers
         //UPDATE
         public async Task<IActionResult> Edit(int id)
         {
-            var exercise = await _exerciseRepository.GetExerciseByIdAsync(id);
+            var exercise = await _exerciseRepository.GetByIdAsync(id);
 
             var exerciseVM = PrepareExerciseVMToUpdate(exercise);
 
@@ -108,7 +108,7 @@ namespace GymLog.Controllers
 
             var exercise = ConvertVmToExercise(exerciseVM);
 
-            _exerciseRepository.UpdateExercise(exercise);
+            _exerciseRepository.Update(exercise);
             _exerciseRepository.Save();
 
             exercise.BodyParts = GetCheckedBodyParts(exerciseVM);

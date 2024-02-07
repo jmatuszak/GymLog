@@ -19,6 +19,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<IBodyPartRepository, BodyPartRepository>();
 builder.Services.AddScoped<ISetRepository, SetRepository>();
+builder.Services.AddScoped<IWorkoutSegmentRepository, WorkoutSegmentRepository>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

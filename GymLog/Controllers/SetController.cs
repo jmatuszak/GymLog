@@ -19,7 +19,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var sets = await _setRepository.GetSetListAsync();
+                var sets = await _setRepository.GetListAsync();
                 return View(sets);
             }
             else return RedirectToAction("Login", "Account");
@@ -30,7 +30,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var sets = await _setRepository.GetSetListAsync();
+                var sets = await _setRepository.GetListAsync();
                 return View();
             }
             else return RedirectToAction("Login", "Account");
@@ -44,7 +44,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                _setRepository.InsertSet(set);
+                _setRepository.Insert(set);
                 _setRepository.Save();
                 return RedirectToAction("Index");
             }
@@ -56,7 +56,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var set = await _setRepository.GetSetByIdAsync(id);
+                var set = await _setRepository.GetByIdAsync(id);
 
                 var setVM = new SetVM()
                 {
@@ -79,7 +79,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var set = await _setRepository.GetSetByIdAsync(setVM.Id);
+                var set = await _setRepository.GetByIdAsync(setVM.Id);
 
                 if (set != null)
                 {
@@ -87,7 +87,7 @@ namespace GymLog.Controllers
                     set.Reps = setVM.Reps;
                     set.Description = setVM.Description;
                     set.WorkoutSegmentId = setVM.WorkoutSegmentId;
-                    _setRepository.UpdateSet(set);
+                    _setRepository.Update(set);
                     _setRepository.Save();
                 }
                 return RedirectToAction("Index");
@@ -100,7 +100,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                var set = await _setRepository.GetSetByIdAsync(id);
+                var set = await _setRepository.GetByIdAsync(id);
                 if (set == null) return View("Error");
                 return View(set);
             }
@@ -113,7 +113,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             else if (User.IsInRole("admin"))
             {
-                _setRepository.DeleteSet(set);
+                _setRepository.Delete(set);
                 _setRepository.Save();
                 return RedirectToAction("Index");
             }

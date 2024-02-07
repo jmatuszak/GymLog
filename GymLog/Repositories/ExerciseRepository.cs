@@ -14,24 +14,24 @@ namespace GymLog.Repositories
             _context = context;
         }
 
-        public void DeleteExercise(Exercise exercise)
+        public void Delete(Exercise exercise)
         {
             _context.Remove(exercise);
         }
 
-        public async Task<Exercise> GetExerciseByIdAsync(int id)
+        public async Task<Exercise> GetByIdAsync(int id)
         {
             var exercise = await _context.Exercises.Include(b => b.BodyParts).FirstOrDefaultAsync(x => x.Id == id);
             return exercise;
         }
 
-        public async Task<IEnumerable<Exercise>> GetExerciseListAsync()
+        public async Task<IEnumerable<Exercise>> GetListAsync()
         {
             var exercises = await _context.Exercises.Include(b => b.BodyParts).ToListAsync();
             return exercises;
         }
 
-        public void InsertExercise(Exercise exercise)
+        public void Insert(Exercise exercise)
         {
             _context.Exercises.Add(exercise);
         }
@@ -56,7 +56,7 @@ namespace GymLog.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateExercise(Exercise exercise)
+        public void Update(Exercise exercise)
         {
             _context.Update(exercise);
         }

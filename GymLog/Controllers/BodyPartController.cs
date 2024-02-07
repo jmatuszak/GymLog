@@ -8,11 +8,11 @@ namespace GymLog.Controllers
 {
     public class BodyPartController : BaseController
     {
-        private readonly IBodyPartRepository _repo;
+        private readonly IBodyPartRepository _bodyPartRepository;
 
         public BodyPartController(IBodyPartRepository bodyPartRepository)
         {
-            _repo = bodyPartRepository;
+            _bodyPartRepository = bodyPartRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -20,7 +20,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             if (User.IsInRole("admin"))
             {
-                var bodyParts = await _repo.GetBodyPartListAsync();
+                var bodyParts = await _bodyPartRepository.GetListAsync();
                 return View(bodyParts);
             }
             else return RedirectToAction("Login", "Account");
@@ -39,8 +39,8 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             if (User.IsInRole("admin"))
             {
-                _repo.InsertBodyPart(bodyPart);
-                _repo.Save();
+                _bodyPartRepository.Insert(bodyPart);
+                _bodyPartRepository.Save();
 
                 return RedirectToAction("Index");
             }
@@ -52,7 +52,7 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             if (User.IsInRole("admin"))
             {
-                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+                var bodyPart = await _bodyPartRepository.GetByIdAsync(id);
                 if (bodyPart == null) return View("Error");
 
                 var bodyPartVM = BodyPartToBodyPartVM(bodyPart);
@@ -73,14 +73,14 @@ namespace GymLog.Controllers
                     ModelState.AddModelError("", "Failed to edit BodyPart");
                     return View("Edit", bodyPartVM);
                 }
-                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+                var bodyPart = await _bodyPartRepository.GetByIdAsync(id);
 
                 if (bodyPart != null)
                 {
                     bodyPart.Id = id;
                     bodyPart.Name = bodyPartVM.Name;
-                    _repo.UpdateBodyPart(bodyPart);
-                    _repo.Save();
+                    _bodyPartRepository.Update(bodyPart);
+                    _bodyPartRepository.Save();
                 }
                 return RedirectToAction("Index");
             }
@@ -94,12 +94,12 @@ namespace GymLog.Controllers
             if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
             if (User.IsInRole("admin"))
             {
-                var bodyPart = await _repo.GetBodyPartByIdAsync(id);
+                var bodyPart = await _bodyPartRepository.GetByIdAsync(id);
                 if (bodyPart == null) return View("Error");
 
                 
-                _repo.DeleteBodyPart(bodyPart);
-                _repo.Save();
+                _bodyPartRepository.Delete(bodyPart);
+                _bodyPartRepository.Save();
                 return RedirectToAction("Index", "BodyPart");
             }
             else return RedirectToAction("Login", "Account");

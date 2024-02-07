@@ -15,24 +15,24 @@ namespace GymLog.Repositories
         }
 
 
-        public void DeleteSet(Set set)
+        public void Delete(Set set)
         {
             _context.Sets.Remove(set);
         }
 
-        public async Task<Set> GetSetByIdAsync(int id)
+        public async Task<Set> GetByIdAsync(int id)
         {
             var set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == id);
             return set;
         }
 
-        public async Task<IEnumerable<Set>> GetSetListAsync()
+        public async Task<IEnumerable<Set>> GetListAsync()
         {
             var sets = await _context.Sets.ToListAsync();
             return sets;
         }
 
-        public void InsertSet(Set set)
+        public void Insert(Set set)
         {
             _context.Sets.Add(set);
         }
@@ -42,7 +42,7 @@ namespace GymLog.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateSet(Set set)
+        public void Update(Set set)
         {
             _context.Update(set);
         }
@@ -65,6 +65,16 @@ namespace GymLog.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task<IEnumerable<Set>> GetSetWithWorkoutTemplateIdListAsync(int id)
+        {
+            return await _context.Sets.Where(x => x.WorkoutSegmentId == id).ToListAsync();
+        }
+
+        public void DeleteRange(IEnumerable<Set> sets)
+        {
+            _context.RemoveRange(sets);
         }
     }
 }

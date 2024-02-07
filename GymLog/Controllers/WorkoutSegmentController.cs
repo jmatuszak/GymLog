@@ -1,5 +1,6 @@
 ﻿using GymLog.Data;
 using GymLog.Data.Enum;
+using GymLog.Interfaces;
 using GymLog.Models;
 using GymLog.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -15,137 +16,104 @@ namespace GymLog.Controllers
 	{
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IWorkoutSegmentRepository _workoutSegmentRepository;
+        private readonly IExerciseRepository _exerciseRepository;
+        private readonly ISetRepository _setRepository;
 
-        public WorkoutSegmentController(AppDbContext context, UserManager<AppUser> userManager)
+        public WorkoutSegmentController(AppDbContext context, UserManager<AppUser> userManager, IWorkoutSegmentRepository workoutSegmentRepository, IExerciseRepository exerciseRepository, ISetRepository setRepository)
         {
             _context = context;
             _userManager = userManager;
+            _workoutSegmentRepository = workoutSegmentRepository;
+            _exerciseRepository = exerciseRepository;
+            _setRepository = setRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var list = _context.WorkoutSegments.Include(s => s.Sets).Include(a => a.Exercise).Include(a => a.Template).ToList();
-                    return View(list);
-                }
+                var list = await _workoutSegmentRepository.GetListAsync();
+                return View(list);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
 
-        public async Task<IActionResult> AddSet(WorkoutSegmentVM WorkoutSegmentVM)
+        public IActionResult AddSet(WorkoutSegmentVM workoutSegmentVM)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
-                    WorkoutSegmentVM.SetsVM.Add(new SetVM());
-                    return View(WorkoutSegmentVM.ActionName, WorkoutSegmentVM);
-
-                }
+                workoutSegmentVM.SetsVM ??= new List<SetVM>();
+                workoutSegmentVM.SetsVM.Add(new SetVM());
+                return View(workoutSegmentVM.ActionName, workoutSegmentVM);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
         
-        public async Task<IActionResult> RemoveSet(WorkoutSegmentVM WorkoutSegmentVM)
+        public IActionResult RemoveSet(WorkoutSegmentVM workoutSegmentVM)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
-                    WorkoutSegmentVM.SetsVM.RemoveAt(WorkoutSegmentVM.SetsVM.Count - 1);
-                    return View(WorkoutSegmentVM.ActionName, WorkoutSegmentVM);
-
-                }
+                workoutSegmentVM.SetsVM ??= new List<SetVM>();
+                workoutSegmentVM.SetsVM.RemoveAt(workoutSegmentVM.SetsVM.Count - 1);
+                return View(workoutSegmentVM.ActionName, workoutSegmentVM);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
         
 
         //<-----------------------  CREATE   --------------------->
-        public async Task<IActionResult> Create(WorkoutSegmentVM? WorkoutSegmentVM)
+        public async Task<IActionResult> Create(WorkoutSegmentVM? workoutSegmentVM)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    WorkoutSegmentVM ??= new WorkoutSegmentVM();
-                    WorkoutSegmentVM.SetsVM ??= new List<SetVM>();
-                    WorkoutSegmentVM.SetsVM.Add(new SetVM());
-                    WorkoutSegmentVM.ActionName = "Create";
-                    WorkoutSegmentVM.Exercises = _context.Exercises.ToList();
-                    return View(WorkoutSegmentVM);
-                }
+                workoutSegmentVM ??= new WorkoutSegmentVM();
+                workoutSegmentVM.SetsVM ??= new List<SetVM>();
+                workoutSegmentVM.SetsVM.Add(new SetVM());
+                workoutSegmentVM.ActionName = "Create";
+                workoutSegmentVM.Exercises = await _exerciseRepository.GetListAsync() as List<Exercise>;
+                return View(workoutSegmentVM);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
-		public IActionResult CreatePost(WorkoutSegmentVM WorkoutSegmentVM)
+		public IActionResult CreatePost(WorkoutSegmentVM workoutSegmentVM)
 		{
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) return View("Create", workoutSegmentVM);
+
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                return View("Create", WorkoutSegmentVM);
-            }
-            var sets = new List<Set>();
-            if (WorkoutSegmentVM.SetsVM != null)
-                foreach (var item in WorkoutSegmentVM.SetsVM)
-                {
-                    var set = new Set()
+                var sets = new List<Set>();
+                if (workoutSegmentVM.SetsVM != null)
+                    foreach (var item in workoutSegmentVM.SetsVM)
                     {
-                        Weight = item.Weight,
-                        Reps = item.Reps,
-                        WorkoutSegmentId = item.WorkoutSegmentId
-                    };
-                    sets.Add(set);
-                }
-            var WorkoutSegment = new WorkoutSegment()
-            {
-                Description = WorkoutSegmentVM.Description,
-                ExerciseId = WorkoutSegmentVM.ExerciseId,
-                TemplateId = WorkoutSegmentVM.TemplateId,
-                Sets = sets,
-                WeightType = WorkoutSegmentVM.WeightType,
-            };
-            _context.WorkoutSegments.Add(WorkoutSegment);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+                        var set = new Set()
+                        {
+                            Weight = item.Weight,
+                            Reps = item.Reps,
+                            WorkoutSegmentId = item.WorkoutSegmentId
+                        };
+                        sets.Add(set);
+                    }
+                var workoutSegment = new WorkoutSegment()
+                {
+                    Description = workoutSegmentVM.Description,
+                    ExerciseId = workoutSegmentVM.ExerciseId,
+                    TemplateId = workoutSegmentVM.TemplateId,
+                    Sets = sets,
+                    WeightType = workoutSegmentVM.WeightType,
+                };
+                _workoutSegmentRepository.Insert(workoutSegment);
+                _workoutSegmentRepository.Save();
+                return RedirectToAction("Index", "Home");
+            }
+            else return RedirectToAction("Login", "Account");
 		}
 
 
@@ -155,115 +123,97 @@ namespace GymLog.Controllers
 
         public async Task<IActionResult> Edit(int id)
 		{
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                if (role == "user")
-                {
-                    RedirectToAction("Index", "Home");
-                }
-                else if (role == "admin")
-                {
-                    var exercises = _context.Exercises.ToList();
-                    //var exercisesConcatVM = await CreateExerciseConcatList();
+                var exercises = await _exerciseRepository.GetListAsync() as List<Exercise>;
 
-                    var WorkoutSegment = await _context.WorkoutSegments.Include(x => x.Sets).FirstOrDefaultAsync(x => x.Id == id);
-                    var setsVM = new List<SetVM>();
-                    foreach (var item in WorkoutSegment.Sets)
+                var workoutSegment = await _workoutSegmentRepository.GetByIdAsync(id);
+                var setsVM = new List<SetVM>();
+                foreach (var item in workoutSegment.Sets)
+                {
+                    SetVM setVM = new SetVM()
                     {
-                        SetVM setVM = new SetVM()
-                        {
-                            Id = item.Id,
-                            Weight = item.Weight,
-                            Reps = item.Reps,
-                            WorkoutSegmentId = item.WorkoutSegmentId,
-                        };
-                        setsVM.Add(setVM);
-                    }
-                    var WorkoutSegmentVM = new WorkoutSegmentVM()
-                    {
-                        Id = WorkoutSegment.Id,
-                        Description = WorkoutSegment.Description,
-                        TemplateId = WorkoutSegment.TemplateId,
-                        ExerciseId = WorkoutSegment.ExerciseId,
-                        Exercises = exercises,
-                        SetsVM = setsVM
+                        Id = item.Id,
+                        Weight = item.Weight,
+                        Reps = item.Reps,
+                        WorkoutSegmentId = item.WorkoutSegmentId,
                     };
-
-                    WorkoutSegmentVM.ActionName = "Edit";
-                    return View(WorkoutSegmentVM);
+                    setsVM.Add(setVM);
                 }
+                var WorkoutSegmentVM = new WorkoutSegmentVM()
+                {
+                    Id = workoutSegment.Id,
+                    Description = workoutSegment.Description,
+                    TemplateId = workoutSegment.TemplateId,
+                    ExerciseId = workoutSegment.ExerciseId,
+                    Exercises = exercises,
+                    SetsVM = setsVM
+                };
+
+                WorkoutSegmentVM.ActionName = "Edit";
+                return View(WorkoutSegmentVM);
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
 		}
 
         [HttpPost]
-        public async Task<IActionResult> EditPost(WorkoutSegmentVM WorkoutSegmentVM)
+        public async Task<IActionResult> EditPost(WorkoutSegmentVM workoutSegmentVM)
         {
-            if (!ModelState.IsValid)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-                return View("Edit", WorkoutSegmentVM);
-            }
-            var oldSets = _context.Sets.Where(x => x.WorkoutSegmentId == WorkoutSegmentVM.Id).ToList();
-            _context.Sets.RemoveRange(oldSets);
+                if (!ModelState.IsValid) return View("Edit", workoutSegmentVM);
 
-            var WorkoutSegment = await _context.WorkoutSegments.FirstOrDefaultAsync(x => x.Id == WorkoutSegmentVM.Id);
-			var sets = new List<Set>();
-            foreach (var item in WorkoutSegmentVM.SetsVM)
-            {
-                Set set = new Set()
+                var oldSets = _context.Sets.Where(x => x.WorkoutSegmentId == workoutSegmentVM.Id).ToList();
+                _context.Sets.RemoveRange(oldSets);
+
+                var workoutSegment = await _workoutSegmentRepository.GetByIdAsync(workoutSegmentVM.Id);
+                var sets = new List<Set>();
+                foreach (var item in workoutSegmentVM.SetsVM)
                 {
-                    Weight = item.Weight,
-                    Reps = item.Reps,
-                    WorkoutSegmentId = item.WorkoutSegmentId,
-                };
-                sets.Add(set);
+                    Set set = new Set()
+                    {
+                        Weight = item.Weight,
+                        Reps = item.Reps,
+                        WorkoutSegmentId = item.WorkoutSegmentId,
+                    };
+                    sets.Add(set);
+                }
+                if (workoutSegment != null)
+                {
+                    workoutSegment.Id = workoutSegmentVM.Id;
+                    workoutSegment.Description = workoutSegmentVM.Description;
+                    workoutSegment.ExerciseId = workoutSegmentVM.ExerciseId;
+                    workoutSegment.TemplateId = workoutSegmentVM.TemplateId;
+                    workoutSegment.Sets = sets;
+                    _workoutSegmentRepository.Update(workoutSegment);
+                    _workoutSegmentRepository.Save();
+                }
+                return RedirectToAction("Index", "Home");
             }
-            if (WorkoutSegment != null)
-            {
-                WorkoutSegment.Id = WorkoutSegmentVM.Id;
-                WorkoutSegment.Description = WorkoutSegmentVM.Description;
-                WorkoutSegment.ExerciseId = WorkoutSegmentVM.ExerciseId;
-                WorkoutSegment.TemplateId = WorkoutSegmentVM.TemplateId;
-                WorkoutSegment.Sets = sets;
-                _context.Update(WorkoutSegment);
-                _context.SaveChanges();
-            }
-			return RedirectToAction("Index", "Home");
+            else return RedirectToAction("Login", "Account");
 		}
 
         //<-----------------------  DELETE   ---------------------> 
 
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Account");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (User.IsInRole("user")) return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("admin"))
             {
-				if (role == "user")
+                var WorkoutSegment = await _workoutSegmentRepository.GetByIdAsync(id);
+                if (WorkoutSegment != null)
                 {
-					RedirectToAction("History", "Home");
+                    _context.WorkoutSegments.Remove(WorkoutSegment);
+                    var sets = await _setRepository.GetSetWithWorkoutTemplateIdListAsync(id);
+                    _setRepository.DeleteRange(sets);
+                    if (sets.Any()) _context.RemoveRange(sets);
+                    _workoutSegmentRepository.Save();
                 }
-                else if (role == "admin")
-                {
-				    var WorkoutSegment = await _context.WorkoutSegments.FirstOrDefaultAsync(x => x.Id == id);
-					if (WorkoutSegment != null)
-                    {
-                        _context.WorkoutSegments.Remove(WorkoutSegment);
-                        var sets = _context.Sets.Where(x => x.WorkoutSegmentId == id).ToList();
-                        if (sets.Any()) _context.RemoveRange(sets);
-                        _context.SaveChanges();
-						RedirectToAction("History", "Home");
-
-					}
-				}
+                return RedirectToAction("History", "Home");
             }
-            return RedirectToAction("Login", "Account");
+            else return RedirectToAction("Login", "Account");
 		}
 
     }

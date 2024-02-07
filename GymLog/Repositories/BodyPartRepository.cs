@@ -14,23 +14,23 @@ namespace GymLog.Repositories
             _context = context;
         }
 
-        public void DeleteBodyPart(BodyPart bodyPart)
+        public void Delete(BodyPart bodyPart)
         {
             _context.BodyParts.Remove(bodyPart);
         }
 
-        public async Task<BodyPart> GetBodyPartByIdAsync(int id)
+        public async Task<BodyPart> GetByIdAsync(int id)
         {
             var bodyPart = await _context.BodyParts.FirstOrDefaultAsync(x => x.Id == id);
             return bodyPart;
         }
 
-        public async Task<IEnumerable<BodyPart>> GetBodyPartListAsync()
+        public async Task<IEnumerable<BodyPart>> GetListAsync()
         {
             return await _context.BodyParts.ToListAsync();
         }
 
-        public void InsertBodyPart(BodyPart bodyPart)
+        public void Insert(BodyPart bodyPart)
         {
             _context.BodyParts.Add(bodyPart);
         }
@@ -40,7 +40,7 @@ namespace GymLog.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateBodyPart(BodyPart bodyPart)
+        public void Update(BodyPart bodyPart)
         {
             _context.BodyParts.Update(bodyPart);
         }

@@ -4,11 +4,11 @@ namespace GymLog.Interfaces
 {
     public interface IBodyPartRepository : IDisposable
     {
-        Task<BodyPart> GetBodyPartByIdAsync(int id);
-        Task<IEnumerable<BodyPart>> GetBodyPartListAsync();
-        void InsertBodyPart(BodyPart bodyPart);
-        void DeleteBodyPart(BodyPart bodyPart);
-        void UpdateBodyPart(BodyPart bodyPart);
+        Task<BodyPart> GetByIdAsync(int id);
+        Task<IEnumerable<BodyPart>> GetListAsync();
+        void Insert(BodyPart bodyPart);
+        void Delete(BodyPart bodyPart);
+        void Update(BodyPart bodyPart);
         void Save();
 
     }
